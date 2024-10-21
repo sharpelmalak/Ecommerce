@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="admin"
-    ,catalog="shomya"
+    ,catalog="ecommerce"
 )
 public class Admin extends User implements java.io.Serializable {
 

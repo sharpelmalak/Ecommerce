@@ -13,7 +13,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="product"
-    ,catalog="shomya"
+    ,catalog="ecommerce"
 )
 public class Product  implements java.io.Serializable {
 
@@ -159,7 +159,7 @@ public class Product  implements java.io.Serializable {
     }
 
 @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(name="customer_wishlist", catalog="shomya", joinColumns = { 
+    @JoinTable(name="customer_wishlist", catalog="ecommerce", joinColumns = { 
         @JoinColumn(name="product_id", nullable=false) }, inverseJoinColumns = {
         @JoinColumn(name="customer_id", nullable=false) })
     public Set<Customer> getCustomers() {

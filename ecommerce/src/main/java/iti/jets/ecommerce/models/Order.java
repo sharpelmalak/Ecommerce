@@ -14,7 +14,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="order"
-    ,catalog="shomya"
+    ,catalog="ecommerce"
 )
 public class Order  implements java.io.Serializable {
 

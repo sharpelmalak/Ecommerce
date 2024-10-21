@@ -21,7 +21,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="customer"
-    ,catalog="shomya"
+    ,catalog="ecommerce"
 )
 public class Customer  extends User implements java.io.Serializable {
 
@@ -100,7 +100,7 @@ public class Customer  extends User implements java.io.Serializable {
     }
 
 @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(name="customer_has_interests_category", catalog="shomya", joinColumns = { 
+    @JoinTable(name="customer_has_interests_category", catalog="ecommerce", joinColumns = { 
         @JoinColumn(name="customer_id", nullable=false) }, inverseJoinColumns = {
         @JoinColumn(name="category_id", nullable=false) })
     public Set<Category> getCategories() {
@@ -112,7 +112,7 @@ public class Customer  extends User implements java.io.Serializable {
     }
 
 @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(name="customer_wishlist", catalog="shomya", joinColumns = { 
+    @JoinTable(name="customer_wishlist", catalog="ecommerce", joinColumns = { 
         @JoinColumn(name="customer_id", nullable=false) }, inverseJoinColumns = {
         @JoinColumn(name="product_id", nullable=false) })
     public Set<Product> getProducts() {

@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name="cart_item"
-    ,catalog="shomya"
+    ,catalog="ecommerce"
 )
 public class CartItem  implements java.io.Serializable {
 

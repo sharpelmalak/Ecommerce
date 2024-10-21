@@ -1,0 +1,67 @@
+Ecommerce/
+├── pom.xml                                                         // Maven Project Object Model file
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── iti/
+│   │   │       └── jets/
+│   │   │           └── ecommerce/
+│   │   │               ├── config/
+│   │   │               │   ├── WebSecurityConfig.java               // Spring Security Configuration
+│   │   │               │   ├── SwaggerConfig.java                   // Swagger API Documentation Configuration
+│   │   │               │   └── AppConfig.java                       // General application configurations (Beans, etc.)
+│   │   │               ├── controllers/
+│   │   │               │   ├── AdminController.java                 // Admin operations
+│   │   │               │   ├── UserController.java                  // User operations (login, register, etc.)
+│   │   │               │   ├── CustomerController.java              // REST controller for Customer operations
+│   │   │               │   ├── ProductController.java               // REST controller for Product operations
+│   │   │               │   └── OrderController.java                 // REST controller for Order operations
+│   │   │               ├── dto/
+│   │   │               │   ├── CustomerDTO.java                     // Data Transfer Object for Customer
+│   │   │               │   ├── ProductDTO.java                      // Data Transfer Object for Product
+│   │   │               │   ├── OrderDTO.java                        // Data Transfer Object for Order
+│   │   │               │   └── OrderItemDTO.java                    // Data Transfer Object for OrderItem
+│   │   │               ├── exceptions/
+│   │   │               │   ├── ResourceNotFoundException.java        // Custom exception when resource is not found
+│   │   │               │   └── GlobalExceptionHandler.java           // Global exception handler for centralized error handling
+│   │   │               ├── mappers/
+│   │   │               │   ├── CustomerMapper.java                  // Mapper for Customer entity to DTO
+│   │   │               │   ├── ProductMapper.java                   // Mapper for Product entity to DTO
+│   │   │               │   └── OrderMapper.java                     // Mapper for Order entity to DTO
+│   │   │               ├── models/
+│   │   │               │   ├── Admin.java                           // Admin entity
+│   │   │               │   ├── User.java                            // User entity
+│   │   │               │   ├── Customer.java                        // Entity for Customer
+│   │   │               │   ├── Product.java                         // Entity for Product
+│   │   │               │   ├── Order.java                           // Entity for Order
+│   │   │               │   ├── OrderItem.java                       // Entity for OrderItem
+│   │   │               │   ├── OrderItemId.java                     // Embedded ID for OrderItem composite key
+│   │   │               │   ├── CartItem.java                        // Entity for Cart Item
+│   │   │               │   ├── CartItemId.java                      // Embedded ID for CartItem composite key
+│   │   │               │   └── Category.java                        // Entity for Product Category
+│   │   │               ├── repositories/
+│   │   │               │   ├── AdminRepository.java                 // Admin data access
+│   │   │               │   ├── UserRepository.java                  // User data access
+│   │   │               │   ├── CustomerRepository.java              // Repository for Customer
+│   │   │               │   ├── ProductRepository.java               // Repository for Product
+│   │   │               │   ├── OrderRepository.java                 // Repository for Order
+│   │   │               │   ├── CartItemRepository.java              // Repository for CartItem
+│   │   │               │   └── CategoryRepository.java              // Repository for Category
+│   │   │               ├── services/
+│   │   │               │   ├── AdminService.java                    // Business logic for admin operations
+│   │   │               │   ├── UserService.java                     // Business logic for user operations
+│   │   │               │   ├── CustomerService.java                 // Service for Customer operations
+│   │   │               │   ├── ProductService.java                  // Service for Product operations
+│   │   │               │   ├── OrderService.java                    // Service for Order operations
+│   │   │               │   └── CartService.java                     // Service for Cart operations
+│   │   │               └── EcommerceApplication.java                 // Spring Boot Main Application
+│   │   └── resources/
+│   │       ├── static                                        // Static assets (CSS, JS, images, etc.)
+│   │       ├── templates                                     // Thymeleaf or other templates for front-end
+│   │       └── application.properties                         // Spring Boot application configuration properties
+└── test/
+    ├── java/
+    │   └── iti/
+    │       └── jets/
+    │           └── ecommerce/
+    │               └── EcommerceApplicationTests.java            // Unit tests for the application

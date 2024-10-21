@@ -8,20 +8,20 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema shomya
+-- Schema ecommerce
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema shomya
+-- Schema ecommerce
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `shomya`;
-CREATE SCHEMA IF NOT EXISTS `shomya` DEFAULT CHARACTER SET utf8mb3 ;
-USE `shomya` ;
+DROP SCHEMA IF EXISTS `ecommerce`;
+CREATE SCHEMA IF NOT EXISTS `ecommerce` DEFAULT CHARACTER SET utf8mb3 ;
+USE `ecommerce` ;
 
 -- -----------------------------------------------------
--- Table `shomya`.`admin`
+-- Table `ecommerce`.`admin`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`admin` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`admin` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `hire_date` DATE NOT NULL,
   PRIMARY KEY (`id`))
@@ -30,9 +30,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`category`
+-- Table `ecommerce`.`category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`category` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`category` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL unique,
   `image` VARCHAR(200) NULL DEFAULT NULL,
@@ -43,9 +43,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`product`
+-- Table `ecommerce`.`product`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`product` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`product` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `brand` VARCHAR(45) NOT NULL,
@@ -59,18 +59,18 @@ CREATE TABLE IF NOT EXISTS `shomya`.`product` (
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_product_admin1`
     FOREIGN KEY (`admin_id`)
-    REFERENCES `shomya`.`admin` (`id`),
+    REFERENCES `ecommerce`.`admin` (`id`),
   CONSTRAINT `fk_product_category1`
     FOREIGN KEY (`category_id`)
-    REFERENCES `shomya`.`category` (`id`))
+    REFERENCES `ecommerce`.`category` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`customer`
+-- Table `ecommerce`.`customer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`customer` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`customer` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `birthdate` DATE NOT NULL,
   `job` VARCHAR(45) NULL DEFAULT NULL,
@@ -82,9 +82,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`order`
+-- Table `ecommerce`.`order`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`order` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`order` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `order_date` DATETIME NOT NULL,
   `total_price` FLOAT NOT NULL,
@@ -92,15 +92,15 @@ CREATE TABLE IF NOT EXISTS `shomya`.`order` (
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_order_customer1`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `shomya`.`customer` (`id`))
+    REFERENCES `ecommerce`.`customer` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`order_item`
+-- Table `ecommerce`.`order_item`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`order_item` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`order_item` (
   `quantity` INT NOT NULL,
   `current_price` FLOAT NOT NULL,
   `product_id` INT NOT NULL,
@@ -108,10 +108,10 @@ CREATE TABLE IF NOT EXISTS `shomya`.`order_item` (
   PRIMARY KEY (`product_id`, `order_id`),
   CONSTRAINT `fk_cart_item_product1`
     FOREIGN KEY (`product_id`)
-    REFERENCES `shomya`.`product` (`id`),
+    REFERENCES `ecommerce`.`product` (`id`),
   CONSTRAINT `fk_order_item_order1`
     FOREIGN KEY (`order_id`)
-    REFERENCES `shomya`.`order` (`id`)
+    REFERENCES `ecommerce`.`order` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -119,43 +119,43 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`customer_has_interests_category`
+-- Table `ecommerce`.`customer_has_interests_category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`customer_has_interests_category` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`customer_has_interests_category` (
   `customer_id` INT NOT NULL,
   `category_id` INT NOT NULL,
   PRIMARY KEY (`customer_id`, `category_id`),
   CONSTRAINT `fk_customer_has_category_category1`
     FOREIGN KEY (`category_id`)
-    REFERENCES `shomya`.`category` (`id`),
+    REFERENCES `ecommerce`.`category` (`id`),
   CONSTRAINT `fk_customer_has_category_customer`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `shomya`.`customer` (`id`))
+    REFERENCES `ecommerce`.`customer` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`customer_wishlist`
+-- Table `ecommerce`.`customer_wishlist`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`customer_wishlist` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`customer_wishlist` (
   `customer_id` INT NOT NULL,
   `product_id` INT NOT NULL,
   PRIMARY KEY (`customer_id`, `product_id`),
   CONSTRAINT `fk_customer_has_product_customer1`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `shomya`.`customer` (`id`),
+    REFERENCES `ecommerce`.`customer` (`id`),
   CONSTRAINT `fk_customer_has_product_product1`
     FOREIGN KEY (`product_id`)
-    REFERENCES `shomya`.`product` (`id`))
+    REFERENCES `ecommerce`.`product` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`user`
+-- Table `ecommerce`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`user` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `username` VARCHAR(45) UNIQUE NOT NULL,
@@ -167,21 +167,21 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `shomya`.`cart_item`
+-- Table `ecommerce`.`cart_item`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shomya`.`cart_item` (
+CREATE TABLE IF NOT EXISTS `ecommerce`.`cart_item` (
   `product_id` INT NOT NULL,
   `customer_id` INT NOT NULL,
   `quantity` INT NOT NULL,
   PRIMARY KEY (`product_id`, `customer_id`),
    CONSTRAINT `fk_product_has_customer_product1`
     FOREIGN KEY (`product_id`)
-    REFERENCES `shomya`.`product` (`id`)
+    REFERENCES `ecommerce`.`product` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_has_customer_customer1`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `shomya`.`customer` (`id`)
+    REFERENCES `ecommerce`.`customer` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

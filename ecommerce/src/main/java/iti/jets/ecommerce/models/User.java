@@ -11,7 +11,7 @@ import javax.annotation.processing.Generated;
  */
 @Entity
 @Table(name="user"
-    ,catalog="shomya"
+    ,catalog="ecommerce"
     , uniqueConstraints = {@UniqueConstraint(columnNames="email"), @UniqueConstraint(columnNames="username")} 
 )
 @Inheritance(strategy = InheritanceType.JOINED)
