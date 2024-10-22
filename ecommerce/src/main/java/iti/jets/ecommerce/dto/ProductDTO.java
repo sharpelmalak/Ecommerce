@@ -1,12 +1,13 @@
 package iti.jets.ecommerce.dto;
 
-
 public class ProductDTO {
     private String name;
     private float price;
     private int quantity;
     private String description;
-    private String image;      /* Modified from byte[] image to String image : haroun */
+    private String image;  // Modified from byte[] image to String image
+    private int categoryId;  // Added field for category ID
+    
 
     // Getters and setters
     public String getName() {
@@ -47,5 +48,13 @@ public class ProductDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }
