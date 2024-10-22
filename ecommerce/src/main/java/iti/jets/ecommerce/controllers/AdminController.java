@@ -22,14 +22,6 @@ public class AdminController {
     @Autowired
     private ProductService productService;
 
-
-
-
-
-
-
-
-
     @PostMapping("/product")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO, @RequestParam int adminId) {
         Product newProduct = productService.createProduct(productDTO, adminId);
