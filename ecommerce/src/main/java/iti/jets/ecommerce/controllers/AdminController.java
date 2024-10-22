@@ -13,8 +13,8 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    // @Autowired
-    // private AdminService adminService;
+    @Autowired
+    private AdminService adminService;
 
     @Autowired
     private ProductService productService;
@@ -66,27 +66,28 @@ public class AdminController {
     /* ============================================================================================ */
     // Uncomment when needed
 
-    // /* Get all customers */
-    // @GetMapping("/customers")
-    // public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
-    //     List<CustomerDTO> customers = customerService.getAllCustomers();
-    //     return ResponseEntity.ok(customers);
-    // }
+    /* Get all customers */
+    @GetMapping("/customers")
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+        List<CustomerDTO> customers = customerService.getAllCustomers();
+        return ResponseEntity.ok(customers);
+    }
 
-    // /* Get a specific customer by ID */
-    // @GetMapping("/customer/{id}")
-    // public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable int id) {
-    //     CustomerDTO customerDTO = customerService.getCustomerById(id);
-    //     return ResponseEntity.ok(customerDTO);
-    // }
+    /* Get a specific customer by ID */
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable int id) {
+        CustomerDTO customerDTO = customerService.getCustomerById(id);
+        return ResponseEntity.ok(customerDTO);
+    }
 
-    // /* Update a customer profile */
-    // @PutMapping("/customer/{id}")
-    // public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable int id, @RequestBody CustomerDTO customerDTO) {
-    //     CustomerDTO updatedCustomer = customerService.updateCustomer(id, customerDTO);
-    //     return ResponseEntity.ok(updatedCustomer);
-    // }
+    /* Update a customer profile */
+    @PutMapping("/customer/{id}")
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable int id, @RequestBody CustomerDTO customerDTO) {
+        CustomerDTO updatedCustomer = customerService.updateCustomer(id, customerDTO);
+        return ResponseEntity.ok(updatedCustomer);
+    }
 
+    /* Not Handled Yet : Haroun */
     // /* Delete a customer (soft delete) */
     // @DeleteMapping("/customer/{id}")
     // public ResponseEntity<String> deleteCustomer(@PathVariable int id) {
@@ -98,24 +99,37 @@ public class AdminController {
     /*                            Admin Profile Management                                          */
     /* ============================================================================================ */
 
-    // /* Get admin profile */
-    // @GetMapping("/profile/{adminId}")
-    // public ResponseEntity<AdminDTO> getAdminProfile(@PathVariable int adminId) {
-    //     AdminDTO adminDTO = adminService.getAdminProfile(adminId);
-    //     return ResponseEntity.ok(adminDTO);
-    // }
 
-    // /* Update admin profile */
-    // @PutMapping("/profile/{adminId}")
-    // public ResponseEntity<AdminDTO> updateAdminProfile(@PathVariable int adminId, @RequestBody AdminDTO adminDTO) {
-    //     AdminDTO updatedAdmin = adminService.updateAdminProfile(adminId, adminDTO);
-    //     return ResponseEntity.ok(updatedAdmin);
-    // }
 
-    // /* Change admin password */
-    // @PutMapping("/profile/{adminId}/change-password")
-    // public ResponseEntity<String> changeAdminPassword(@PathVariable int adminId, @RequestBody PasswordChangeDTO passwordChangeDTO) {
-    //     adminService.changePassword(adminId, passwordChangeDTO);
-    //     return ResponseEntity.ok("Password changed successfully");
-    // }
+
+    /* Get admin profile */
+    @GetMapping("/profile/{adminId}")
+    public ResponseEntity<AdminDTO> getAdminProfile(@PathVariable int adminId) {
+        AdminDTO adminDTO = adminService.getAdminProfile(adminId);
+        return ResponseEntity.ok(adminDTO);
+    }
+
+
+       /* Get all admins */
+       @GetMapping("/profiles")
+       public ResponseEntity<List<AdminDTO>> getAllAdmins() {
+           List<AdminDTO> adminDTOs = adminService.getAllAdmins();
+           return ResponseEntity.ok(adminDTOs);
+       }
+
+
+
+    /* Update admin profile */
+    @PutMapping("/profile/{adminId}")
+    public ResponseEntity<AdminDTO> updateAdminProfile(@PathVariable int adminId, @RequestBody AdminDTO adminDTO) {
+        AdminDTO updatedAdmin = adminService.updateAdminProfile(adminId, adminDTO);
+        return ResponseEntity.ok(updatedAdmin);
+    }
+
+    /* Change admin password */
+    @PutMapping("/profile/{adminId}/change-password")
+    public ResponseEntity<String> changeAdminPassword(@PathVariable int adminId, @RequestBody PasswordChangeDTO passwordChangeDTO) {
+        adminService.changePassword(adminId, passwordChangeDTO);
+        return ResponseEntity.ok("Password changed successfully");
+    }
 }

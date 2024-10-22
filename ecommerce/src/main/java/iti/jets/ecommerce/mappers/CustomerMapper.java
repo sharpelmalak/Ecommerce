@@ -5,7 +5,6 @@ import iti.jets.ecommerce.models.Customer;
 
 public class CustomerMapper {
 
-<<<<<<< HEAD
     // Convert UserDto to User Entity (general use for Customer or Admin)
     public static Customer toEntity(CustomerDTO customerDTO, Customer customer) {
         customer.setName(customerDTO.getName());
@@ -35,8 +34,6 @@ public class CustomerMapper {
         dto.setPhone(customer.getPhone());
         return dto;
     }
-=======
->>>>>>> harounBranch
 }
 
 
