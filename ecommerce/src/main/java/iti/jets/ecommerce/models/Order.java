@@ -18,11 +18,12 @@ import java.util.Set;
 )
 public class Order  implements java.io.Serializable {
 
-
      private int id;
      private Customer customer;
      private Timestamp orderDate;
      private float totalPrice;
+     private PaymentMethod paymentMethod;
+
      private Set<OrderItem> orderItems = new HashSet<OrderItem>(0);
 
     public Order() {
@@ -88,7 +89,15 @@ public class Order  implements java.io.Serializable {
     }
 
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="payment_method_id", nullable=false)
+    public PaymentMethod getPaymentMethod() {
+        return this.paymentMethod;
+    }
 
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 
 }
 

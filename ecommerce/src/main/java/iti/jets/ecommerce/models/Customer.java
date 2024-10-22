@@ -33,6 +33,7 @@ public class Customer  extends User implements java.io.Serializable {
      private Set<Category> categories = new HashSet<Category>(0);
      private Set<Product> products = new HashSet<Product>(0);
      private Set<Order> orders = new HashSet<Order>(0);
+    private Set<Card> cards = new HashSet<Card>(0);
 
     public Customer() {
     }
@@ -130,6 +131,15 @@ public class Customer  extends User implements java.io.Serializable {
     
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="customer")
+    public Set<Card> getCards() {
+        return this.cards;
+    }
+
+    public void setCards(Set<Card> cards) {
+        this.cards = cards;
     }
 
 }
