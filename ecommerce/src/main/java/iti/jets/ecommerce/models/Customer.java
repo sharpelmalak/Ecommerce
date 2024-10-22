@@ -27,7 +27,6 @@ public class Customer extends User implements java.io.Serializable {
 
      private Date birthdate;
      private String job;
-     private float creditLimit;
      private String address;
      private String phone;
      private Set<CartItem> cartItems = new HashSet<CartItem>(0);
@@ -39,18 +38,6 @@ public class Customer extends User implements java.io.Serializable {
     public Customer() {
     }
 
-	
-    public Customer(Date birthdate, float creditLimit, String address) {
-        this.birthdate = birthdate;
-        this.creditLimit = creditLimit;
-        this.address = address;
-    }
-    public Customer( Date birthdate, String job, float creditLimit, String address) {
-       this.birthdate = birthdate;
-       this.job = job;
-       this.creditLimit = creditLimit;
-       this.address = address;
-    }
 
     @Temporal(TemporalType.DATE)
     @Column(name="birthdate", nullable=false, length=10)
@@ -63,7 +50,7 @@ public class Customer extends User implements java.io.Serializable {
     }
 
     
-    @Column(name="job", length=45)
+    @Column(name="job", length=45,nullable = true)
     public String getJob() {
         return this.job;
     }
@@ -72,15 +59,15 @@ public class Customer extends User implements java.io.Serializable {
         this.job = job;
     }
 
-    
-    @Column(name="credit_limit", nullable=false, precision=12)
-    public float getCreditLimit() {
-        return this.creditLimit;
+    @Column(name="phone", length=45,nullable = true)
+    public String getPhone() {
+        return this.phone;
     }
-    
-    public void setCreditLimit(float creditLimit) {
-        this.creditLimit = creditLimit;
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
+
 
     
     @Column(name="address", nullable=false, length=100)
@@ -143,6 +130,17 @@ public class Customer extends User implements java.io.Serializable {
         this.cards = cards;
     }
 
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + getId()+
+                "birthdate=" + birthdate +
+                ", job='" + job + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }
 
 

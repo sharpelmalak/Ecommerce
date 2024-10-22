@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`customer` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `birthdate` DATE NOT NULL,
   `job` VARCHAR(45) NULL DEFAULT NULL,
-  `credit_limit` FLOAT NOT NULL,
+   `phone` VARCHAR(45) NULL DEFAULT NULL,
   `address` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
@@ -119,6 +119,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`order` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `order_date` DATETIME NOT NULL,
   `total_price` FLOAT NOT NULL,
+   `status` VARCHAR(100) NULL DEFAULT NULL,
   `customer_id` INT NOT NULL,
   `payment_method_id` INT NOT NULL,
   PRIMARY KEY (`id`),
