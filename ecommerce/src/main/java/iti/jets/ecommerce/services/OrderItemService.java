@@ -1,6 +1,7 @@
 package iti.jets.ecommerce.services;
 
 import iti.jets.ecommerce.models.OrderItem;
+import iti.jets.ecommerce.models.OrderItemId;
 import iti.jets.ecommerce.repositories.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class OrderItemService {
         orderItemRepository.save(orderItem);
     }
 
-    public OrderItem getOrderItem(int id) {
+    public OrderItem getOrderItem(OrderItemId id) {
         return orderItemRepository.getById(id);
     }
 
