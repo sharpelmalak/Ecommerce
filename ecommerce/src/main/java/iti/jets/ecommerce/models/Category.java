@@ -19,13 +19,13 @@ public class Category  implements java.io.Serializable {
 
      private int id;
      private String name;
-     private byte[] image;
+     private String image;     /* Modified from byte[] image to String image : haroun */
      private boolean isDeleted = false;
      private Set<Customer> customers = new HashSet<Customer>(0);
      private Set<Product> products = new HashSet<Product>(0);
 
     public Category(){}
-    public Category(String name, byte[] image) {
+    public Category(String name, String image) {
        this.name = name;
        this.image = image;
     }
@@ -54,11 +54,11 @@ public class Category  implements java.io.Serializable {
     
     @Column(name="image")
     @Lob
-    public  byte[] getImage() {
+    public  String getImage() {
         return this.image;
     }
     
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

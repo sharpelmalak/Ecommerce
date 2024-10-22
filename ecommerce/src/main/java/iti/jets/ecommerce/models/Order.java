@@ -25,6 +25,7 @@ public class Order implements java.io.Serializable {
     private float totalPrice;
     private String status; // "Placed", "Confirmed", "Delivered"
     private Set<OrderItem> orderItems = new HashSet<OrderItem>(0);
+    private PaymentMethod paymentMethod;
 
     public Order() {
     }
@@ -97,6 +98,15 @@ public class Order implements java.io.Serializable {
         this.orderItems = orderItems;
     }
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="payment_method_id", nullable=false)
+    public PaymentMethod getPaymentMethod() {
+        return this.paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 
 }
 

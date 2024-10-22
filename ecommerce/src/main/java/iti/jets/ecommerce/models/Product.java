@@ -25,7 +25,7 @@ public class Product  implements java.io.Serializable {
      private float price;
      private int quantity;
      private String description;
-     private byte[] image;
+     private String image;     /* Modified from byte[] image to String image : haroun */
      private boolean isDeleted = false;
      private Set<CartItem> cartItems = new HashSet<CartItem>(0);
      private Set<OrderItem> orderItems = new HashSet<OrderItem>(0);
@@ -42,7 +42,7 @@ public class Product  implements java.io.Serializable {
         this.price = price;
         this.quantity = quantity;
     }
-    public Product(Admin admin, Category category,String name, float price, int quantity, String description, byte[] image) {
+    public Product(Admin admin, Category category,String name, float price, int quantity, String description, String image) {
 
         this.admin = admin;
         this.category = category;
@@ -125,11 +125,11 @@ public class Product  implements java.io.Serializable {
     
     @Column(name="image")
     @Lob
-    public byte[] getImage() {
+    public String getImage() {
         return this.image;
     }
     
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
     @Column(name = "is_deleted", nullable = false)
