@@ -23,7 +23,6 @@ import java.util.Objects;
 )
 public class CartItem  implements java.io.Serializable {
 
-
      private CartItemId id;
      private Product product;
      private Customer customer;

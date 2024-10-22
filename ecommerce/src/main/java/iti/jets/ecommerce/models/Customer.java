@@ -23,12 +23,13 @@ import java.util.Set;
 @Table(name="customer"
     ,catalog="ecommerce"
 )
-public class Customer  extends User implements java.io.Serializable {
+public class Customer extends User implements java.io.Serializable {
 
      private Date birthdate;
      private String job;
      private float creditLimit;
      private String address;
+     private String phone;
      private Set<CartItem> cartItems = new HashSet<CartItem>(0);
      private Set<Category> categories = new HashSet<Category>(0);
      private Set<Product> products = new HashSet<Product>(0);
