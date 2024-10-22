@@ -35,7 +35,20 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `ecommerce`.`category` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL unique,
-  `image` VARCHAR(200) NULL DEFAULT NULL,
+   `image` TINYTEXT NULL DEFAULT NULL,
+  `is_deleted` BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+
+-- -----------------------------------------------------
+-- Table `ecommerce`.`payment_method`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ecommerce`.`payment_method` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL unique,
   `is_deleted` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
@@ -52,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`product` (
   `price` FLOAT NOT NULL,
   `quantity` INT NOT NULL,
   `description` VARCHAR(200) NULL DEFAULT NULL,
-   `image` VARCHAR(200) NULL DEFAULT NULL,
+   `image` TINYTEXT NULL DEFAULT NULL,
    `is_deleted` BOOLEAN DEFAULT FALSE,
   `admin_id` INT NOT NULL,
   `category_id` INT NOT NULL,
@@ -81,6 +94,24 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
+
+-- -----------------------------------------------------
+-- Table `ecommerce`.`card`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ecommerce`.`card` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `card_type` VARCHAR(45)  NOT NULL,
+  `card_number` VARCHAR(25)  NOT NULL,
+  `exp_month` tinyint  NOT NULL,
+  `exp_year` smallint  NOT NULL,
+   `is_deleted` BOOLEAN DEFAULT FALSE,
+  `customer_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_card_customer`
+    FOREIGN KEY (`customer_id`)
+    REFERENCES `ecommerce`.`customer` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `ecommerce`.`order`
 -- -----------------------------------------------------
@@ -89,10 +120,14 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`order` (
   `order_date` DATETIME NOT NULL,
   `total_price` FLOAT NOT NULL,
   `customer_id` INT NOT NULL,
+  `payment_method_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_order_customer1`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `ecommerce`.`customer` (`id`))
+    REFERENCES `ecommerce`.`customer` (`id`),
+     CONSTRAINT `fk_order_payment_method`
+    FOREIGN KEY (`payment_method_id`)
+    REFERENCES `ecommerce`.`payment_method` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
