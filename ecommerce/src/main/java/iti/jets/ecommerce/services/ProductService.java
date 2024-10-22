@@ -2,6 +2,7 @@ package iti.jets.ecommerce.services;
 
 import java.util.List;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,12 @@ public class ProductService {
     // Get all products
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    public Product getProductById(int id) {
+        Optional<Product> product = productRepository.findById(id);
+        // Handle the case where product is found or not found
+        return product.orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
     }
     
 }

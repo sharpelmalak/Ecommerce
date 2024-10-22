@@ -53,6 +53,13 @@ public class AdminController {
             .map(this::convertToDTO) // Use a method to convert
             .collect(Collectors.toList());
         return ResponseEntity.ok(productDTOs);
+    }    
+    
+    @GetMapping("/product/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable int id ) {
+            Product newProduct = productService.getProductById(id);
+            ProductDTO returnedProductDTO = this.convertToDTO(newProduct); 
+            return ResponseEntity.ok(returnedProductDTO);
     }
 
     private ProductDTO convertToDTO(Product product) {
