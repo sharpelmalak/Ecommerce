@@ -17,5 +17,4 @@ public class PaymentMethod {
     private int id;
     private String name;
     private boolean isDeleted = false;
-
 }

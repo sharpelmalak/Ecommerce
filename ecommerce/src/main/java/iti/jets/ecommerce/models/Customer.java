@@ -23,7 +23,7 @@ import java.util.Set;
 @Table(name="customer"
     ,catalog="ecommerce"
 )
-public class Customer  extends User implements java.io.Serializable {
+public class Customer extends User implements java.io.Serializable {
 
      private Date birthdate;
      private String job;

@@ -23,7 +23,6 @@ public class Order  implements java.io.Serializable {
      private Timestamp orderDate;
      private float totalPrice;
      private PaymentMethod paymentMethod;
-
      private Set<OrderItem> orderItems = new HashSet<OrderItem>(0);
 
     public Order() {
