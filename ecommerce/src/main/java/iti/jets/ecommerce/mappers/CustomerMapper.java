@@ -5,6 +5,5 @@ import iti.jets.ecommerce.models.Customer;
 
 public class CustomerMapper {
 
-
 }
 
