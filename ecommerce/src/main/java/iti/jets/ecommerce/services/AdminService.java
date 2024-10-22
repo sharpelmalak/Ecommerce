@@ -19,34 +19,33 @@ public class AdminService {
     private AdminRepository adminRepository;  
 
 
-    // Create a product
-    public Product createProduct(ProductDTO productDTO) {
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+
+
+    public Product createProduct(ProductDTO productDTO, int adminId) {
         Product product = new Product();
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
         product.setQuantity(productDTO.getQuantity());
         product.setDescription(productDTO.getDescription());
         product.setImage(productDTO.getImage());
-        // Set other properties such as category, admin, etc.
-        return productRepository.save(product);
-    }
-
-
-     // Create a product
-     public Product createProduct(ProductDTO productDTO, int adminId) {
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
-        product.setQuantity(productDTO.getQuantity());
-        product.setDescription(productDTO.getDescription());
-        product.setImage(productDTO.getImage());
-
-        // Fetch the admin by ID and set it to the product
-        Admin admin = adminRepository.findById(adminId).orElseThrow(() -> new RuntimeException("Admin not found"));
+    
+        // Fetch the admin by ID
+        Admin admin = adminRepository.findById(adminId)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
         product.setAdmin(admin);
-
+    
+        // Fetch the category by ID from the productDTO and set it to the product
+        Category category = categoryRepository.findById(productDTO.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        product.setCategory(category);
+    
         return productRepository.save(product);
     }
+    
+
 
     // Update a product
     public Product updateProduct(int id, ProductDTO productDTO) {
