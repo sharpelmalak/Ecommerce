@@ -17,7 +17,6 @@ import javax.annotation.processing.Generated;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class  User {
 
-
      private int id;
      private String name;
      private String username;
