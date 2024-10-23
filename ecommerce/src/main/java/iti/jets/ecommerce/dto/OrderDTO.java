@@ -9,10 +9,11 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.Set;
 
+import iti.jets.ecommerce.models.Order;
+
 @Setter
 @Getter
 public class OrderDTO {
-
     private int orderId;
     private int customerId;
     private Date orderDate;
@@ -27,5 +28,14 @@ public class OrderDTO {
         this.orderStatus = orderStatus;
         this.totalPrice = totalPrice;
         this.orderItems = orderItems;
+    }
+
+    public OrderDTO(Order order) {
+        this.orderId = order.getId();
+        this.customerId = order.getCustomer().getId();
+        this.orderDate = order.getOrderDate();
+        this.orderStatus = order.getStatus();
+        this.totalPrice = order.getTotalPrice();
+        this.orderItems = order.getOrderItemsDTO();
     }
 }
