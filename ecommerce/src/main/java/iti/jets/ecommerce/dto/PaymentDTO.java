@@ -3,9 +3,8 @@ package iti.jets.ecommerce.dto;
 import lombok.Data;
 
 @Data
-public class LoginDTO {
-    private String email;
-    private String password;
+public class PaymentDTO {
+    private String paymentMethod;
 
     // Getters and setters
 }

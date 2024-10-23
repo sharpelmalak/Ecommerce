@@ -1,35 +1,42 @@
 package iti.jets.ecommerce.services;
 
-import iti.jets.ecommerce.dto.CustomerDTO;
-import iti.jets.ecommerce.dto.CustomerDTOAdmin;
+import iti.jets.ecommerce.dto.*;
+import iti.jets.ecommerce.models.*;
 import iti.jets.ecommerce.mappers.CustomerMapper;
-import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.repositories.CustomerRepository;
+import iti.jets.ecommerce.repositories.OrderRepository;
+import iti.jets.ecommerce.repositories.ProductRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 
 @Service
 public class CustomerService {
-
-    private CustomerRepository customerRepository;
-
+    
+    private final CustomerRepository customerRepository;
+    
     private PasswordEncoder passwordEncoder;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+  
 
-    @Autowired
-    public CustomerService(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+    // @Autowired does not have any effect if you are using the constructor : haroun
+    public CustomerService(CustomerRepository customerRepository,ProductRepository productRepository,OrderRepository orderRepository,PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public CustomerDTO RegisterCustomer(CustomerDTO customerDTO) {
-
+        
         customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         Customer customer = CustomerMapper.toEntity(customerDTO, new Customer());
         customerRepository.save(customer);
@@ -41,8 +48,50 @@ public class CustomerService {
     }
 
 
+    /* ==================================== Customer Actions ==============================  */
+    // Add Item to Cart
+    public void addToCart(int customerId, CartItemDTO cartItemDto) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        CartItem cartItem = new CartItem(customer, productRepository.findById(cartItemDto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found")), cartItemDto.getQuantity());
+        customer.getCartItems().add(cartItem);
+        customerRepository.save(customer);
+    }
 
-    /* ============================ CRUD Operations for Customer ============================  */
+    // Remove Item from Cart
+    public void removeFromCart(int customerId, int productId) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        customer.getCartItems().removeIf(item -> item.getProduct().getId() == productId);
+        customerRepository.save(customer);
+    }
+
+
+    // Pay for an Order
+    public void payForOrder(int customerId, int orderId, PaymentDTO paymentDto) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        order.setStatus("confirmed");
+        orderRepository.save(order);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* ============================ CRUD Operations for Customer related to Admin Actions ============================  */
     /* Get all customers */
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> customers = customerRepository.findAll();
@@ -92,6 +141,17 @@ public class CustomerService {
         Customer updatedCustomer = customerRepository.save(existingCustomer);
         return CustomerMapper.toDto(updatedCustomer);
     }
+    /* ============================ CRUD Operations for Customer related to Admin Actions ============================  */
+
+
+
+
+
+
+
+
+
+
 
 
     /* Delete a customer : soft delete */
