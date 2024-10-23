@@ -23,6 +23,7 @@ public class AdminService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     /* Get admin profile by ID */
     public AdminDTO getAdminProfile(int adminId) {
         Admin admin = adminRepository.findById(adminId)
