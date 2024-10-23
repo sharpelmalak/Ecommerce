@@ -85,8 +85,6 @@ public abstract class  User {
     }
 
 
-
-
 }
 
 

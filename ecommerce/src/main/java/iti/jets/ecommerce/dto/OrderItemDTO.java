@@ -1,12 +1,8 @@
 package iti.jets.ecommerce.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Setter
-@Getter
+@Data
 
 public class OrderItemDTO {
     private int productId;
