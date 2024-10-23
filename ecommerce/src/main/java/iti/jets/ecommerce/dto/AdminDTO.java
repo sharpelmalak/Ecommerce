@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import java.sql.Date;
 
 
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class AdminDTO extends UserDTO {

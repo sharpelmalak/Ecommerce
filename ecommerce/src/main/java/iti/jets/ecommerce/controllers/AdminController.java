@@ -22,10 +22,10 @@ public class AdminController {
     @Autowired
     private CustomerService customerService;
 
+    
     /* ============================================================================================ */
     /*                            Admin Functionalities Related to Products                         */
     /* ============================================================================================ */
-
     /* Create a Product */
     @PostMapping("/product")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO, @RequestParam int adminId) {
@@ -61,11 +61,13 @@ public class AdminController {
         return ResponseEntity.ok(returnedProductDTO);
     }
 
+
+
+
+
     /* ============================================================================================ */
     /*                           Admin Functionalities Related to Customers                         */
     /* ============================================================================================ */
-    // Uncomment when needed
-
     /* Get all customers */
     @GetMapping("/customers")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
@@ -95,13 +97,13 @@ public class AdminController {
     //     return ResponseEntity.ok("Customer deleted successfully");
     // }
 
+
+
+
+
     /* ============================================================================================ */
     /*                            Admin Profile Management                                          */
     /* ============================================================================================ */
-
-
-
-
     /* Get admin profile */
     @GetMapping("/profile/{adminId}")
     public ResponseEntity<AdminDTO> getAdminProfile(@PathVariable int adminId) {
