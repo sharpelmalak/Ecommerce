@@ -1,6 +1,7 @@
 package iti.jets.ecommerce.services;
 
 import iti.jets.ecommerce.dto.CustomerDTO;
+import iti.jets.ecommerce.dto.CustomerDTOAdmin;
 import iti.jets.ecommerce.mappers.CustomerMapper;
 import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.repositories.CustomerRepository;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class CustomerService {
@@ -55,36 +58,53 @@ public class CustomerService {
         return CustomerMapper.toDto(customer);
     }
 
-    /* Update customer profile */
+    /* Update customer profile By Admin*/
+    public CustomerDTO updateCustomerByAdmin(int id, CustomerDTOAdmin customerDTO) {
+        Customer existingCustomer = customerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
+        
+        /* Incoming in CustomerDTOAdmin  */
+        existingCustomer.setName(customerDTO.getName());
+        existingCustomer.setUsername(customerDTO.getUsername());
+        existingCustomer.setEmail(customerDTO.getEmail());
+        Customer updatedCustomer = customerRepository.save(existingCustomer);
+        return CustomerMapper.toDto(updatedCustomer);
+    }
+
+    /* Update customer profile*/
     public CustomerDTO updateCustomer(int id, CustomerDTO customerDTO) {
         Customer existingCustomer = customerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
-
-        existingCustomer.setName(customerDTO.getName());
+        
+        /* Incoming in DTO  */
+        existingCustomer.setName(existingCustomer.getName());
+        existingCustomer.setUsername(customerDTO.getUsername());
         existingCustomer.setEmail(customerDTO.getEmail());
-        existingCustomer.setPhone(customerDTO.getPhone());
+        existingCustomer.setAddress(existingCustomer.getAddress());
+        existingCustomer.setPhone(existingCustomer.getPhone());
+        existingCustomer.setBirthdate(existingCustomer.getBirthdate());
+        existingCustomer.setJob(existingCustomer.getJob());
+
         if (customerDTO.getPassword() != null && !customerDTO.getPassword().isEmpty()) {
             existingCustomer.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         }
-        // Update other fields as needed
 
         Customer updatedCustomer = customerRepository.save(existingCustomer);
         return CustomerMapper.toDto(updatedCustomer);
     }
 
 
-    /* Not Handled Yet : Haroun */
-    // /* Soft delete customer */
-    // public void deleteCustomer(int id) {
-    //     Customer customer = customerRepository.findById(id)
-    //             .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
+    /* Delete a customer : soft delete */
+    public String deleteCustomer(int id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isPresent()) {
+            Customer existingCustomer = customer.get();
+            existingCustomer.setDeleted(true);
+            customerRepository.save(existingCustomer);
+            return "deleted";
+        } else {
+             throw new ResourceNotFoundException("Customer not found with ID: " + id);
+        }
+    }
 
-    //     if (customer.isDeleted()) {
-    //         throw new RuntimeException("Customer is already deleted.");
-    //     } else {
-    //         customer.setDeleted(true); // Soft delete by setting the `isDeleted` flag
-    //     }
-
-    //     customerRepository.save(customer);
-    // }
 }

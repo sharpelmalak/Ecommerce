@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Setter
 @Getter
-
 public class OrderDTO {
 
     private int orderId;

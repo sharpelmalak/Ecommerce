@@ -1,13 +1,15 @@
 package iti.jets.ecommerce.dto;
 
 public class ProductDTO {
+    private int id;
     private String name;
     private float price;
     private int quantity;
     private String description;
     private String image;  // Modified from byte[] image to String image
     private int categoryId;  // Added field for category ID
-    
+    private boolean isDeleted; 
+
 
     // Getters and setters
     public String getName() {
@@ -56,5 +58,22 @@ public class ProductDTO {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }
