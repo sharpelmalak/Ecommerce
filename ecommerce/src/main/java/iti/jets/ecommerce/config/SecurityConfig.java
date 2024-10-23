@@ -61,7 +61,10 @@ public class SecurityConfig {
                                         "/swagger-resources/**",
                                         "/webjars/**",
                                         "/api/auth/login",
-                                        "/api/auth/register"
+                                        "/api/auth/register",
+                                        "/api/admin/**",
+                                        "/api/customers/**",
+                                        "/api/products/**"
                                 ).permitAll()
                                 // Allow access to other public API endpoints
                                // .requestMatchers("/api/**").permitAll()
