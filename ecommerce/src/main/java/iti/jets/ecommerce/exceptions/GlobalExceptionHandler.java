@@ -14,5 +14,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    // Handle ItemNotAvailableException
+    @ExceptionHandler(ItemNotAvailableException.class)
+    public ResponseEntity<String> handleItemNotAvailableException(ItemNotAvailableException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     // Other exception handlers can be added here, if needed
 }
