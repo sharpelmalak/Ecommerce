@@ -23,9 +23,9 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Check the actual type of user and assign authorities accordingly
         if (user instanceof Admin) {
-            return Collections.singletonList(new SimpleGrantedAuthority("ADMIN"));
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else if (user instanceof Customer) {
-            return Collections.singletonList(new SimpleGrantedAuthority("CUSTOMER"));
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
         } else {
             return Collections.emptyList(); // Default if no type matches
         }
