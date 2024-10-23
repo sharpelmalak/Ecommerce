@@ -1,12 +1,9 @@
 package iti.jets.ecommerce.services;
 
 import iti.jets.ecommerce.dto.OrderDTO;
-import iti.jets.ecommerce.mappers.OrderMapper;
-import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.models.Order;
-import iti.jets.ecommerce.repositories.CustomerRepository;
 import iti.jets.ecommerce.repositories.OrderRepository;
-import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,32 +12,35 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private OrderMapper orderMapper;
-    private OrderRepository orderRepository;
 
-    public OrderServiceImpl(OrderMapper orderMapper, OrderRepository orderRepository) {
-        this.orderMapper = orderMapper;
+    private OrderRepository orderRepository;
+    private ModelMapper modelMapper;
+
+    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public OrderDTO createOrder(OrderDTO orderDTO) {
-        Order newOrder = orderMapper.mapToEntity(orderDTO);
+        //Order newOrder = orderMapper.mapToEntity(orderDTO);
+        Order newOrder = modelMapper.map(orderDTO, Order.class);
         newOrder = orderRepository.save(newOrder);
-        return orderMapper.mapToDTO(newOrder);
+        return modelMapper.map(newOrder, OrderDTO.class);
     }
 
     @Override
     public OrderDTO getOrderById(int orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
-        return orderMapper.mapToDTO(order);
+        return modelMapper.map(order, OrderDTO.class);
     }
 
     @Override
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
-        List<OrderDTO> returnedOrders = orders.stream().map(orderMapper::mapToDTO).collect(Collectors.toList());
+        //List<OrderDTO> returnedOrders = orders.stream().map(orderMapper::mapToDTO).collect(Collectors.toList());
+        List<OrderDTO> returnedOrders = orders.stream().map((element) -> modelMapper.map(element, OrderDTO.class)).collect(Collectors.toList());
         return returnedOrders;
     }
 

@@ -71,20 +71,11 @@
 			<version>2.0.2</version>
 		</dependency>
 
-		<!-- MapStruct Dependency -->
 		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct</artifactId>
-			<version>${org.mapstruct.version}</version>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.2.0</version> <!-- Check for the latest version -->
 		</dependency>
-
-		<!-- MapStruct Spring Boot Starter -->
-		<dependency>
-			<groupId>io.github.linpeilie</groupId>
-			<artifactId>mapstruct-plus-spring-boot-starter</artifactId>
-			<version>1.4.4</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -105,23 +96,6 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<configuration>
-					<source>21</source> <!-- Java version -->
-					<target>21</target>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.mapstruct</groupId>
-							<artifactId>mapstruct-processor</artifactId>
-							<version>${org.mapstruct.version}</version>
-						</path>
-					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 
