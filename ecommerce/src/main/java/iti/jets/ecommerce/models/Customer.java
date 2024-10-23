@@ -29,6 +29,7 @@ public class Customer extends User implements java.io.Serializable {
      private String job;
      private float creditLimit;
      private String address;
+     private String phone;
      private Set<CartItem> cartItems = new HashSet<CartItem>(0);
      private Set<Category> categories = new HashSet<Category>(0);
      private Set<Product> products = new HashSet<Product>(0);
