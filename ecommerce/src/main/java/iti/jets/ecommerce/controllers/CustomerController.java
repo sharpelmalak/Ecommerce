@@ -8,6 +8,8 @@ import iti.jets.ecommerce.repositories.ProductRepository;
 import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderServiceImpl;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.http.HttpStatus;
@@ -44,7 +46,7 @@ public class CustomerController {
 
     // Add Item to Cart
     @PostMapping("/{customerId}/cart/add")
-    public ResponseEntity<String> addItemToCart(@PathVariable int customerId, @RequestBody CartItemDTO cartItemDto) {
+    public ResponseEntity<String> addItemToCart(HttpServletRequest request, @PathVariable int customerId, @RequestBody CartItemDTO cartItemDto) {
         customerService.addToCart(customerId, cartItemDto);
         return ResponseEntity.ok("Item added to cart.");
     }

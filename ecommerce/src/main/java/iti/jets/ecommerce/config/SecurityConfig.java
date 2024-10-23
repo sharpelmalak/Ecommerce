@@ -63,9 +63,8 @@ public class SecurityConfig {
                                         "/api/auth/login",
                                         "/api/auth/register"
                                 ).permitAll()
-                                // Allow access to other public API endpoints
-                               // .requestMatchers("/api/**").permitAll()
-                                // Ensure other requests require authentication
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/test").hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults()) // Optionally, configure form login if needed
