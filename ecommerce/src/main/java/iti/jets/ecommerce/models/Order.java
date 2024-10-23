@@ -26,7 +26,7 @@ public class Order implements java.io.Serializable {
     private float totalPrice;
     private String status; // "Placed", "Confirmed", "Delivered"
     private Set<OrderItem> orderItems = new HashSet<OrderItem>(0);
-    private Set<OrderItemDTO> orderItemsDTO = new HashSet<OrderItemDTO>(0);
+    // private Set<OrderItemDTO> orderItemsDTO = new HashSet<OrderItemDTO>(0);
     
 
     private PaymentMethod paymentMethod;
@@ -112,16 +112,6 @@ public class Order implements java.io.Serializable {
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
-
-    public Set<OrderItemDTO> getOrderItemsDTO() {
-        return orderItemsDTO;
-    }
-
-
-    public void setOrderItemsDTO(Set<OrderItemDTO> orderItemsDTO) {
-        this.orderItemsDTO = orderItemsDTO;
-    }
-
 }
 
 

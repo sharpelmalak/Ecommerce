@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Set;
 
 import iti.jets.ecommerce.models.Order;
+import jakarta.persistence.ElementCollection;
 
 @Setter
 @Getter
@@ -30,12 +31,12 @@ public class OrderDTO {
         this.orderItems = orderItems;
     }
 
-    public OrderDTO(Order order) {
-        this.orderId = order.getId();
-        this.customerId = order.getCustomer().getId();
-        this.orderDate = order.getOrderDate();
-        this.orderStatus = order.getStatus();
-        this.totalPrice = order.getTotalPrice();
-        this.orderItems = order.getOrderItemsDTO();
-    }
+    // public OrderDTO(Order order) {
+    //     this.orderId = order.getId();
+    //     this.customerId = order.getCustomer().getId();
+    //     this.orderDate = order.getOrderDate();
+    //     this.orderStatus = order.getStatus();
+    //     this.totalPrice = order.getTotalPrice();
+    //     this.orderItems = order.getOrderItemsDTO();
+    // }
 }

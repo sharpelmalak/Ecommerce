@@ -64,25 +64,6 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    // // Place Order
-    // public void placeOrder(int customerId) {
-    //     Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-    //     Set<CartItem> cartItems = customer.getCartItems();
-    //     if (cartItems.isEmpty()) {
-    //         throw new IllegalStateException("Cart is empty.");
-    //     }
-    //     Order order = new Order(customer, cartItems);
-    //     customer.getOrders().add(order);
-    //     customer.getCartItems().clear();
-    //     customerRepository.save(customer);
-    // }
-
-
-    // Get Order History
-    public List<OrderDTO> getOrderHistory(int customerId) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        return customer.getOrders().stream().map(OrderDTO::new).collect(Collectors.toList());
-    }
 
     // Pay for an Order
     public void payForOrder(int customerId, int orderId, PaymentDTO paymentDto) {

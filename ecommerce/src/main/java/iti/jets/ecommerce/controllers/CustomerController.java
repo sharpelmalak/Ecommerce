@@ -6,8 +6,10 @@ import iti.jets.ecommerce.repositories.CustomerRepository;
 import iti.jets.ecommerce.repositories.OrderRepository;
 import iti.jets.ecommerce.repositories.ProductRepository;
 import iti.jets.ecommerce.services.CustomerService;
+import iti.jets.ecommerce.services.OrderServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,11 @@ import java.util.List;
 @RequestMapping("/customers")
 public class CustomerController {
 
-    private final CustomerService customerService;
+    @Autowired
+    private  CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
+    @Autowired
+    private OrderServiceImpl orderServiceImpl;
 
 
     // Get Customer Profile
@@ -54,17 +56,20 @@ public class CustomerController {
         return ResponseEntity.ok("Item removed from cart.");
     }
 
-    // // Place Order
-    // @PostMapping("/{customerId}/order")
-    // public ResponseEntity<String> placeOrder(@PathVariable int customerId) {
-    //     customerService.placeOrder(customerId);
-    //     return ResponseEntity.ok("Order placed successfully.");
-    // }
+    // Place Order
+    @PostMapping("/{customerId}/order")
+    public ResponseEntity<String> placeOrder(@PathVariable OrderDTO orderDTO) {
+        orderServiceImpl.createOrder(orderDTO);
+        return ResponseEntity.ok("Order placed successfully.");
+        /* in case we want to return OrderDTO instead of a successful message  */
+        /*  OrderDTO placedOrderDTO  = orderServiceImpl.createOrder(orderDTO); 
+            return ResponseEntity.ok(placedOrderDTO); */ 
+    }
 
     // Get Order History
     @GetMapping("/{customerId}/orders")
     public ResponseEntity<List<OrderDTO>> getOrderHistory(@PathVariable int customerId) {
-        List<OrderDTO> orders = customerService.getOrderHistory(customerId);
+        List<OrderDTO> orders = orderServiceImpl.getOrdersByCustomer(customerId);
         return ResponseEntity.ok(orders);
     }
 
