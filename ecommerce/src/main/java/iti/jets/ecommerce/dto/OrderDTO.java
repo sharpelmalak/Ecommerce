@@ -20,6 +20,7 @@ public class OrderDTO {
     private double totalPrice;
     private Set<OrderItemDTO> orderItems;
 
+    public OrderDTO(){}
     public OrderDTO(int orderId, int customerId, Date orderDate, String orderStatus, double totalPrice, Set<OrderItemDTO> orderItems) {
         this.orderId = orderId;
         this.customerId = customerId;
