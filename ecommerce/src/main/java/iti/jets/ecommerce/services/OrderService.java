@@ -9,6 +9,7 @@ public interface OrderService {
     OrderDTO createOrder(OrderDTO order);
 
     OrderDTO getOrderById(int orderId);
+    List<OrderDTO> getOrdersByCustomer(int userId);
     List<OrderDTO> getAllOrders();
 
     void updateOrderStatus(int orderId, String status);
