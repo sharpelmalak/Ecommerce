@@ -24,7 +24,6 @@ import java.util.Set;
     ,catalog="ecommerce"
 )
 public class Customer extends User implements java.io.Serializable {
-
      private Date birthdate;
      private String job;
      private String address;
@@ -33,11 +32,21 @@ public class Customer extends User implements java.io.Serializable {
      private Set<Category> categories = new HashSet<Category>(0);
      private Set<Product> products = new HashSet<Product>(0);
      private Set<Order> orders = new HashSet<Order>(0);
-    private Set<Card> cards = new HashSet<Card>(0);
+     private Set<Card> cards = new HashSet<Card>(0);
+
+     @Column(name = "is_deleted", nullable = false)
+     private boolean isDeleted = false;
+
+     public boolean isDeleted() {
+         return isDeleted;
+     }
+
+     public void setDeleted(boolean isDeleted) {
+         this.isDeleted = isDeleted;
+     }
 
     public Customer() {
     }
-
 
     @Temporal(TemporalType.DATE)
     @Column(name="birthdate", nullable=false, length=10)

@@ -1,6 +1,6 @@
 package iti.jets.ecommerce.mappers;
 
-import iti.jets.ecommerce.dto.CustomerDTO;
+import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.models.Customer;
 
 public class CustomerMapper {
@@ -20,6 +20,7 @@ public class CustomerMapper {
         return customer;
     }
 
+    
     // Convert User Entity to UserDto
     public static CustomerDTO toDto(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
@@ -34,6 +35,19 @@ public class CustomerMapper {
         dto.setPhone(customer.getPhone());
         return dto;
     }
+
+    // Convert User Entity to UserDto
+    public static CustomerDTOAdmin toDtoCustomerAdmin(Customer customer) {
+        CustomerDTOAdmin dto = new CustomerDTOAdmin();
+        dto.setName(customer.getName());
+        dto.setUsername(customer.getUsername());
+        dto.setEmail(customer.getEmail());
+        return dto;
+    }
+
+    
+
+    
 }
 
 

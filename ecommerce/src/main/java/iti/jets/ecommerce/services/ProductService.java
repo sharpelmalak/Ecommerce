@@ -47,7 +47,7 @@ public class ProductService {
         Product savedProduct = productRepository.save(product);
         return ProductConverter.convertToDTO(savedProduct);   
     }
-
+    
     /* Update a product */
     public ProductDTO updateProduct(int id, ProductDTO productDTO) {
         Product existingProduct = productRepository.findById(id)

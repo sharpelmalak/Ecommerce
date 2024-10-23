@@ -22,10 +22,10 @@ public class AdminController {
     @Autowired
     private CustomerService customerService;
 
+    
     /* ============================================================================================ */
     /*                            Admin Functionalities Related to Products                         */
     /* ============================================================================================ */
-
     /* Create a Product */
     @PostMapping("/product")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO, @RequestParam int adminId) {
@@ -61,11 +61,10 @@ public class AdminController {
         return ResponseEntity.ok(returnedProductDTO);
     }
 
+    
     /* ============================================================================================ */
     /*                           Admin Functionalities Related to Customers                         */
     /* ============================================================================================ */
-    // Uncomment when needed
-
     /* Get all customers */
     @GetMapping("/customers")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
@@ -82,26 +81,27 @@ public class AdminController {
 
     /* Update a customer profile */
     @PutMapping("/customer/{id}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable int id, @RequestBody CustomerDTO customerDTO) {
-        CustomerDTO updatedCustomer = customerService.updateCustomer(id, customerDTO);
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable int id, @RequestBody CustomerDTOAdmin customerDTO) {
+        CustomerDTO updatedCustomer = customerService.updateCustomerByAdmin(id, customerDTO);
         return ResponseEntity.ok(updatedCustomer);
     }
 
     /* Not Handled Yet : Haroun */
-    // /* Delete a customer (soft delete) */
-    // @DeleteMapping("/customer/{id}")
-    // public ResponseEntity<String> deleteCustomer(@PathVariable int id) {
-    //     customerService.deleteCustomer(id);
-    //     return ResponseEntity.ok("Customer deleted successfully");
-    // }
+    /* Delete a customer (soft delete) */
+    @DeleteMapping("/customer/{id}")
+    public ResponseEntity<String> deleteCustomer(@PathVariable int id) {
+        if(customerService.deleteCustomer(id) == "deleted");{
+            return ResponseEntity.ok("Customer deleted successfully");
+        }
+    }
+
+    
+
+
 
     /* ============================================================================================ */
     /*                            Admin Profile Management                                          */
     /* ============================================================================================ */
-
-
-
-
     /* Get admin profile */
     @GetMapping("/profile/{adminId}")
     public ResponseEntity<AdminDTO> getAdminProfile(@PathVariable int adminId) {
@@ -110,13 +110,12 @@ public class AdminController {
     }
 
 
-       /* Get all admins */
-       @GetMapping("/profiles")
-       public ResponseEntity<List<AdminDTO>> getAllAdmins() {
-           List<AdminDTO> adminDTOs = adminService.getAllAdmins();
-           return ResponseEntity.ok(adminDTOs);
-       }
-
+    /* Get all admins */
+    @GetMapping("/profiles")
+    public ResponseEntity<List<AdminDTO>> getAllAdmins() {
+        List<AdminDTO> adminDTOs = adminService.getAllAdmins();
+        return ResponseEntity.ok(adminDTOs);
+    }
 
 
     /* Update admin profile */

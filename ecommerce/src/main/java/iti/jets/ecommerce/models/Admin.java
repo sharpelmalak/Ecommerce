@@ -55,10 +55,6 @@ public class Admin extends User implements java.io.Serializable {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
-
-
-
-
 }
 
 
