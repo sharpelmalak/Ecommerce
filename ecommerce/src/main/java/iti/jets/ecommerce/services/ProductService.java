@@ -90,5 +90,14 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
         return ProductConverter.convertToDTO(product);
     }
+
+    public boolean checkProductAvailability(int productId, int requiredQuantity) {
+        // Fetch the product from the repository
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        // Check if the product's available stock is greater than or equal to the required quantity
+        return product.getQuantity() >= requiredQuantity;
+    }
 }
 
