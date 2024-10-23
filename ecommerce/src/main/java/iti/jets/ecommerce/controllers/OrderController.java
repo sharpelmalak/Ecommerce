@@ -1,48 +1,57 @@
 package iti.jets.ecommerce.controllers;
 
+
+import iti.jets.ecommerce.dto.OrderDTO;
 import iti.jets.ecommerce.models.Order;
 import iti.jets.ecommerce.services.OrderService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/orders")
-@RequiredArgsConstructor
+@RequestMapping("/api/orders")
 public class OrderController {
 
-    private final OrderService orderService;
+    private OrderService orderService;
 
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    // Create new Order
     @PostMapping
-    public void saveOrder(@RequestBody Order order) {
-        orderService.saveOrder(order);
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
+        return ResponseEntity.ok(orderService.createOrder(orderDTO));
     }
 
-    @GetMapping("/{id}")
-    public Order getOrder(@PathVariable int id) {
-        return orderService.getOrder(id);
+    // Get all orders for a specific user (Customer action)
+    @GetMapping("/customers/{customerId}")
+    public ResponseEntity<List<OrderDTO>> getOrdersByUser(@PathVariable int customerId) {
+        List<OrderDTO> orders = orderService.getOrdersByCustomer(customerId);
+        return ResponseEntity.ok(orders);
     }
 
+    // Get details of a specific order (Customer/Admin action)
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable int orderId) {
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
+    }
+
+    // Get all orders (Admin action)
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public ResponseEntity<List<OrderDTO>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    @PutMapping("/{id}")
-    public void updateOrder(@PathVariable int id , @RequestBody Order order) {
-        orderService.updateOrder(id,order);
+
+    @PutMapping("/{orderId}/status")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable Integer orderId, @RequestParam String status) {
+        orderService.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable int id) {
-        orderService.deleteOrder(id);
-    }
-
-    @DeleteMapping
-    public void deleteAllOrders() {
-        orderService.deleteAllOrders();
-    }
 
 
 

@@ -16,7 +16,6 @@ import java.util.Set;
 )
 public class Category  implements java.io.Serializable {
 
-
      private int id;
      private String name;
      private String image;     /* Modified from byte[] image to String image : haroun */
