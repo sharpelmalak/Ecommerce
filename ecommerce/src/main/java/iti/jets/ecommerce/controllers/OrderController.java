@@ -1,48 +1,47 @@
 package iti.jets.ecommerce.controllers;
 
-import iti.jets.ecommerce.models.Order;
+
+import iti.jets.ecommerce.dto.OrderDTO;
 import iti.jets.ecommerce.services.OrderService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
-@RequiredArgsConstructor
+@RequestMapping("/api/orders")
+
 public class OrderController {
 
-    private final OrderService orderService;
 
-    @PostMapping
-    public void saveOrder(@RequestBody Order order) {
-        orderService.saveOrder(order);
+    private OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
-    @GetMapping("/{id}")
-    public Order getOrder(@PathVariable int id) {
-        return orderService.getOrder(id);
+    @PostMapping
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
+        return ResponseEntity.ok(orderService.createOrder(orderDTO));
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable int orderId) {
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public ResponseEntity<List<OrderDTO>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    @PutMapping("/{id}")
-    public void updateOrder(@PathVariable int id , @RequestBody Order order) {
-        orderService.updateOrder(id,order);
+
+    @PutMapping("/{orderId}/status")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable Integer orderId, @RequestParam String status) {
+        orderService.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable int id) {
-        orderService.deleteOrder(id);
-    }
-
-    @DeleteMapping
-    public void deleteAllOrders() {
-        orderService.deleteAllOrders();
-    }
 
 
 
