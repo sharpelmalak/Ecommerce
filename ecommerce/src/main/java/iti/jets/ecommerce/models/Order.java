@@ -38,6 +38,7 @@ public class Order implements java.io.Serializable {
         this.status = status;
     }
 
+    @Column(name = "status", nullable = false)
     public String getStatus() {
         return status;
     }
