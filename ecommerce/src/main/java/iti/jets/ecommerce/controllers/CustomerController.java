@@ -44,21 +44,7 @@ public class CustomerController {
         return ResponseEntity.ok("Customer profile updated successfully.");
     }
 
-    // Add Item to Cart
-    @PostMapping("/{customerId}/cart/add")
-    public ResponseEntity<String> addItemToCart(HttpServletRequest request, @PathVariable int customerId, @RequestBody CartItemDTO cartItemDto) {
-        customerService.addToCart(customerId, cartItemDto);
-        return ResponseEntity.ok("Item added to cart.");
-    }
-
-    // Remove Item from Cart
-    @DeleteMapping("/{customerId}/cart/remove")
-    public ResponseEntity<String> removeItemFromCart(@PathVariable int customerId, @RequestParam int productId) {
-        customerService.removeFromCart(customerId, productId);
-        return ResponseEntity.ok("Item removed from cart.");
-    }
-
-    // Place Order
+    /*  Place Order */
     @PostMapping("/{customerId}/order")
     public ResponseEntity<String> placeOrder(@PathVariable OrderDTO orderDTO) {
         orderServiceImpl.createOrder(orderDTO);
@@ -68,14 +54,14 @@ public class CustomerController {
             return ResponseEntity.ok(placedOrderDTO); */ 
     }
 
-    // Get Order History
+    /*  Get Order History */
     @GetMapping("/{customerId}/orders")
     public ResponseEntity<List<OrderDTO>> getOrderHistory(@PathVariable int customerId) {
         List<OrderDTO> orders = orderServiceImpl.getOrdersByCustomer(customerId);
         return ResponseEntity.ok(orders);
     }
 
-    // Pay for an Order
+    /*  Pay for an Order */
     @PostMapping("/{customerId}/order/{orderId}/pay")
     public ResponseEntity<String> payForOrder(@PathVariable int customerId, @PathVariable int orderId, @RequestBody PaymentDTO paymentDto) {
         customerService.payForOrder(customerId, orderId, paymentDto);

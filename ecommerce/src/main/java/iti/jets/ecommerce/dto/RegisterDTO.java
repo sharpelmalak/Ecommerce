@@ -1,6 +1,5 @@
 package iti.jets.ecommerce.dto;
 
-
 import lombok.Data;
 
 import java.sql.Date;

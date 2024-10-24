@@ -4,7 +4,6 @@ import java.sql.Date;
 
 import lombok.Data;
 
-
 @Data
 public class CustomerRegistrationDTO {
     private String name;
@@ -12,6 +11,4 @@ public class CustomerRegistrationDTO {
     private String username;
     private String password;
     private Date birthdate;
-
-    // Getters and setters
 }
