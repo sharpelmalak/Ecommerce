@@ -50,7 +50,7 @@ public class ProductController {
         List<ProductDTO> productDTOs = productService.getProductsByPriceRange(minPrice, maxPrice);
         return ResponseEntity.ok(productDTOs);
     }
-
+    
     /* Get products by category and price range */
     @GetMapping("/category/{category}/price")
     public ResponseEntity<List<ProductDTO>> getProductsByCategoryAndPrice(
