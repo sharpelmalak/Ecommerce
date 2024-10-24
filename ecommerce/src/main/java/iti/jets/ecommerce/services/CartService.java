@@ -6,18 +6,24 @@ import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
 import iti.jets.ecommerce.dto.CartItemDTO;
 import iti.jets.ecommerce.dto.ProductDTO;
 import iti.jets.ecommerce.exceptions.CartException;
+import iti.jets.ecommerce.mappers.CartItemMapper;
 import iti.jets.ecommerce.models.CartItem;
+import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.repositories.CartItemRepository;
+import iti.jets.ecommerce.repositories.CustomerRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService {
@@ -26,12 +32,45 @@ public class CartService {
 
     private ProductService productService;
 
+    private CustomerRepository customerRepository;
+
     @Autowired
-    public CartService(CartItemRepository cartItemRepository, ProductService productService) {
+    public CartService(CartItemRepository cartItemRepository, ProductService productService,CustomerRepository customerRepository) {
         this.cartItemRepository = cartItemRepository;
         this.productService = productService;
+        this.customerRepository = customerRepository;
     }
 
+
+    public boolean checkCart(HttpSession session) {
+        boolean result = false;
+        List<CartItemDTO> cart = (List<CartItemDTO>) session.getAttribute("cart");
+        if (cart != null) {
+
+            Iterator<CartItemDTO> iterator = cart.iterator();
+
+            while (iterator.hasNext()) {
+                CartItemDTO cartItem = iterator.next();
+                ProductDTO product = productService.getProductById(cartItem.getProduct().getId());
+                if (product == null || product.getQuantity() == 0) {
+                    result = true;
+                    iterator.remove();
+                } else {
+                    if (!cartItem.getProduct().equals(product)) {
+                        if (product.getQuantity() < cartItem.getQuantity()) {
+                            cartItem.setQuantity(product.getQuantity());
+                            result = true;
+                        } else if (product.getPrice() != cartItem.getProduct().getPrice()) {
+                            result = true;
+                        }
+                        cartItem.setProduct(product);
+                    }
+
+                }
+            }
+        }
+        return result;
+    }
 
     // Method to add a product to the cart
     public CartItemDTO addProductToCart(HttpSession session, int productId, int quantity) throws CartException {
@@ -152,5 +191,33 @@ public class CartService {
             }
         }
         return new ArrayList<>();
+    }
+    public  void saveCart(HttpSession session)
+    {
+        List<CartItemDTO> cart = (List<CartItemDTO>) session.getAttribute("cart");
+        if (cart != null && !cart.isEmpty()) {
+            List<CartItem> cartItems = CartItemMapper.toEntity(cart);
+            cartItemRepository.saveAll(cartItems);
+        }
+
+    }
+
+    public  List<CartItemDTO> loadCart(int customerId)
+    {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent())
+        {
+            List<CartItem> cartItems = cartItemRepository.findByCustomer(customer.get());
+            return CartItemMapper.toDto(cartItems);
+        }
+        return null;
+    }
+    public  void resetCart(int customerId)
+    {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent())
+        {
+            cartItemRepository.deleteAllByCustomer(customer.get());
+        }
     }
 }
