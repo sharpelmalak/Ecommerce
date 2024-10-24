@@ -1,17 +1,17 @@
 // package iti.jets.ecommerce.services;
-
-<<<<<<< HEAD
-import iti.jets.ecommerce.models.OrderItem;
-import iti.jets.ecommerce.models.OrderItemId;
-import iti.jets.ecommerce.repositories.OrderItemRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-=======
-// import iti.jets.ecommerce.models.OrderItem;
-// import iti.jets.ecommerce.repositories.OrderItemRepository;
-// import lombok.RequiredArgsConstructor;
-// import org.springframework.stereotype.Service;
->>>>>>> 0e85513adfc9ddaa6032a9a8038e2a6569a8046b
+//
+//<<<<<<< HEAD
+//import iti.jets.ecommerce.models.OrderItem;
+//import iti.jets.ecommerce.models.OrderItemId;
+//import iti.jets.ecommerce.repositories.OrderItemRepository;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.stereotype.Service;
+//=======
+//// import iti.jets.ecommerce.models.OrderItem;
+//// import iti.jets.ecommerce.repositories.OrderItemRepository;
+//// import lombok.RequiredArgsConstructor;
+//// import org.springframework.stereotype.Service;
+//>>>>>>> 0e85513adfc9ddaa6032a9a8038e2a6569a8046b
 
 // import java.util.List;
 
@@ -24,16 +24,16 @@ import org.springframework.stereotype.Service;
 //     public void saveOrderItem(OrderItem orderItem) {
 //         orderItemRepository.save(orderItem);
 //     }
-
-<<<<<<< HEAD
-    public OrderItem getOrderItem(OrderItemId id) {
-        return orderItemRepository.getById(id);
-    }
-=======
-//     public OrderItem getOrderItem(int id) {
-//         return orderItemRepository.getById(id);
-//     }
->>>>>>> 0e85513adfc9ddaa6032a9a8038e2a6569a8046b
+//
+//<<<<<<< HEAD
+//    public OrderItem getOrderItem(OrderItemId id) {
+//        return orderItemRepository.getById(id);
+//    }
+//=======
+////     public OrderItem getOrderItem(int id) {
+////         return orderItemRepository.getById(id);
+////     }
+//>>>>>>> 0e85513adfc9ddaa6032a9a8038e2a6569a8046b
 
 //     public List<OrderItem> getAllOrderItems() {
 //         return orderItemRepository.findAll();

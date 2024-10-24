@@ -1,7 +1,9 @@
 package iti.jets.ecommerce.services;
 
 import iti.jets.ecommerce.dto.CategoryDTO;
+import iti.jets.ecommerce.dto.ProductConverter;
 import iti.jets.ecommerce.dto.ProductDTO;
+import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 import iti.jets.ecommerce.models.Admin;
 import iti.jets.ecommerce.models.Category;
 import iti.jets.ecommerce.models.Product;
@@ -34,6 +36,12 @@ public class CategoryService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
         return categoryDTOS;
+    }
+    public CategoryDTO getCategoryById(int id) {
+        Category category = CategoryRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Category Not Found with ID: "+id));
+
+        return convertToDTO(category);
     }
     private CategoryDTO convertToDTO(Category category) {
         CategoryDTO dto = new CategoryDTO();
