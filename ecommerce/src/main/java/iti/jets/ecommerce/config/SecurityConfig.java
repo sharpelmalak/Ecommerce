@@ -74,8 +74,18 @@ public class SecurityConfig {
                         .requestMatchers("/test").hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults()) // Enable default form-based login
-                .oauth2Login(withDefaults()) // Enable OAuth2 login with defaults
+                .formLogin(form -> form
+                        .loginPage("/login") // Custom login page
+                        .loginProcessingUrl("/api/auth/login") // Custom login processing URL
+                        .defaultSuccessUrl("/home/test") // Redirect after successful login
+                        .failureUrl("/login?error=true") // Redirect on login failure
+                        .permitAll() // Allow everyone to access the login page
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login") // Custom login page for OAuth2
+                        .defaultSuccessUrl("/home/test") // Redirect after successful OAuth2 login
+                        .permitAll() // Allow access to login page for OAuth2
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

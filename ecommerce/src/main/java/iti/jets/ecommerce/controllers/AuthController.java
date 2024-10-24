@@ -8,12 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -31,8 +29,12 @@ public class AuthController {
         return ResponseEntity.ok(customerService.RegisterCustomer(customerDTO));
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody CustomerDTO customerDTO) {
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+    @PostMapping(value = "/login",consumes = {"application/json", "application/x-www-form-urlencoded"})
+    public String login(CustomerDTO customerDTO) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
                         customerDTO.getUsername(), customerDTO.getPassword()));
