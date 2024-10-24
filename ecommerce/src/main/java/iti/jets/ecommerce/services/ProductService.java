@@ -99,5 +99,48 @@ public class ProductService {
         // Check if the product's available stock is greater than or equal to the required quantity
         return product.getQuantity() >= requiredQuantity;
     }
-}
 
+    
+    /* ============= Get product by category , price Range , and brand or Category and brand together */
+    
+    /*  Get products by category and return as DTOs */
+    public List<ProductDTO> getProductsByCategory(String category) {
+        List<Product> products = productRepository.findByCategory_Name(category);
+        return products.stream()
+                .map(ProductConverter::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /*  Get products by brand and return as DTOs */
+    public List<ProductDTO> getProductsByBrand(String brand) {
+        List<Product> products = productRepository.findByBrand(brand);
+        return products.stream()
+                .map(ProductConverter::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /*  Get products by price range and return as DTOs */
+    public List<ProductDTO> getProductsByPriceRange(Double minPrice, Double maxPrice) {
+        List<Product> products = productRepository.findByPriceBetween(minPrice, maxPrice);
+        return products.stream()
+                .map(ProductConverter::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /*  Get products by category and price range, return as DTOs */
+    public List<ProductDTO> getProductsByCategoryAndPrice(String category, Double minPrice, Double maxPrice) {
+        List<Product> products = productRepository.findByCategory_NameAndPriceBetween(category, minPrice, maxPrice);
+        return products.stream()
+                .map(ProductConverter::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /*  Get products by name (partial match), return as DTOs */
+    public List<ProductDTO> getProductsByName(String name) {
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(name);
+        return products.stream()
+                .map(ProductConverter::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+}

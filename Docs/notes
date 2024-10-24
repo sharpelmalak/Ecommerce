@@ -1,0 +1,9 @@
+Testing Apis for Product Catalog ==> 
+/api/products/category/{category}   : Returns all products in the specified category.
+/api/products/brand/{brand}         : Returns products from the specified brand.
+/api/products/price?minPrice={minPrice}&maxPrice={maxPrice} : Filters products within a given price range.
+/api/products/category/{category}/price?minPrice={minPrice}&maxPrice={maxPrice}: Filters by both category and price.
+GET /api/products/search?name=example : This will return all products where the name contains the string "example" (case-insensitive)
+
+
+link chatgpt : https://chatgpt.com/share/671a4465-1348-800d-bfd7-0e65577d6bbe

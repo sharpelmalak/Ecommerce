@@ -13,4 +13,5 @@ public class CustomerDTO extends UserDTO{
     private String job;
     private String address;
     private String phone;
+    private boolean isDeleted;
 }

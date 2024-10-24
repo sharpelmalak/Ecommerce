@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 )
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product  implements java.io.Serializable {
-
+    
      private int id;
      private Admin admin;
      private Category category;
@@ -31,6 +31,13 @@ public class Product  implements java.io.Serializable {
      private String description;
      private String image;     /* Modified from byte[] image to String image : haroun */
      private boolean isDeleted = false;
+     /* Newly added fields for a watch */
+     // Watch-specific fields
+     private String material;
+     private int caseDiameter;
+     private String waterResistance;
+     private String gender;
+    
      private Set<CartItem> cartItems = new HashSet<CartItem>(0);
      private Set<OrderItem> orderItems = new HashSet<OrderItem>(0);
      private Set<Customer> customers = new HashSet<Customer>(0);
@@ -57,7 +64,7 @@ public class Product  implements java.io.Serializable {
        this.image = image;
     }
    
-     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return this.id;
     }
@@ -202,6 +209,41 @@ public class Product  implements java.io.Serializable {
         // Only check price and quantity for equality
         return Double.compare(this.price, other.price) == 0 &&
                 this.quantity == other.quantity;
+    }
+
+    
+    public String getMaterial() {
+        return material;
+    }
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    public int getCaseDiameter() {
+        return caseDiameter;
+    }
+
+
+    public void setCaseDiameter(int caseDiameter) {
+        this.caseDiameter = caseDiameter;
+    }
+
+    public String getWaterResistance() {
+        return waterResistance;
+    }
+
+
+    public void setWaterResistance(String waterResistance) {
+        this.waterResistance = waterResistance;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
 

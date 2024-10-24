@@ -33,6 +33,7 @@ public class CustomerMapper {
         dto.setJob(customer.getJob());
         dto.setAddress(customer.getAddress());
         dto.setPhone(customer.getPhone());
+        dto.setDeleted(customer.isDeleted());
         return dto;
     }
 

@@ -10,6 +10,12 @@ public class OrderItemDTO {
     private int quantity;
     private double price;
 
+
+
+    // No-argument constructor
+    public OrderItemDTO() {
+    }
+
     public OrderItemDTO(int productId, int orderId, int quantity, double price) {
         this.productId = productId;
         this.orderId = orderId;
