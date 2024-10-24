@@ -48,23 +48,6 @@ public class CustomerService {
     }
 
 
-    /* ==================================== Customer Actions ==============================  */
-    // Add Item to Cart
-    public void addToCart(int customerId, CartItemDTO cartItemDto) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        CartItem cartItem = new CartItem(customer, productRepository.findById(cartItemDto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found")), cartItemDto.getQuantity());
-        customer.getCartItems().add(cartItem);
-        customerRepository.save(customer);
-    }
-
-    // Remove Item from Cart
-    public void removeFromCart(int customerId, int productId) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        customer.getCartItems().removeIf(item -> item.getProduct().getId() == productId);
-        customerRepository.save(customer);
-    }
-
-
     // Pay for an Order
     public void payForOrder(int customerId, int orderId, PaymentDTO paymentDto) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
@@ -72,24 +55,6 @@ public class CustomerService {
         order.setStatus("confirmed");
         orderRepository.save(order);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /* ============================ CRUD Operations for Customer related to Admin Actions ============================  */
     /* Get all customers */
@@ -142,16 +107,6 @@ public class CustomerService {
         return CustomerMapper.toDto(updatedCustomer);
     }
     /* ============================ CRUD Operations for Customer related to Admin Actions ============================  */
-
-
-
-
-
-
-
-
-
-
 
 
     /* Delete a customer : soft delete */

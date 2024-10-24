@@ -1,6 +1,5 @@
 package iti.jets.ecommerce.dto;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,11 @@ public class OrderDTO {
     private double totalPrice;
     private Set<OrderItemDTO> orderItems;
 
-    public OrderDTO(){}
-    public OrderDTO(int orderId, int customerId, Date orderDate, String orderStatus, double totalPrice, Set<OrderItemDTO> orderItems) {
+    public OrderDTO() {
+    }
+
+    public OrderDTO(int orderId, int customerId, Date orderDate, String orderStatus, double totalPrice,
+            Set<OrderItemDTO> orderItems) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.orderDate = orderDate;
@@ -33,11 +35,11 @@ public class OrderDTO {
     }
 
     // public OrderDTO(Order order) {
-    //     this.orderId = order.getId();
-    //     this.customerId = order.getCustomer().getId();
-    //     this.orderDate = order.getOrderDate();
-    //     this.orderStatus = order.getStatus();
-    //     this.totalPrice = order.getTotalPrice();
-    //     this.orderItems = order.getOrderItemsDTO();
+    // this.orderId = order.getId();
+    // this.customerId = order.getCustomer().getId();
+    // this.orderDate = order.getOrderDate();
+    // this.orderStatus = order.getStatus();
+    // this.totalPrice = order.getTotalPrice();
+    // this.orderItems = order.getOrderItemsDTO();
     // }
 }

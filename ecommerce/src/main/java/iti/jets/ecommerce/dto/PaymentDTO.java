@@ -5,6 +5,4 @@ import lombok.Data;
 @Data
 public class PaymentDTO {
     private String paymentMethod;
-
-    // Getters and setters
 }

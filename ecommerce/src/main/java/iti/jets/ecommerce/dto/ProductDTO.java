@@ -9,9 +9,9 @@ public class ProductDTO {
     private float price;
     private int quantity;
     private String description;
-    private String image;    // Modified from byte[] image to String image
-    private int categoryId;  // Added field for category ID
-    private boolean isDeleted; 
+    private String image; // Modified from byte[] image to String image
+    private int categoryId; // Added field for category ID
+    private boolean isDeleted;
     private String brand;
     // Watch-specific fields
     private String material;
