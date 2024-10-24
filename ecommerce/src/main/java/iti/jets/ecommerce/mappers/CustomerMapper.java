@@ -6,7 +6,8 @@ import iti.jets.ecommerce.models.Customer;
 public class CustomerMapper {
 
     // Convert UserDto to User Entity (general use for Customer or Admin)
-    public static Customer toEntity(CustomerDTO customerDTO, Customer customer) {
+    public static Customer toEntity(CustomerDTO customerDTO) {
+        Customer customer = new Customer();
         customer.setName(customerDTO.getName());
         customer.setUsername(customerDTO.getUsername());
         customer.setPassword(customerDTO.getPassword());

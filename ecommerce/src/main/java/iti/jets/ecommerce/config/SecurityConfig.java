@@ -51,10 +51,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF protection
+        .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(auth -> auth
-                                // Allow access to Swagger UI and OpenAPI documentation without authentication
-                                .requestMatchers(
+               // Allow access to Swagger UI and OpenAPI documentation without authentication
+                        .requestMatchers(
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-ui.html",
@@ -71,10 +71,9 @@ public class SecurityConfig {
                         .requestMatchers("/test").hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults()) // Optionally, configure form login if needed
+                .formLogin(withDefaults()) // Enable default form-based login
+                .oauth2Login(withDefaults()) // Enable OAuth2 login with defaults
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-
         return http.build();
     }
 }
