@@ -70,4 +70,15 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
+
+    public AdminDTO findAdminByEmailAndPassword(String email, String password) {
+        Admin admin = adminRepository.findByEmail(email);
+        System.out.println(admin);
+        if (admin != null && passwordEncoder.matches(password, admin.getPassword())) {
+            // Assuming you have a method to convert Admin to AdminDTO
+            return AdminMapper.convertToDTO(admin);
+        }
+        return null; // Or throw an exception if preferred
+    }
+
 }

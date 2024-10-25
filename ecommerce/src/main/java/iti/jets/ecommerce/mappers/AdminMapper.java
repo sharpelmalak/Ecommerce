@@ -12,6 +12,7 @@ public class AdminMapper {
         adminDTO.setName(admin.getName());
         adminDTO.setUsername(admin.getUsername());
         adminDTO.setEmail(admin.getEmail());
+        adminDTO.setPassword(admin.getPassword());
         adminDTO.setHireDate(admin.getHireDate());
         return adminDTO;
     }

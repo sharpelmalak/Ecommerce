@@ -66,8 +66,9 @@ public class SecurityConfig {
                                         "/api/g/**",
                                         "/api/customers/**",
                                         "/api/products/**",
-                                        "/index.html",
+                                        // "/index.html",
                                         "/css/**", "/js/**", "/images/**",
+                                        "/home/**",
                                         "/**"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

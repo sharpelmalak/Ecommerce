@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/signup.css}">
+    <title>Registration Form</title>
+
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}">
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <!-- Include intl-tel-input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+
+    <!-- Include intl-tel-input JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+
+    <style>
+        .form-holder input {
+            flex: 1;
+            border: #b3b1b1 solid 1px;
+            background-color: transparent;
+            font-size: 16px;
+            margin-left: 50px;
+        }
+        .interest-bubble {
+            display: inline-block;
+            margin: 5px;
+            position: relative;
+        }
+        .interest-bubble input[type="checkbox"] {
+            display: none;
+        }
+        .interest-bubble label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .interest-bubble input[type="checkbox"]:checked + label {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<!-- Include header -->
+<div th:replace="common/header :: header"></div>
+
+<div class="wrapper" style="background-image: url('img/signup.png');">
+    <div class="inner">
+        <form id="registrationForm" th:action="@{/register}" method="post">
+            <h3>Sign Up</h3>
+
+            <!-- First and Last Name Fields -->
+            <div class="form-group">
+                <div class="form-wrapper">
+                    <label for="firstName">First Name</label>
+                    <div class="form-holder">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="firstName" name="firstName" class="form-control" required placeholder="First Name">
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <label for="lastName">Last Name</label>
+                    <div class="form-holder">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="lastName" name="lastName" class="form-control" required placeholder="Last Name">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Username -->
+            <div class="form-wrapper">
+                <label for="username">Username</label>
+                <div class="form-holder">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" name="username" class="form-control" required placeholder="Username" oninput="checkAvailability('username', this.value)">
+                </div>
+                <small id="usernameFeedback"></small> <!-- Feedback for username -->
+                <div id="usernameError" class="error-message"></div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-wrapper">
+                <label for="email">Email</label>
+                <div class="form-holder">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" class="form-control" required placeholder="Email Address" oninput="checkAvailability('email', this.value)">
+                </div>
+                <small id="emailFeedback"></small> <!-- Feedback for email -->
+                <div id="emailError" class="error-message"></div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-wrapper">
+                <label for="password">Password</label>
+                <div class="form-holder">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" class="form-control" required placeholder="Password" onblur="validatePassword()">
+                </div>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+
+            <!-- Birthdate -->
+            <div class="form-wrapper">
+                <label for="birthdate">Date of Birth</label>
+                <div class="form-holder">
+                    <i class="fas fa-calendar-alt"></i>
+                    <input type="date" id="birthdate" name="birthdate" class="form-control" required onblur="validateBirthdate()">
+                </div>
+                <div id="birthdateError" class="error-message"></div>
+            </div>
+
+            <!-- Credit Limit -->
+            <div class="form-wrapper">
+                <label for="creditLimit">Credit Limit</label>
+                <div class="form-holder">
+                    <i class="fas fa-dollar-sign"></i>
+                    <input type="number" id="creditLimit" name="creditLimit" class="form-control" required placeholder="Credit Limit" onblur="validateCreditLimit()">
+                </div>
+                <div id="creditLimitError" class="error-message"></div>
+            </div>
+
+            <!-- Address Section (Country, City, Street) -->
+            <div class="form-group">
+                <div class="form-wrapper">
+                    <label for="country">Country</label>
+                    <div class="form-holder">
+                        <i class="fas fa-flag"></i>
+                        <input type="text" id="country" name="country" class="form-control" required placeholder="Country" onblur="validateCountry()">
+                    </div>
+                    <div id="countryError" class="error-message"></div>
+                </div>
+                <div class="form-wrapper">
+                    <label for="city">City</label>
+                    <div class="form-holder">
+                        <i class="fas fa-city"></i>
+                        <input type="text" id="city" name="city" class="form-control" required placeholder="City" onblur="validateCity()">
+                    </div>
+                    <div id="cityError" class="error-message"></div>
+                </div>
+            </div>
+
+            <div class="form-wrapper">
+                <label for="street">Street</label>
+                <div class="form-holder">
+                    <i class="fas fa-road"></i>
+                    <input type="text" id="street" name="street" class="form-control" required placeholder="Street Address" onblur="validateStreet()">
+                </div>
+                <div id="streetError" class="error-message"></div>
+            </div>
+
+            <!-- Phone with Country -->
+            <div class="form-wrapper">
+                <label for="phone">Phone Number</label>
+                <div class="form-holder">
+                    <input type="tel" id="phone" name="phone" class="form-control" required>
+                </div>
+                <div id="phoneError" class="error-message"></div>
+            </div>
+
+            <!-- Interests (Categories) -->
+            <div class="form-group">
+                <label><b>Select Your Interests</b></label>
+                <div class="d-flex flex-wrap">
+                    <div th:each="category : ${categories}" class="interest-bubble">
+                        <input type="checkbox" th:id="'category' + ${category.id}" th:name="categories" th:value="${category.id}">
+                        <label th:for="'category' + ${category.id}" th:text="${category.name}"></label>
+                    </div>
+                </div>
+                <small id="categoriesHelp" class="form-text text-muted">
+                    Select your interests (categories).
+                </small>
+                <div id="categoriesError" class="error-message"></div>
+            </div>
+
+            <div class="form-end">
+                <button type="submit">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Include footer -->
+<div th:replace="common/footer :: footer"></div>
+
+<!-- JavaScript for AJAX-based validation and form validation (reused) -->
+<script th:src="@{/js/formValidation.js}"></script>
+</body>
+</html>

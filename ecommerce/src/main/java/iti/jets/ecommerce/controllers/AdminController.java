@@ -39,7 +39,7 @@ public class AdminController {
         ProductDTO updatedProductDTO = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProductDTO);
     }
-
+    
     /* Delete a product (soft delete) */
     @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id) {
@@ -109,7 +109,7 @@ public class AdminController {
         return ResponseEntity.ok(adminDTO);
     }
 
-
+    
     /* Get all admins */
     @GetMapping("/profiles")
     public ResponseEntity<List<AdminDTO>> getAllAdmins() {
@@ -131,4 +131,6 @@ public class AdminController {
         adminService.changePassword(adminId, passwordChangeDTO);
         return ResponseEntity.ok("Password changed successfully");
     }
+
+
 }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Products</title>
+    
+    <!-- CSS for Admin Panel -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #f4f7f9;
+        }
+        /* Sidebar Style */
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            padding-top: 20px;
+            color: white;
+        }
+        .sidebar a {
+            color: white;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 1.2em;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar Section -->
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <a th:href="@{/ProductController}">Manage Products</a>
+        <a th:href="@{/AdminController}">My Profile</a>
+        <a th:href="@{/user?action=list}">Customer Profiles</a>
+        <a th:href="@{/user?action=list}">Create a Promotion</a>
+        <a th:href="@{/LogoutServlet}">Logout</a>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Dashboard Widgets -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card p-3">
+                        <h5>Product Count</h5>
+                        <p><strong th:text="${productList.size()}"></strong></p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3">
+                        <h5>Active Categories</h5>
+                        <p><strong th:text="${categories.size()}"></strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Products Table -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h2>Manage Products</h2>
+                    <button class="btn btn-primary mb-3" id="addProductBtn" th:onclick="'window.location.href=\'' + @{/ProductController(action='create')} + '\''">Add New Product</button>
+
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Category</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productList">
+                            <tr th:each="product : ${productList}">
+                                <td th:text="${product.id}"></td>
+                                <td th:text="${product.name}"></td>
+                                <td class="price" th:text="'$' + ${product.price}"></td>
+                                <td th:text="${product.stock}"></td>
+                                <td th:text="${product.category.name}"></td>
+                                <td>
+                                    <form th:action="@{/ProductController}" method="get" style="display:inline;">
+                                        <input type="hidden" name="action" value="edit">
+                                        <input type="hidden" name="id" th:value="${product.id}">
+                                        <button type="submit" class="btn btn-warning">Edit</button>
+                                    </form>
+                                    <form th:action="@{/ProductController}" method="post" style="display:inline;">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="id" th:value="${product.id}">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Your Admin Panel. All Rights Reserved for WatchAt.
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        // Modal open and close logic
+        document.getElementById("addProductBtn").addEventListener("click", function () {
+            clearFormData();
+            document.getElementById("productModal").style.display = "block";
+        });
+        document.querySelector(".close").addEventListener("click", function () {
+            document.getElementById("productModal").style.display = "none";
+        });
+
+        function clearFormData() {
+            document.getElementById("productId").value = '';
+            document.getElementById("name").value = '';
+            document.getElementById("price").value = '';
+            document.getElementById("quantity").value = '';
+            document.getElementById("category").value = '';
+            document.getElementById("imageUrl").value = '';
+        }
+    </script>
+</body>
+</html>
