@@ -1,8 +1,9 @@
-package iti.jets.ecommerce.dto;
+package iti.jets.ecommerce.mappers;
 
+import iti.jets.ecommerce.dto.ProductDTO;
 import iti.jets.ecommerce.models.Product;
 
-public class ProductConverter {
+public class ProductMapper {
     public static ProductDTO convertToDTO(Product product) {
         ProductDTO dto = new ProductDTO();
         dto.setId(product.getId());
