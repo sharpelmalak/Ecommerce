@@ -25,8 +25,17 @@ public class Customer extends User implements java.io.Serializable {
     @Column(name = "phone", length = 45, nullable = true)
     private String phone;
 
+
+    /* we should replace this with 'street' (but will affect any part it is used as address) : haroun */
     @Column(name = "address", nullable = false, length = 100)
     private String address;
+
+    @Column(name = "city", nullable = false, length = 100)
+    private String city;
+    
+    @Column(name = "country", nullable = false, length = 100)
+    private String country;
+    
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private Set<CartItem> cartItems = new HashSet<>(0);
@@ -64,4 +73,5 @@ public class Customer extends User implements java.io.Serializable {
                 ", phone='" + phone + '\'' +
                 '}';
     }
+
 }

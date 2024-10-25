@@ -30,6 +30,9 @@ public class AdminController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private PromotionService promotionService;
+
     
     /* ============================================================================================ */
     /*                            Admin Functionalities Related to Products                         */
@@ -145,4 +148,9 @@ public class AdminController {
     }
 
 
+    /* ================= Create Promotions  ==================== */
+    @PostMapping("/promotion")
+    public ResponseEntity<PromotionDTO> createPromotion(@RequestBody PromotionDTO promotionDTO) {
+        return ResponseEntity.ok(promotionService.createPromotion(promotionDTO));
+    }
 }
