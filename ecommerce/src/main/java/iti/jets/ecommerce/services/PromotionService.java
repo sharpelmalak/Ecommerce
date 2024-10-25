@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import iti.jets.ecommerce.dto.PromotionConverter;
+import iti.jets.ecommerce.mappers.PromotionMapper;
 import iti.jets.ecommerce.dto.PromotionDTO;
 import iti.jets.ecommerce.models.Promotion;
 import iti.jets.ecommerce.repositories.*;
@@ -28,7 +28,7 @@ public class PromotionService {
         promotion.setCountry(promotionDTO.getCountry());
         promotion.setStartDate(promotionDTO.getStartDate());
         promotion.setEndDate(promotionDTO.getEndDate()); 
-        return PromotionConverter.convertToDTO(promotionRepository.save(promotion)); 
+        return PromotionMapper.convertToDTO(promotionRepository.save(promotion)); 
     }
 
 

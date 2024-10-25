@@ -1,8 +1,9 @@
-package iti.jets.ecommerce.dto;
+package iti.jets.ecommerce.mappers;
 
+import iti.jets.ecommerce.dto.AdminDTO;
 import iti.jets.ecommerce.models.Admin;
 
-public class AdminConverter {
+public class AdminMapper {
     
     /* Utility method to map Admin entity to AdminDTO */
     public static AdminDTO convertToDTO(Admin admin) {

@@ -2,6 +2,8 @@ package iti.jets.ecommerce.services;
 
 import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.models.Admin;
+import iti.jets.ecommerce.mappers.*;
+
 import iti.jets.ecommerce.repositories.AdminRepository;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 
@@ -28,7 +30,7 @@ public class AdminService {
     public AdminDTO getAdminProfile(int adminId) {
         Admin admin = adminRepository.findById(adminId)
                 .orElseThrow(() -> new ResourceNotFoundException("Admin not found with ID: " + adminId));
-        return AdminConverter.convertToDTO(admin);
+        return AdminMapper.convertToDTO(admin);
     }
 
     /* Get all admins */
@@ -36,7 +38,7 @@ public class AdminService {
         List<Admin> admins = adminRepository.findAll();
         
         return admins.stream()
-                .map(AdminConverter::convertToDTO)
+                .map(AdminMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -51,7 +53,7 @@ public class AdminService {
         admin.setHireDate(adminDTO.getHireDate());
 
         Admin updatedAdmin = adminRepository.save(admin);
-        return AdminConverter.convertToDTO(updatedAdmin);
+        return AdminMapper.convertToDTO(updatedAdmin);
     }
 
     /* Change admin password */

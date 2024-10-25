@@ -1,8 +1,9 @@
-package iti.jets.ecommerce.dto;
+package iti.jets.ecommerce.mappers;
 
+import iti.jets.ecommerce.dto.PromotionDTO;
 import iti.jets.ecommerce.models.Promotion;
 
-public class PromotionConverter {
+public class PromotionMapper {
     public static PromotionDTO convertToDTO(Promotion promotion) {
         PromotionDTO dto = new PromotionDTO();
         dto.setName(promotion.getName());
