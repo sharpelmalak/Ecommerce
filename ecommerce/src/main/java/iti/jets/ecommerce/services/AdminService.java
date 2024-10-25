@@ -3,6 +3,8 @@ package iti.jets.ecommerce.services;
 import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.mappers.AdminMapper;
 import iti.jets.ecommerce.models.Admin;
+import iti.jets.ecommerce.mappers.*;
+
 import iti.jets.ecommerce.repositories.AdminRepository;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 
@@ -68,6 +70,17 @@ public class AdminService {
         // Set the new password after encoding it
         admin.setPassword(passwordEncoder.encode(passwordChangeDTO.getNewPassword()));
         adminRepository.save(admin);
+    }
+
+
+    public AdminDTO findAdminByEmailAndPassword(String email, String password) {
+        Admin admin = adminRepository.findByEmail(email);
+        System.out.println(admin);
+        if (admin != null && passwordEncoder.matches(password, admin.getPassword())) {
+            // Assuming you have a method to convert Admin to AdminDTO
+            return AdminMapper.convertToDTO(admin);
+        }
+        return null; // Or throw an exception if preferred
     }
 
 }

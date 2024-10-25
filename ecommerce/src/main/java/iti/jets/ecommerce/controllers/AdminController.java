@@ -3,13 +3,18 @@ package iti.jets.ecommerce.controllers;
 import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.services.*;
 import iti.jets.ecommerce.models.*;
+
+import org.hibernate.event.spi.ResolveNaturalIdEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
+// @RestController    /* in case we want the response body to be json */
 @RequestMapping("/api/admin")
 public class AdminController {
 
@@ -21,6 +26,12 @@ public class AdminController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private PromotionService promotionService;
 
     
     /* ============================================================================================ */
@@ -39,7 +50,7 @@ public class AdminController {
         ProductDTO updatedProductDTO = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProductDTO);
     }
-
+    
     /* Delete a product (soft delete) */
     @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id) {
@@ -49,9 +60,13 @@ public class AdminController {
 
     /* Get all products */
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+    public String getAllProducts(Model model) {
         List<ProductDTO> productDTOs = productService.getAllProducts();
-        return ResponseEntity.ok(productDTOs);
+        List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
+        model.addAttribute("productList", productDTOs);
+        model.addAttribute("categoryList", categoryDTOs);
+        return "admin/admin-panel";
+        // return ResponseEntity.ok(productDTOs); /* in case we want to return a jason  */
     }
 
     /* Get a specific product by ID */
@@ -109,7 +124,7 @@ public class AdminController {
         return ResponseEntity.ok(adminDTO);
     }
 
-
+    
     /* Get all admins */
     @GetMapping("/profiles")
     public ResponseEntity<List<AdminDTO>> getAllAdmins() {
@@ -130,5 +145,12 @@ public class AdminController {
     public ResponseEntity<String> changeAdminPassword(@PathVariable int adminId, @RequestBody PasswordChangeDTO passwordChangeDTO) {
         adminService.changePassword(adminId, passwordChangeDTO);
         return ResponseEntity.ok("Password changed successfully");
+    }
+
+
+    /* ================= Create Promotions  ==================== */
+    @PostMapping("/promotion")
+    public ResponseEntity<PromotionDTO> createPromotion(@RequestBody PromotionDTO promotionDTO) {
+        return ResponseEntity.ok(promotionService.createPromotion(promotionDTO));
     }
 }
