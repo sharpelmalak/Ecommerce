@@ -10,9 +10,6 @@ import iti.jets.ecommerce.repositories.CustomerRepository;
 import iti.jets.ecommerce.repositories.OrderRepository;
 import iti.jets.ecommerce.repositories.PaymentRepository;
 import iti.jets.ecommerce.services.CardService;
-import iti.jets.ecommerce.services.CustomerService;
-import iti.jets.ecommerce.services.OrderService;
-import iti.jets.ecommerce.utils.ValidationUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

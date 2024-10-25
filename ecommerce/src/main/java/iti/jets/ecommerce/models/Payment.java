@@ -28,7 +28,7 @@ public class Payment {
     private Card card;
 
     @Column(name = "payment_method", nullable = false, length = 50)
-    private String paymentMethod;  // e.g., 'COD', 'Stripe', 'Fawry'
+    private String paymentMethod;  // e.g., 'COD', 'Card', 'Fawry'
 
     @Column(name = "payment_status", nullable = false, length = 20)
     private String paymentStatus;  // 'Pending', 'Completed', 'Failed'
