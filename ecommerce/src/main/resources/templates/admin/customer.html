@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #f4f7f9;
+        }
+        .card {
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #343a40;
+            color: white;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+        footer {
+            text-align: center;
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            margin-top: 20px;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            padding-top: 20px;
+            color: white;
+        }
+        .sidebar a {
+            color: white;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar Section -->
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <a th:href="@{/api/admin/products}">Manage Products</a>
+        <a th:href="@{/api/admin/profile/{id}}">My Profile</a>
+        <a th:href="@{/api/admin/customers}">Customer Profiles</a>
+        <a th:href="@{/api/admin/promotion}">Create a Promotion</a>
+        <a th:href="@{/api/auth/login}">Logout</a>
+    </div> 
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Customer Details</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Name</th>
+                            <td th:text="${customer.name}"></td>
+                        </tr>
+                        <tr>
+                            <th>Username</th>
+                            <td th:text="${customer.username}"></td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td th:text="${customer.email}"></td>
+                        </tr>
+                        <tr>
+                            <th>job</th>
+                            <td th:text="${customer.job}"></td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td th:text="${customer.phone}"></td>
+                        </tr>
+                        <tr>
+                            <th>Street</th>
+                            <td th:text="${customer.address}"></td>
+                        </tr>
+                        <tr>
+                            <th>City</th>
+                            <td th:text="${customer.city}"></td>
+                        </tr>
+                        <tr>
+                            <th>Country</th>
+                            <td th:text="${customer.country}"></td>
+                        </tr>
+                        <tr>
+                            <th>Birthdate</th>
+                            <td th:text="${customer.birthdate}"></td>
+                        </tr>
+                    </table>
+
+                    <!-- Back button -->
+                    <a th:href="@{/api/admin/customers}" class="btn btn-primary">Back to Customers List</a>
+
+
+                    <!-- Display error messages -->
+                    <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Your Admin Panel. All Rights Reserved For Watchat.
+    </footer>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

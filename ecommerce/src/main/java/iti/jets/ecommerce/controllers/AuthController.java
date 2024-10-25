@@ -35,6 +35,7 @@ public class AuthController {
     public String login() {
         return "login";
     }
+    
     @PostMapping(value = "/login",consumes = {"application/json", "application/x-www-form-urlencoded"})
     public String login(CustomerDTO customerDTO) {
         Authentication authentication = authenticationManager
