@@ -64,15 +64,15 @@
 
 <body>
 
-    <!-- Sidebar Section -->
+    <!--  Sidebar Section  -->
     <div class="sidebar">
         <h2>Admin Panel</h2>
-        <a th:href="@{/ProductController}">Manage Products</a>
-        <a th:href="@{/AdminController}">My Profile</a>
-        <a th:href="@{/user?action=list}">Customer Profiles</a>
+        <a th:href="@{/api/admin/products}">Manage Products</a>
+        <a th:href="@{/api/admin/profile/{id}}">My Profile</a>
+        <a th:href="@{/api/admin/customers">Customer Profiles</a>
         <a th:href="@{/user?action=list}">Create a Promotion</a>
         <a th:href="@{/LogoutServlet}">Logout</a>
-    </div>
+    </div> 
 
     <!-- Main Content Section -->
     <div class="main-content">
@@ -88,7 +88,7 @@
                 <div class="col-md-3">
                     <div class="card p-3">
                         <h5>Active Categories</h5>
-                        <p><strong th:text="${categories.size()}"></strong></p>
+                        <p><strong th:text="${categoryList.size()}"></strong></p>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,8 @@
                                 <th>Name</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
-                                <th>Category</th>
+                                <th>CategoryID</th>
+                                <th>Brand</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -115,8 +116,9 @@
                                 <td th:text="${product.id}"></td>
                                 <td th:text="${product.name}"></td>
                                 <td class="price" th:text="'$' + ${product.price}"></td>
-                                <td th:text="${product.stock}"></td>
-                                <td th:text="${product.category.name}"></td>
+                                <td th:text="${product.quantity}"></td>
+                                <td th:text="${product.categoryId}"></td>
+                                <td th:text="${product.brand}"></td>
                                 <td>
                                     <form th:action="@{/ProductController}" method="get" style="display:inline;">
                                         <input type="hidden" name="action" value="edit">
@@ -163,3 +165,5 @@
     </script>
 </body>
 </html>
+
+

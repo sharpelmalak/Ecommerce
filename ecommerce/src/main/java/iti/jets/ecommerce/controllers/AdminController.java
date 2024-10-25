@@ -3,13 +3,18 @@ package iti.jets.ecommerce.controllers;
 import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.services.*;
 import iti.jets.ecommerce.models.*;
+
+import org.hibernate.event.spi.ResolveNaturalIdEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
+// @RestController    /* in case we want the response body to be json */
 @RequestMapping("/api/admin")
 public class AdminController {
 
@@ -21,6 +26,9 @@ public class AdminController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     
     /* ============================================================================================ */
@@ -49,9 +57,13 @@ public class AdminController {
 
     /* Get all products */
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+    public String getAllProducts(Model model) {
         List<ProductDTO> productDTOs = productService.getAllProducts();
-        return ResponseEntity.ok(productDTOs);
+        List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
+        model.addAttribute("productList", productDTOs);
+        model.addAttribute("categoryList", categoryDTOs);
+        return "admin/admin-panel";
+        // return ResponseEntity.ok(productDTOs); /* in case we want to return a jason  */
     }
 
     /* Get a specific product by ID */

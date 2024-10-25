@@ -1,33 +1,38 @@
 package iti.jets.ecommerce.controllers;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import iti.jets.ecommerce.dto.ProductDTO;
+import iti.jets.ecommerce.services.ProductService;
 
 
 @Controller
 public class HomeController {
 
-    @GetMapping("/home/test")
-    public String home() {
-        return "index"; // This returns the index.html template from the templates directory
-    }
+    @Autowired
+    private  ProductService productService; 
 
-    // @GetMapping("/home")
-    // public String login() {
-    //     return "login"; // If "home/login.html" is under templates folder for Thymeleaf or JSP
-    // }
-
-    
     @GetMapping("/home")
-    public String adminlogin() {
-        return "adminlogin"; // If "home/login.html" is under templates folder for Thymeleaf or JSP
+    public String home() {
+        return "index";
+    }
+    @GetMapping("/customer/home")
+    public String customerHome() {
+        return "index";
     }
 
-    @GetMapping("/home/admin")
-    public String adminpannel() {
-        return "admin-panel"; // Return the name of the Thymeleaf template
+    @GetMapping("/admin/home")
+    public String adminHome(Model model) {
+        List<ProductDTO> productList = productService.getAllProducts();
+        model.addAttribute("productList", productList);
+        return "admin/admin-panel";
     }
-
 }
+
