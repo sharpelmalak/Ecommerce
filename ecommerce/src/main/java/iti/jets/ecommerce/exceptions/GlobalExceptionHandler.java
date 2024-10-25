@@ -20,6 +20,36 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    // Handle UnsupportedPaymentMethod
+    @ExceptionHandler(UnsupportedPaymentMethodException.class)
+    public ResponseEntity<String> handleUnsupportedPaymentMethod(UnsupportedPaymentMethodException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    // Handle InvalidCardNumberException
+    @ExceptionHandler(InvalidCardNumberException.class)
+    public ResponseEntity<String> handleInvalidCardNumberException(InvalidCardNumberException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    // Handle InvalidCvvException
+    @ExceptionHandler(InvalidCvvException.class)
+    public ResponseEntity<String> handleInvalidCvvException(InvalidCvvException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    // Handle CustomerEmailException
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<String> handleInvalidEmailException(InvalidEmailException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    // Handle CardExpirationDateException
+    @ExceptionHandler(CardExpirationDateException.class)
+    public ResponseEntity<String> handleCardExpirationDateException(CardExpirationDateException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(CartException.class)
     public ResponseEntity<String> handleCartException(CartException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

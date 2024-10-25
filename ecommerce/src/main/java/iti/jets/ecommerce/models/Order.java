@@ -39,9 +39,8 @@ public class Order implements java.io.Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>(0);
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_method_id", nullable = false)
-    private PaymentMethod paymentMethod;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order(Customer customer, float totalPrice, String status) {
         this.customer = customer;
