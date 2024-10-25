@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import iti.jets.ecommerce.mappers.ProductMapper;
@@ -17,14 +21,20 @@ import iti.jets.ecommerce.repositories.ProductRepository;
 @Service
 public class ProductService {
 
-    @Autowired
+
     private ProductRepository productRepository;
 
-    @Autowired
+
     private AdminRepository adminRepository;  
 
-    @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    public ProductService(ProductRepository productRepository, AdminRepository adminRepository, CategoryRepository categoryRepository) {
+        this.productRepository = productRepository;
+        this.adminRepository = adminRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     public ProductDTO createProduct(ProductDTO productDTO, int adminId) {
         Product product = new Product();
@@ -141,6 +151,49 @@ public class ProductService {
         return products.stream()
                 .map(ProductMapper::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getAllBrands()
+    {
+        return productRepository.findAllUniqueBrands();
+    }
+
+    public List<String> getAllMaterials()
+    {
+        return productRepository.findAllUniqueMaterials();
+    }
+
+    public Page<ProductDTO> getProducts(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice, Pageable pageable) {
+        // If no filters are provided, fetch a default set of products
+        if (categoryId == null && (brands == null || brands.isEmpty()) && (materials == null || materials.isEmpty()) && minPrice == null && maxPrice == null) {
+            System.out.println("default called");
+            return getDefaultProducts(pageable);
+        } else {
+            System.out.println("filterd called");
+            return getFilteredProducts(categoryId, brands, materials, minPrice, maxPrice, pageable);
+        }
+    }
+
+    private Page<ProductDTO> getDefaultProducts(Pageable pageable) {
+        // Fetch the first page of products (adjust the size as needed)
+        Page<Product> productPage = productRepository.findAll(pageable); // You can change this to your preferred default query
+
+        List<ProductDTO> productDTOs = productPage.getContent().stream()
+                .map(product -> ProductMapper.convertToDTO(product))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
+    }
+
+    public Page<ProductDTO> getFilteredProducts(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByCategoryIdOrBrandInOrMaterialInOrPriceBetween(categoryId, brands, materials, minPrice, maxPrice, pageable);
+
+        List<ProductDTO> productDTOs = productPage.getContent().stream()
+                .map(product -> ProductMapper.convertToDTO(product))
+                .collect(Collectors.toList());
+
+        System.out.println("list " + productDTOs.size());
+        return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
     }
 
 }

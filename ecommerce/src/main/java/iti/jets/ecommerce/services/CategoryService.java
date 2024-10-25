@@ -40,6 +40,7 @@ public class CategoryService {
         dto.setName(category.getName());
         dto.setId(category.getId());
         dto.setImage(category.getImage());
+        dto.setItemsCount(category.getProducts().size());
         return dto;
     }
 
