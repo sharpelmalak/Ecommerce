@@ -29,6 +29,10 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
+
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -64,6 +68,7 @@ public class SecurityConfig {
                                         "/api/auth/register",
                                         "/api/admin/**",
                                         "/api/g/**",
+                                        "/shop/**",
                                         "/api/customers/**",
                                         "/api/products/**",
                                         "/index.html",
@@ -77,13 +82,13 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login") // Custom login page
                         .loginProcessingUrl("/api/auth/login") // Custom login processing URL
-                        .defaultSuccessUrl("/home/test") // Redirect after successful login
+                        .successHandler(successHandler) // Redirect after successful login
                         .failureUrl("/login?error=true") // Redirect on login failure
                         .permitAll() // Allow everyone to access the login page
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login") // Custom login page for OAuth2
-                        .defaultSuccessUrl("/home/test") // Redirect after successful OAuth2 login
+                        .defaultSuccessUrl("/home") // Redirect after successful OAuth2 login
                         .permitAll() // Allow access to login page for OAuth2
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

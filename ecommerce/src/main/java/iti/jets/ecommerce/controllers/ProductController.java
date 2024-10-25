@@ -4,6 +4,9 @@ import iti.jets.ecommerce.dto.ProductDTO;
 import iti.jets.ecommerce.services.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,5 +69,31 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getProductsByName(@RequestParam String name) {
         List<ProductDTO> productDTOs = productService.getProductsByName(name);
         return ResponseEntity.ok(productDTOs);
+    }
+    @GetMapping("/brands")
+    public List<String> brands() {
+        return productService.getAllBrands();
+    }
+
+    @GetMapping("/materials")
+    public List<String> materials() {
+        return productService.getAllMaterials();
+    }
+
+    @GetMapping("/filter")
+    public Page<ProductDTO> getProductsFilter(
+            @RequestParam(required = false) Integer categoryId,
+            @RequestParam(required = false) List<String> brands,
+            @RequestParam(required = false) List<String> materials,
+            @RequestParam(required = false) Float minPrice,
+            @RequestParam(required = false) Float maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+
+        System.out.println(categoryId);
+        System.out.println(minPrice);
+        System.out.println(maxPrice);
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.getProducts(categoryId, brands, materials, minPrice, maxPrice, pageable);
     }
 }

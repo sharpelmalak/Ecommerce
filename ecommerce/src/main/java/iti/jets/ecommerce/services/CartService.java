@@ -192,6 +192,7 @@ public class CartService {
         }
         return new ArrayList<>();
     }
+
     public  void saveCart(HttpSession session)
     {
         List<CartItemDTO> cart = (List<CartItemDTO>) session.getAttribute("cart");
