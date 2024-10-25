@@ -1,18 +1,11 @@
 package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.*;
-import iti.jets.ecommerce.models.Customer;
-import iti.jets.ecommerce.repositories.CustomerRepository;
-import iti.jets.ecommerce.repositories.OrderRepository;
-import iti.jets.ecommerce.repositories.ProductRepository;
+
 import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderServiceImpl;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

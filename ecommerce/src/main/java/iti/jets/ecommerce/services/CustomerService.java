@@ -40,7 +40,7 @@ public class CustomerService {
     public CustomerDTO RegisterCustomer(CustomerDTO customerDTO) {
         
         customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
-        Customer customer = CustomerMapper.toEntity(customerDTO, new Customer());
+        Customer customer = CustomerMapper.toEntity(customerDTO);
         customerRepository.save(customer);
         return CustomerMapper.toDto(customer);
     }

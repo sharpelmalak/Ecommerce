@@ -18,4 +18,5 @@ public class ProductDTO {
     private int caseDiameter;
     private String waterResistance;
     private String gender;
+
 }

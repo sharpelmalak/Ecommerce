@@ -50,7 +50,6 @@ public class Product implements java.io.Serializable {
     private String description;
 
     @Column(name = "image")
-    @Lob
     private String image; // Modified from byte[] to String
 
     @Column(name = "is_deleted", nullable = false)

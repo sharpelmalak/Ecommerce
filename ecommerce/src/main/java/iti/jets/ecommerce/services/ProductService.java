@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import iti.jets.ecommerce.mappers.*;
+import iti.jets.ecommerce.mappers.ProductMapper;
 import iti.jets.ecommerce.dto.ProductDTO;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 import iti.jets.ecommerce.models.*;
@@ -45,7 +45,11 @@ public class ProductService {
         product.setCategory(category);
     
         Product savedProduct = productRepository.save(product);
+<<<<<<< HEAD
         return ProductMapper.convertToDTO(savedProduct);   
+=======
+        return ProductMapper.convertToDTO(savedProduct);
+>>>>>>> dev
     }
     
     /* Update a product */

@@ -51,10 +51,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF protection
+        .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(auth -> auth
-                                // Allow access to Swagger UI and OpenAPI documentation without authentication
-                                .requestMatchers(
+               // Allow access to Swagger UI and OpenAPI documentation without authentication
+                        .requestMatchers(
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-ui.html",
@@ -63,6 +63,7 @@ public class SecurityConfig {
                                         "/api/auth/login",
                                         "/api/auth/register",
                                         "/api/admin/**",
+                                        "/api/g/**",
                                         "/api/customers/**",
                                         "/api/products/**",
                                         "/index.html",
@@ -73,10 +74,19 @@ public class SecurityConfig {
                         .requestMatchers("/test").hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults()) // Optionally, configure form login if needed
+                .formLogin(form -> form
+                        .loginPage("/login") // Custom login page
+                        .loginProcessingUrl("/api/auth/login") // Custom login processing URL
+                        .defaultSuccessUrl("/home/test") // Redirect after successful login
+                        .failureUrl("/login?error=true") // Redirect on login failure
+                        .permitAll() // Allow everyone to access the login page
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login") // Custom login page for OAuth2
+                        .defaultSuccessUrl("/home/test") // Redirect after successful OAuth2 login
+                        .permitAll() // Allow access to login page for OAuth2
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-
         return http.build();
     }
 }
