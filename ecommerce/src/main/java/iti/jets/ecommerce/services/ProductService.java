@@ -45,11 +45,7 @@ public class ProductService {
         product.setCategory(category);
     
         Product savedProduct = productRepository.save(product);
-<<<<<<< HEAD
-        return ProductMapper.convertToDTO(savedProduct);   
-=======
         return ProductMapper.convertToDTO(savedProduct);
->>>>>>> dev
     }
     
     /* Update a product */
