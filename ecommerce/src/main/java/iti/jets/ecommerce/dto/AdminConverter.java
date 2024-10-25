@@ -4,7 +4,7 @@ import iti.jets.ecommerce.models.Admin;
 
 public class AdminConverter {
     
-     /* Utility method to map Admin entity to AdminDTO */
+    /* Utility method to map Admin entity to AdminDTO */
     public static AdminDTO convertToDTO(Admin admin) {
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setId(admin.getId());

@@ -22,7 +22,6 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product implements java.io.Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

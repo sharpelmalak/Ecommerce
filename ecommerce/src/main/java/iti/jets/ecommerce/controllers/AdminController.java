@@ -22,6 +22,9 @@ public class AdminController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private PromotionService promotionService;
+
     
     /* ============================================================================================ */
     /*                            Admin Functionalities Related to Products                         */
@@ -130,5 +133,12 @@ public class AdminController {
     public ResponseEntity<String> changeAdminPassword(@PathVariable int adminId, @RequestBody PasswordChangeDTO passwordChangeDTO) {
         adminService.changePassword(adminId, passwordChangeDTO);
         return ResponseEntity.ok("Password changed successfully");
+    }
+
+
+    /* ================= Create Promotions  ==================== */
+    @PostMapping("/promotion")
+    public ResponseEntity<PromotionDTO> createPromotion(@RequestBody PromotionDTO promotionDTO) {
+        return ResponseEntity.ok(promotionService.createPromotion(promotionDTO));
     }
 }
