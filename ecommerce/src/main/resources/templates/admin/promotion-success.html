@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotion Created Successfully</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f9;
+        }
+        header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .success-message {
+            color: #27ae60;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        .actions {
+            margin-top: 20px;
+        }
+        .actions button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+        .actions button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Promotion Created Successfully</h1>
+</header>
+
+<div class="container">
+    <p class="success-message" th:text="${successMessage}">Promotion created successfully!</p>
+
+    <!-- Promotion Details Table -->
+    <table>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td th:text="${promotionDTO.name}">Promotion Name</td>
+        </tr>
+        <tr>
+            <td>Discount Percentage</td>
+            <td th:text="${promotionDTO.discountPercentage}">Discount Percentage</td>
+        </tr>
+        <tr>
+            <td>Free Shipping</td>
+            <td th:text="${promotionDTO.freeShipping ? 'Yes' : 'No'}">Free Shipping</td>
+        </tr>
+        <tr>
+            <td>Country</td>
+            <td th:text="${promotionDTO.country}">Applicable Country</td>
+        </tr>
+        <tr>
+            <td>Start Date</td>
+            <td th:text="${promotionDTO.startDate}">Start Date</td>
+        </tr>
+        <tr>
+            <td>End Date</td>
+            <td th:text="${promotionDTO.endDate}">End Date</td>
+        </tr>
+    </table>
+
+    <!-- Navigation Buttons -->
+    <div class="actions">
+        <button onclick="window.location.href='/api/admin/add-promotion-form'">Add Another Promotion</button>
+        <button onclick="window.location.href='/api/admin/products'">View All Products</button>
+    </div>
+</div>
+
+</body>
+</html>

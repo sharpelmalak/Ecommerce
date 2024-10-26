@@ -63,14 +63,13 @@
 </head>
 
 <body>
-
     <!--  Sidebar Section  -->
     <div class="sidebar">
         <h2>Admin Panel</h2>
         <a th:href="@{/api/admin/products}">Manage Products</a>
-        <a th:href="@{/api/admin/profile/{id}}">My Profile</a>
+        <a th:href="@{/api/admin/profile/1}">My Profile</a>
         <a th:href="@{/api/admin/customers}">Customer Profiles</a>
-        <a th:href="@{/api/admin/promotion}">Create a Promotion</a>        
+        <a th:href="@{/api/admin/add-promotion-form}">Create a Promotion</a>        
         <a th:href="@{/api/auth/login}">Logout</a>
     </div> 
 
@@ -97,8 +96,10 @@
             <div class="card mt-4">
                 <div class="card-body">
                     <h2>Manage Products</h2>
-                    <button class="btn btn-primary mb-3" id="addProductBtn" th:onclick="'window.location.href=\'' + @{/ProductController(action='create')} + '\''">Add New Product</button>
-
+                    <button class="btn btn-primary mb-3" id="addProductBtn"
+                        th:onclick="'window.location.href=\'' + @{/api/admin/product/addForm} + '\''">
+                        Add New Product
+                    </button>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
@@ -106,7 +107,7 @@
                                 <th>Name</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
-                                <th>CategoryID</th>
+                                <th>Category</th>
                                 <th>Brand</th>
                                 <th>Actions</th>
                             </tr>
@@ -117,19 +118,20 @@
                                 <td th:text="${product.name}"></td>
                                 <td class="price" th:text="'$' + ${product.price}"></td>
                                 <td th:text="${product.quantity}"></td>
-                                <td th:text="${product.categoryId}"></td>
+                                <td th:text="${product.categoryName}"></td>
                                 <td th:text="${product.brand}"></td>
                                 <td>
-                                    <form th:action="@{/ProductController}" method="get" style="display:inline;">
-                                        <input type="hidden" name="action" value="edit">
+                                    <!-- edit the product -->
+                                    <form th:action="@{/api/admin/product/editForm}" method="get" style="display:inline;">
                                         <input type="hidden" name="id" th:value="${product.id}">
                                         <button type="submit" class="btn btn-warning">Edit</button>
                                     </form>
-                                    <form th:action="@{/ProductController}" method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="id" th:value="${product.id}">
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+                                    
+                                    <form th:action="@{/api/admin/product/{id}(id=${product.id})}" method="post" style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE"> <!-- To indicate the request method -->
+                                        <button type="button" class="btn btn-danger" th:onclick="'deleteProduct(' + ${product.id} + ')'">Delete</button>
                                     </form>
+                                    
                                 </td>
                             </tr>
                         </tbody>
@@ -162,7 +164,34 @@
             document.getElementById("category").value = '';
             document.getElementById("imageUrl").value = '';
         }
-    </script>
+
+
+    function deleteProduct(id) {
+        if (confirm('Are you sure you want to delete this product?')) {
+            fetch(`/api/admin/product/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Product deleted successfully!');
+                        // Optionally reload the page or update the UI
+                        location.reload(); // Reloads the page
+                    } else {
+                        alert('Failed to delete the product.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the product.');
+                });
+        }
+    }
+</script>
+
+
 </body>
 </html>
 

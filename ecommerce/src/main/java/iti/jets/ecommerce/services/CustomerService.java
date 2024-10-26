@@ -121,7 +121,6 @@ public class CustomerService {
     
 
 
-
     /* =========================== Promotions for customer Based on a specific Region (Country) =========================*/
     /* Get Promotion For a cutomer Based on its location (Country) */
     public List<Promotion> getPromotionsForCustomer(Customer customer) {
