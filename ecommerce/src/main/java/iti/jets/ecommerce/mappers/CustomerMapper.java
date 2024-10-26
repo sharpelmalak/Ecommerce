@@ -16,6 +16,8 @@ public class CustomerMapper {
         customer.setJob(customerDTO.getJob());     // Ensure this is being set
         customer.setPhone(customerDTO.getPhone()); // Ensure this is being set
         customer.setAddress(customerDTO.getAddress());
+        customer.setCity(customerDTO.getCity());
+        customer.setCountry(customerDTO.getCountry());
         System.out.println("inside mapper"+customer);
         // id is auto-generated, so no need to set it
         return customer;
@@ -35,6 +37,8 @@ public class CustomerMapper {
         dto.setAddress(customer.getAddress());
         dto.setPhone(customer.getPhone());
         dto.setDeleted(customer.isDeleted());
+        dto.setCity(customer.getCity());
+        dto.setCountry(customer.getCountry());
         return dto;
     }
 

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,30 @@ import java.util.stream.Collectors;
 @Service
 public class AdminService {
 
-    @Autowired
+
     private AdminRepository adminRepository;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    public AdminService(AdminRepository adminRepository, PasswordEncoder passwordEncoder){
+        this.adminRepository = adminRepository;
+        this.passwordEncoder = passwordEncoder;
+
+
+        Admin admin = adminRepository.findByEmail("admin@admin.com");
+        if (admin == null) {
+            admin = new Admin();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setName("admin");
+            admin.setEmail("admin@admin.com");
+            admin.setHireDate(new Date(2022,1,1));
+            adminRepository.save(admin);
+        }
+
+
+    }
 
     /* Get admin profile by ID */
     public AdminDTO getAdminProfile(int adminId) {
