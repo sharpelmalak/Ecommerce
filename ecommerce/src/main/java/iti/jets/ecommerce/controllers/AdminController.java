@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Controller
-// @RestController    /* in case we want the response body to be json */
 @RequestMapping("/api/admin")
 public class AdminController {
 
@@ -32,6 +32,10 @@ public class AdminController {
 
     @Autowired
     private PromotionService promotionService;
+
+    
+    @Autowired
+    private OrderServiceImpl orderServiceImpl;
 
     
     /* ============================================================================================ */
@@ -82,17 +86,22 @@ public class AdminController {
     /* ============================================================================================ */
     /* Get all customers */
     @GetMapping("/customers")
-    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+    public String getAllCustomers(Model model) {
         List<CustomerDTO> customers = customerService.getAllCustomers();
-        return ResponseEntity.ok(customers);
+        model.addAttribute("customersList", customers);
+        return "admin/customers";
+        // return ResponseEntity.ok(customers);
     }
 
     /* Get a specific customer by ID */
     @GetMapping("/customer/{id}")
-    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable int id) {
+    public String getCustomerById(@PathVariable int id,Model model) {
         CustomerDTO customerDTO = customerService.getCustomerById(id);
-        return ResponseEntity.ok(customerDTO);
+        model.addAttribute("customer", customerDTO);
+        return "admin/customer";
+        // return ResponseEntity.ok(customerDTO); /* if we want to return a raw json */
     }
+
 
     /* Update a customer profile */
     @PutMapping("/customer/{id}")
@@ -110,6 +119,19 @@ public class AdminController {
         }
     }
 
+
+
+    
+    /*  Get Order History */
+    @GetMapping("/{customerId}/orders")
+    public String getOrderHistory(@PathVariable int customerId, Model model) {
+        List<OrderDTO> orders = orderServiceImpl.getOrdersByCustomer(customerId);
+        CustomerDTO customerDTO = customerService.getCustomerById(customerId);
+        model.addAttribute("customer", customerDTO);
+        model.addAttribute("orders", orders);
+        return "admin/orderHistory";
+        // return ResponseEntity.ok(orders);
+    }
     
 
 

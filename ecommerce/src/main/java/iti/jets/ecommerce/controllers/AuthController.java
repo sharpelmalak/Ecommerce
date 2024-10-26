@@ -1,6 +1,7 @@
 package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.CustomerDTO;
+import iti.jets.ecommerce.dto.LoginDTO;
 import iti.jets.ecommerce.services.CustomerService;
 import org.springframework.security.core.GrantedAuthority;
 import iti.jets.ecommerce.services.JWTService;
@@ -40,15 +41,16 @@ public class AuthController {
     public String login() {
         return "login";
     }
+
     @PostMapping(value = "/login", consumes = {"application/json"}, produces = "application/json")
-    public ResponseEntity<Map<String, String>> login(@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO) {
         try {
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(
-                            customerDTO.getUsername(), customerDTO.getPassword()));
+                            loginDTO.getUsername(), loginDTO.getPassword()));
 
             if (authentication.isAuthenticated()) {
-                String token = jwtService.generateToken(customerDTO.getUsername());
+                String token = jwtService.generateToken(loginDTO.getUsername());
                 String role = authentication.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .findFirst()
@@ -65,19 +67,5 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "Login Failed"));
         }
     }
-
-//    @PostMapping(value = "/login", consumes = {"application/json", "application/x-www-form-urlencoded"})
-//    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
-//        System.out.println("hereeeeeeeeee");
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
-//        );
-//
-//        if (authentication.isAuthenticated()) {
-//            String token = jwtService.generateToken(loginDTO.getUsername());
-//            return ResponseEntity.ok(token); // Return JWT token
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login Failed");
-//        }
-//    }
+    
 }
