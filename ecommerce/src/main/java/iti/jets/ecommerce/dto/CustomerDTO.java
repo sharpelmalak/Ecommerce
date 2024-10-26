@@ -16,6 +16,4 @@ public class CustomerDTO extends UserDTO{
     private String country;
     private String phone;
     private boolean isDeleted;
-    private String city;
-    private String country;
 }
