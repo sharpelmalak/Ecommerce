@@ -279,8 +279,20 @@
                 <!-- Phone with Country -->
                 <div class="form-wrapper">
                     <label for="phone">Phone Number</label>
-                    <div class="form-holder">
-                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                    <div class="form-holder d-flex">
+                        <!-- Country Code Dropdown -->
+                        <select id="countryCode" name="countryCode" class="form-control" required>
+                            <option value="+20">+20 (Egypt)</option>
+                            <option value="+970">+970 (Palestine)</option>
+                            <option value="+966">+966 (KSA)</option>
+                            <option value="+1">+1 (USA)</option>
+                            <option value="+44">+44 (UK)</option>
+                            <option value="+61">+61 (Australia)</option>
+                            <!-- Add other country codes as needed -->
+                        </select>
+
+                        <!-- Phone Number Input -->
+                        <input type="tel" id="phone" name="phone" class="form-control ml-2" placeholder="Enter phone number" required>
                     </div>
                     <div id="phoneError" class="error-message"></div>
                 </div>

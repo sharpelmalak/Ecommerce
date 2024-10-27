@@ -2,6 +2,7 @@ package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.dto.LoginDTO;
+import iti.jets.ecommerce.services.CategoryService;
 import iti.jets.ecommerce.services.CustomerService;
 import org.springframework.security.core.GrantedAuthority;
 import iti.jets.ecommerce.services.JWTService;
@@ -28,7 +29,7 @@ public class AuthController {
     private CustomerService customerService; 
     
     @Autowired
-    private CategoryService category;
+    private CategoryService categoryService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -37,9 +38,21 @@ public class AuthController {
     private JWTService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerDTO> register(@ModelAttribute CustomerDTO customerDTO) {
-        return ResponseEntity.ok(customerService.RegisterCustomer(customerDTO));
+    public String register(@ModelAttribute CustomerDTO customerDTO,Model model) {
+        // Call the service to save the user
+        boolean isRegistered = customerService.RegisterCustomer(customerDTO);
+        
+        if (isRegistered) {
+            model.addAttribute("successMessage", "Registration successful! Please log in.");
+            return "signup3"; // Return to signup form if registration fails            
+        } else {
+            model.addAttribute("errorMessage", "Registration failed. Due to Username or Email Exists");
+            model.addAttribute("customerDTO", customerDTO); // Preserve the data
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "login"; // Return to signup form if registration fails
+        }
     }
+    
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error",required = false) String error) {
@@ -51,7 +64,7 @@ public class AuthController {
         CustomerDTO customerDTO = new CustomerDTO();
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("customerDTO", customerDTO);
-        return "signup2";
+        return "signup3";
     }
 
     @PostMapping(value = "/login", consumes = {"application/json"}, produces = "application/json")

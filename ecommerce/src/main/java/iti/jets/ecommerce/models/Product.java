@@ -52,7 +52,7 @@ public class Product implements java.io.Serializable {
     @Column(name = "image")
     private String image; // Modified from byte[] to String
 
-    @Column(name = "is_deleted", nullable = false)
+    @Column(name = "is_deleted", nullable = true)
     private boolean isDeleted = false;
 
     // Watch-specific fields
