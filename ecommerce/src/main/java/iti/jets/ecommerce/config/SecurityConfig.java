@@ -75,7 +75,6 @@ public class SecurityConfig {
                                         "/shop/**",
                                         "/api/customers/**",
                                         "/api/products/**",
-                                        // "/index.html",
                                         "/css/**", "/js/**", "/images/**",
                                         "/home/**",
                                         "/**"

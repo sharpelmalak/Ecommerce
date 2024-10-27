@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -33,13 +34,20 @@ public class AuthController {
     private JWTService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerDTO> register(@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerDTO> register(@ModelAttribute CustomerDTO customerDTO) {
         return ResponseEntity.ok(customerService.RegisterCustomer(customerDTO));
     }
 
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @GetMapping("/registeration-form")
+    public String showRegisterationForm(Model  model) {
+        CustomerDTO customerDTO = new CustomerDTO();
+        model.addAttribute("customerDTO", customerDTO);
+        return "signup2";
     }
 
     @PostMapping(value = "/login", consumes = {"application/json"}, produces = "application/json")
