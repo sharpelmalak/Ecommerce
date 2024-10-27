@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error",required = false) String error) {
         return "login";
     }
 

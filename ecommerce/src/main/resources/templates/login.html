@@ -166,7 +166,7 @@
 				<div class="col-lg-6">
 					<div class="login_form_inner">
 						<h3>Log in to enter</h3>
-						<form class="row login_form" id="contactForm">
+						<form class="row login_form" id="contactForm" method="post" action="/api/auth/login">
 							<div class="col-md-12 form-group">
 								<input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
 							</div>
@@ -299,46 +299,46 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script th:src="@{/js/owl.carousel.min.js}"></script>
 	<script th:src="@{/js/main.js}"></script>
 
-	<script>
-		$(document).ready(function() {
-			$('#contactForm').on('submit', function(e) {
-				e.preventDefault();
+<!--	<script>-->
+<!--		$(document).ready(function() {-->
+<!--			$('#contactForm').on('submit', function(e) {-->
+<!--				e.preventDefault();-->
 
-				const username = $('#username').val();
-				const password = $('#password').val();
-				const keepLoggedIn = $('#keepLoggedIn').is(':checked');
+<!--				const username = $('#username').val();-->
+<!--				const password = $('#password').val();-->
+<!--				const keepLoggedIn = $('#keepLoggedIn').is(':checked');-->
 
-				$.ajax({
-					url: '/api/auth/login',
-					type: 'POST',
-					contentType: 'application/json',
-					data: JSON.stringify({ username: username, password: password }),
-					success: function(response) {
-						console.log(response)
-						const token = response.token;
-						if (keepLoggedIn) {
-							localStorage.setItem('token', token);
-						} else {
-							sessionStorage.setItem('token', token);
-						}
+<!--				$.ajax({-->
+<!--					url: '/api/auth/login',-->
+<!--					type: 'POST',-->
+<!--					contentType: 'application/json',-->
+<!--					data: JSON.stringify({ username: username, password: password }),-->
+<!--					success: function(response) {-->
+<!--						console.log(response)-->
+<!--						const token = response.token;-->
+<!--						if (keepLoggedIn) {-->
+<!--							localStorage.setItem('token', token);-->
+<!--						} else {-->
+<!--							sessionStorage.setItem('token', token);-->
+<!--						}-->
 
-						const role = response.role;
-						if (role === 'ROLE_ADMIN') {
-							window.location.href = '/admin/home';
-						} else if (role === 'ROLE_CUSTOMER') {
-							window.location.href = '/customer/home';
-						} else {
-							window.location.href = '/home';
-						}
-					},
-					error: function(xhr) {
-						$('#message').text('Invalid username or password').show();
-					}
-				});
-			});
-		});
+<!--						const role = response.role;-->
+<!--						if (role === 'ROLE_ADMIN') {-->
+<!--							window.location.href = '/admin/home';-->
+<!--						} else if (role === 'ROLE_CUSTOMER') {-->
+<!--							window.location.href = '/customer/home';-->
+<!--						} else {-->
+<!--							window.location.href = '/home';-->
+<!--						}-->
+<!--					},-->
+<!--					error: function(xhr) {-->
+<!--						$('#message').text('Invalid username or password').show();-->
+<!--					}-->
+<!--				});-->
+<!--			});-->
+<!--		});-->
 
-	</script>
+<!--	</script>-->
 
 
 <!--	// old version remember id of form-->

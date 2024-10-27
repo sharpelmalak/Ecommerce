@@ -70,23 +70,25 @@ public class SecurityConfig {
                                         "/webjars/**",
                                         "/api/auth/login",
                                         "/api/auth/register",
-                                        "/api/admin/**",
                                         "/api/g/**",
                                         "/shop/**",
                                         "/api/customers/**",
                                         "/api/products/**",
-                                        // "/index.html",
-                                        "/css/**", "/js/**", "/images/**",
-                                        "/home/**",
-                                        "/**"
+                                        "/css/**", "/js/**", "/img/**","/fonts/**",
+                                "/home"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
                 )
+                .formLogin(form-> form
+                        .loginPage("/api/auth/login")
+                        .successHandler(successHandler)
+                        .failureUrl("/api/auth/login?error=true")
+                        .permitAll())
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login") // Custom login page for OAuth2
-                        .defaultSuccessUrl("/home")
+                        .loginPage("/api/auth/login") // Custom login page for OAuth2
+                        .defaultSuccessUrl("/shop")
                         .userInfoEndpoint(userInfo -> userInfo.userService(this.oauth2UserService()))
                         .permitAll() // Allow access to login page for OAuth2
                 )

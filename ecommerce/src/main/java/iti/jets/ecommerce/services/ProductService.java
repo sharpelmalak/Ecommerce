@@ -43,6 +43,12 @@ public class ProductService {
         product.setQuantity(productDTO.getQuantity());
         product.setDescription(productDTO.getDescription());
         product.setImage(productDTO.getImage());
+        product.setDeleted(productDTO.isDeleted());
+        product.setBrand(productDTO.getBrand());
+        product.setWaterResistance(productDTO.getWaterResistance());
+        product.setCaseDiameter(productDTO.getCaseDiameter());
+        product.setMaterial(productDTO.getMaterial());
+        product.setGender(productDTO.getGender());
         
         // Fetch the admin by ID or throw ResourceNotFoundException if not found
         Admin admin = adminRepository.findById(adminId)
@@ -53,7 +59,7 @@ public class ProductService {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + productDTO.getCategoryId()));
         product.setCategory(category);
-    
+        
         Product savedProduct = productRepository.save(product);
         return ProductMapper.convertToDTO(savedProduct);
     }
@@ -67,8 +73,10 @@ public class ProductService {
         existingProduct.setQuantity(productDTO.getQuantity());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setImage(productDTO.getImage());
-        // Update other properties if necessary
-
+        existingProduct.setBrand(productDTO.getBrand());
+        existingProduct.setGender(productDTO.getGender());
+        existingProduct.setWaterResistance(productDTO.getWaterResistance());
+        existingProduct.setCaseDiameter(productDTO.getCaseDiameter());
         Product updatedProduct = productRepository.save(existingProduct);
         return ProductMapper.convertToDTO(updatedProduct);
     }
@@ -93,6 +101,15 @@ public class ProductService {
                 .map(ProductMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+
+    public List<ProductDTO> getAllActiveProducts() {
+        return productRepository.findAllByIsDeletedFalse().stream()
+                .map(ProductMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+
 
     /* Get product by ID */
     public ProductDTO getProductById(int id) {

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Product</title>
+    <title>Update A Product</title>
 
     <style>
         body {
@@ -123,23 +123,21 @@
 <body>
 
     <header>
-        <h1>Add New Product</h1>
+        <h1>Update Product Details</h1>
     </header>
-
-    <section th:if="${!productAdded}">
-        <form th:action="@{/api/admin/product}" method="post">
-            <!-- Hidden field for admin ID -->
+    <section th:if="${!productUpdated}">
+        <form th:action="@{/api/admin/product/{id}(id=${productDTO.id})}" method="post">
             <input type="hidden" name="adminId" th:value="${adminId}" />
-
+            
             <label for="name">Product Name:</label>
             <input type="text" id="name" name="name" class="form-control" th:value="${productDTO.name}" required>
-
+    
             <label for="price">Price:</label>
             <input type="number" id="price" name="price" class="form-control" th:value="${productDTO.price}" required>
-
+    
             <label for="quantity">Quantity:</label>
             <input type="number" id="quantity" name="quantity" class="form-control" th:value="${productDTO.quantity}" required>
-
+    
             <label for="category">Category:</label>
             <select id="category" name="categoryId" class="form-control" required>
                 <option th:each="category : ${categories}"
@@ -147,37 +145,39 @@
                         th:text="${category.name}"
                         th:selected="${productDTO.categoryId == category.id}">Category Name</option>
             </select>
-
+    
             <label for="brand">Brand:</label>
             <input type="text" id="brand" name="brand" class="form-control" th:value="${productDTO.brand}" required>
-
+    
             <label for="material">Material:</label>
             <input type="text" id="material" name="material" class="form-control" th:value="${productDTO.material}">
-
+    
             <label for="caseDiameter">Case Diameter:</label>
             <input type="number" id="caseDiameter" name="caseDiameter" class="form-control" th:value="${productDTO.caseDiameter}">
-
+    
             <label for="waterResistance">Water Resistance:</label>
             <input type="text" id="waterResistance" name="waterResistance" class="form-control" th:value="${productDTO.waterResistance}">
-
+    
             <label for="gender">Gender:</label>
             <input type="text" id="gender" name="gender" class="form-control" th:value="${productDTO.gender}">
-
+    
             <label for="color">Color:</label>
             <input type="color" id="color" name="color" class="form-control" required>
-
+    
             <label for="imageUrl">Product Image URL:</label>
             <input type="text" id="imageUrl" name="image" class="form-control" th:value="${productDTO.image}" required>
-
+    
             <label for="description">Product Description:</label>
             <textarea id="description" name="description" class="form-control" th:text="${productDTO.description}" required></textarea>
-
+    
             <div class="button-container">
-                <button type="submit" class="btn btn-success">Add Product</button>
+                <button type="submit" class="btn btn-success">Update Product</button>
                 <button type="button" id="cancelBtn" 
                         th:onclick="'window.location.href=\'' + @{/api/admin/products} + '\''">Cancel</button> 
             </div>
         </form>
+    </section>
+    
     </section>
 </div>
     <footer>

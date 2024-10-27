@@ -11,9 +11,11 @@ public class ProductDTO {
     private int quantity;
     private String description;
     private String image;   // Modified from byte[] image to String image
-    private int categoryId; // Added field for category ID
-    private boolean isDeleted;
+    private int    categoryId; // Added field for category ID
+    private String categoryName; // Added field for category ID
+    private boolean isDeleted = false;    
     private String brand;
+    private String Added_By;
     // Watch-specific fields
     private String material;
     private int caseDiameter;

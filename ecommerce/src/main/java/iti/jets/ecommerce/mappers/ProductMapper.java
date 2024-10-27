@@ -13,8 +13,14 @@ public class ProductMapper {
         dto.setDescription(product.getDescription());
         dto.setImage(product.getImage());
         dto.setCategoryId(product.getCategory() != null ? product.getCategory().getId() : 0); // Assuming Category has getId method
+        dto.setCategoryName(product.getCategory() != null ? product.getCategory().getName() : "default name"); // Assuming Category has getId method
+        dto.setAdded_By(product.getAdmin() != null ? product.getAdmin().getName() : "default name"); // Assuming Category has getId method
         dto.setBrand(product.getBrand());
         dto.setDeleted(product.isDeleted());
+        dto.setGender(product.getGender());
+        dto.setMaterial(product.getMaterial());
+        dto.setCaseDiameter(product.getCaseDiameter());
+        dto.setWaterResistance(product.getWaterResistance());
         return dto;
     }
 }

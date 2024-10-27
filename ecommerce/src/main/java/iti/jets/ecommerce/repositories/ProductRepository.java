@@ -16,6 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // Find products by category
     List<Product> findByCategory_Name(String categoryName);
 
+    // find Active Products only
+    List<Product> findAllByIsDeletedFalse(); // Fetch products that are not deleted
+
     // Find products by brand
     List<Product> findByBrand(String brand);
     
