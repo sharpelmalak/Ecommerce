@@ -218,7 +218,7 @@
                             <td></td>
                             <td>
                                 <div class="checkout_btn_inner d-flex align-items-center">
-                                    <a class="gray_btn" href="#">Continue Shopping</a>
+                                    <a class="gray_btn" href="/shop">Continue Shopping</a>
                                     <a class="primary-btn" href="#">Proceed to checkout</a>
                                 </div>
                             </td>
@@ -330,7 +330,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script>
         function updateQuantity(productId, qty) {
             if (qty < 1) {
-                alert("Quantity must be at least 1.");
                 return;
             }
             $.ajax({
@@ -344,14 +343,16 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 success: function(response) {
                     console.log(response)
                     // Update the cart item and summary without reloading the page
-                    if(response.product.quantity>qty)
+                    if(response.product.quantity>=qty)
                     {
                         updateCartItemUI(productId, response);
-                        updateCartSummary();
                     }
                     else {
+                        response.quantity=response.product.quantity
+                        updateCartItemUI(productId, response);
                         alert('Exceed Stock');
                     }
+                    updateCartSummary();
 
                 },
                 error: function() {
@@ -369,7 +370,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
         function decreaseQuantity(productId) {
             const qtyInput = document.getElementById(`qty-${productId}`);
-            const newQty = Math.max(1, parseInt(qtyInput.value) - 1); // Ensure quantity is at least 1
+            const newQty = qtyInput.value-1
             //qtyInput.value = newQty;
             updateQuantity(productId, newQty);
         }
@@ -413,6 +414,32 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         }
 
         function updateCartSummary() {
+            $.ajax({
+                url: '/cart/check',
+                type: 'GET',
+                success: function(response) {
+                    console.log(response)
+                    if(response)
+                    {
+                        updateTotal()
+                    }
+                    else
+                    {
+                        alert('STOCK UPDATES');
+                        window.location.href = '/cart'
+                    }
+
+                },
+                error: function() {
+                    alert('STOCK UPDATES');
+                }
+            });
+
+
+        }
+
+        function updateTotal()
+        {
             const totalElement = document.getElementById('cart-total');
             // Example usage:
             const totalAmount = calculateTotal();
@@ -420,9 +447,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             if (totalElement) {
                 totalElement.textContent = totalAmount
             }
-
         }
-
         function calculateTotal() {
             let total = 0;
 
