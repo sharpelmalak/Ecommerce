@@ -77,6 +77,7 @@ public class SecurityConfig {
                                         "/webjars/**",
                                         "/api/auth/login",
                                         "/api/auth/register",
+                                        "/api/auth/check-username",
                                         "/api/g/**",
                                         "/shop/**",
                                         "/api/customers/**",
@@ -88,9 +89,7 @@ public class SecurityConfig {
                                         "/cart/add",
                                         "/cart/remove/*",
                                         "/cart/update",
-                                        "/cart/clear",
-                                        "/**"
-
+                                        "/cart/clear"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
