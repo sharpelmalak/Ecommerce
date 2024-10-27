@@ -71,18 +71,18 @@ SET @customerId9 = @customerId8 + 1;
 SET @customerId10 = @customerId9 + 1;
 
 -- Insert Customer specific data
-INSERT INTO customer (id, birthdate, job, phone, address)
+INSERT INTO customer (id, birthdate, job, phone, address,city,country)
 VALUES 
-(@customerId1, '1990-01-01', 'Engineer', '123-456-7890', '123 Main St'),
-(@customerId2, '1991-02-01', 'Teacher', '123-456-7891', '124 Main St'),
-(@customerId3, '1992-03-01', 'Doctor', '123-456-7892', '125 Main St'),
-(@customerId4, '1993-04-01', 'Nurse', '123-456-7893', '126 Main St'),
-(@customerId5, '1994-05-01', 'Lawyer', '123-456-7894', '127 Main St'),
-(@customerId6, '1995-06-01', 'Architect', '123-456-7895', '128 Main St'),
-(@customerId7, '1996-07-01', 'Scientist', '123-456-7896', '129 Main St'),
-(@customerId8, '1997-08-01', 'Artist', '123-456-7897', '130 Main St'),
-(@customerId9, '1998-09-01', 'Writer', '123-456-7898', '131 Main St'),
-(@customerId10, '1999-10-01', 'Chef', '123-456-7899', '132 Main St');
+(@customerId1, '1990-01-01', 'Engineer', '123-456-7890', '123 Main St','Cairo','Egype'),
+(@customerId2, '1991-02-01', 'Teacher', '123-456-7891', '124 Main St','Cairo','Egype'),
+(@customerId3, '1992-03-01', 'Doctor', '123-456-7892', '125 Main St','Cairo','Egype'),
+(@customerId4, '1993-04-01', 'Nurse', '123-456-7893', '126 Main St','Cairo','Egype'),
+(@customerId5, '1994-05-01', 'Lawyer', '123-456-7894', '127 Main St','Cairo','Egype'),
+(@customerId6, '1995-06-01', 'Architect', '123-456-7895', '128 Main St','Cairo','Egype'),
+(@customerId7, '1996-07-01', 'Scientist', '123-456-7896', '129 Main St','Cairo','Egype'),
+(@customerId8, '1997-08-01', 'Artist', '123-456-7897', '130 Main St','Cairo','Egype'),
+(@customerId9, '1998-09-01', 'Writer', '123-456-7898', '131 Main St','Cairo','Egype'),
+(@customerId10, '1999-10-01', 'Chef', '123-456-7899', '132 Main St','Cairo','Egype');
 
 -- Insert dummy data into `category`
 INSERT INTO `ecommerce`.`category` (`name`, `image`, `is_deleted`) VALUES
@@ -100,15 +100,27 @@ INSERT INTO `ecommerce`.`product` (`name`, `brand`, `price`, `quantity`, `descri
 
 -- Insert dummy data into `card`
 INSERT INTO `ecommerce`.`card` (`card_type`, `card_number`, `exp_month`, `exp_year`, `cvv`, `is_deleted`, `customer_id`) VALUES
-('Visa', '4111111111111111', 12, 2025, '123', FALSE, 1),
-('MasterCard', '5500000000000004', 10, 2024, '456', FALSE, 2),
-('Amex', '340000000000009', 8, 2023, '789', FALSE, 3);
+('Visa', '4111111111111111', 12, 2025, '123', FALSE, 11),
+('MasterCard', '5500000000000004', 10, 2024, '456', FALSE, 12),
+('Amex', '340000000000009', 8, 2023, '789', FALSE, 13);
+
+INSERT INTO card (card_type, card_number, exp_month, exp_year, cvv, is_deleted, customer_id)
+VALUES
+    ('Visa', '4111111111111111', 12, 2025, '123', 0, 11),
+    ('MasterCard', '5500000000000004', 5, 2024, '456', 0, 12),
+    ('American Express', '340000000000009', 8, 2024, '7890', 0, 13),
+    ('Discover', '6011000000000004', 3, 2026, '321', 0, 14),
+    ('Visa', '4111111111111111', 11, 2025, '111', 0, 15),
+    ('MasterCard', '5500000000000004', 7, 2024, '222', 0, 16),
+    ('Diners Club', '3056930000000004', 6, 2025, '333', 0, 17);
+
+
 
 -- Insert dummy data into `order`
-INSERT INTO `ecommerce`.`order` (`order_date`, `total_price`, `status`, `customer_id`) VALUES
-('2024-10-10 15:30:00', 1250.00, 'Placed', 1),
-('2024-10-11 10:00:00', 530.00, 'Confirmed', 2),
-('2024-10-12 18:45:00', 50.00, 'Delivered', 3);
+INSERT INTO `ecommerce`.`order` (`order_date`, `total_price`, `status`, `customer_id`,`shipping_cost`) VALUES
+('2024-10-10 15:30:00', 1250.00, 'Placed', 11,50),
+('2024-10-11 10:00:00', 530.00, 'Confirmed', 12,50),
+('2024-10-12 18:45:00', 50.00, 'Delivered', 13,50);
 
 -- Insert dummy data into `order_item`
 INSERT INTO `ecommerce`.`order_item` (`quantity`, `current_price`, `product_id`, `order_id`) VALUES

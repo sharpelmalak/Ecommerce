@@ -20,352 +20,745 @@
     <!--
             CSS
             ============================================= -->
-    <link rel="stylesheet" href="css/linearicons.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link rel="stylesheet" href="css/themify-icons.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/nice-select.css">
-    <link rel="stylesheet" href="css/nouislider.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="../css/linearicons.css">
+    <link rel="stylesheet" href="../css/owl.carousel.css">
+    <link rel="stylesheet" href="../css/themify-icons.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/nice-select.css">
+    <link rel="stylesheet" href="../css/nouislider.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 
 <body>
 
-    <!-- Start Header Area -->
-	<header class="header_area sticky-header">
-		<div class="main_menu">
-			<nav class="navbar navbar-expand-lg navbar-light main_box">
-				<div class="container">
-					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-							<li class="nav-item submenu dropdown active">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Shop</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
-									<li class="nav-item active"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
-									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
-								</ul>
-							</li>
-							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Blog</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-								</ul>
-							</li>
-							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Pages</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
-								</ul>
-							</li>
-							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-						</ul>
-						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
-							<li class="nav-item">
-								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-		</div>
-		<div class="search_input" id="search_input_box">
-			<div class="container">
-				<form class="d-flex justify-content-between">
-					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
-					<button type="submit" class="btn"></button>
-					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
-				</form>
-			</div>
-		</div>
-	</header>
-	<!-- End Header Area -->
-
-    <!-- Start Banner Area -->
-    <section class="banner-area organic-breadcrumb">
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item submenu dropdown active">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+                                <li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a>
+                                </li>
+                                <li class="nav-item active"><a class="nav-link" href="checkout.html">Product
+                                    Checkout</a></li>
+                                <li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+                                <li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">Blog</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                                <li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">Pages</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
+                                <li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                        <li class="nav-item">
+                            <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="search_input" id="search_input_box">
         <div class="container">
-            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-                <div class="col-first">
-                    <h1>Checkout</h1>
-                    <nav class="d-flex align-items-center">
-                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="single-product.html">Checkout</a>
-                    </nav>
+            <form class="d-flex justify-content-between">
+                <input type="text" class="form-control" id="search_input" placeholder="Search Here">
+                <button type="submit" class="btn"></button>
+                <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+            </form>
+        </div>
+    </div>
+</header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="single-product.html">Checkout</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Checkout Area =================-->
+<!-- =================Checkout Area =================-->
+<section class="checkout_area section_gap">
+    <div class="container">
+        <div class="billing_details">
+            <div class="row">
+                <!-- Left Column for Address, Order details and Payment -->
+                <div class="col-lg-8">
+                    <!-- Address Section -->
+                    <h4>Shipping Address</h4>
+                    <div id="address-section">
+                        <!-- Dynamically populated by JavaScript -->
+                    </div>
+
+                    <br>
+                    <h4>Your Order</h4>
+                    <div id="order-section">
+                        <!-- Dynamically populated by JavaScript -->
+                        <!-- fetch order details -->
+                    </div>
+
+
+                    <!-- Payment Section -->
+                    <br>
+                    <h4>Payment</h4>
+                    <div id="payment-section">
+                        <p>Select Payment Method:</p>
+
+                        <!-- COD Option -->
+                        <input type="radio" id="cod" name="payment" value="COD">
+                        <label for="cod">Cash on Delivery</label><br>
+
+                        <!-- Card Option -->
+                        <input type="radio" id="card" name="payment" value="Card">
+                        <label for="card">Credit/Debit Card</label><br>
+
+                        <!-- Saved Cards Section (Initially hidden) -->
+                        <div id="saved-cards-section" style="display: none;">
+                            <p>Your Saved Cards:</p>
+                            <!-- Dynamically populated saved cards will appear here -->
+                        </div>
+
+                        <!-- Add New Card Form (Initially hidden) -->
+                        <div id="new-card-section" style="display: none;">
+                            <h4>Add New Card</h4>
+                            <form id="new-card-form">
+                                <div class="form-group">
+                                    <label for="card-number">Card Number</label>
+                                    <input type="text" id="card-number" class="form-control"
+                                           placeholder="1234 5678 9101 1121" required
+                                           pattern="\d{16}" maxlength="16" title="Card number must be 16 digits">
+                                    <span class="error-message" id="card-number-error"
+                                          style="color: red; display: none;">Invalid card number</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="card-holder">Card Holder Name</label>
+                                    <input type="text" id="card-holder" class="form-control" placeholder="John Doe"
+                                           required>
+                                    <span class="error-message" id="card-holder-error"
+                                          style="color: red; display: none;">Cardholder name is required</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exp-month">Expiration Month</label>
+                                    <input type="number" id="exp-month" class="form-control" placeholder="MM" required
+                                           min="1" max="12" pattern="\d{1}/\d{2}"
+                                           title="Expiration month must be between 01 and 12">
+                                    <span class="error-message" id="exp-month-error" style="color: red; display: none;">Invalid expiration month</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exp-year">Expiration Year</label>
+                                    <input type="number" id="exp-year" class="form-control" placeholder="YYYY" required
+                                           min="2024" pattern="\d{4}"
+                                           title="Expiration year must be 2024 or later">
+                                    <span class="error-message" id="exp-year-error" style="color: red; display: none;">Invalid expiration year</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" class="form-control" placeholder="123" required
+                                           pattern="\d{3}"
+                                           maxlength="3" title="CVV must be exactly 3 digits">
+                                    <span class="error-message" id="cvv-error" style="color: red; display: none;">Invalid CVV</span>
+                                </div>
+
+
+                                <!-- Save Card Button -->
+                                <button type="button" id="save-card-btn" class="primary-btn">Save Card</button>
+                            </form>
+                            <br>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Right Column for Order Summary -->
+                <div class="col-lg-4">
+                    <div class="order_box">
+                        <h2>Order Summary</h2>
+                        <ul class="list" id="order-items">
+                            <!-- Dynamically populated order items -->
+                        </ul>
+
+                        <ul class="list list_2">
+                            <div id="subtotal"></div>
+                            <div id="shipping-cost"></div>
+                            <div id="total-price"></div>
+                        </ul>
+
+                        <a class="primary-btn" id="place-order-btn" href="confirmation.html">Place Order</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- End Banner Area -->
+    </div>
+</section>
 
-    <!--================Checkout Area =================-->
-    <section class="checkout_area section_gap">
-        <div class="container">
-            <div class="returning_customer">
-                <div class="check_title">
-                    <h2>Returning Customer? <a href="#">Click here to login</a></h2>
+<!--================End Checkout Area =================-->
+
+<!-- start footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>About Us</h6>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                        ut labore dolore
+                        magna aliqua.
+                    </p>
                 </div>
-                <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new
-                    customer, please proceed to the Billing & Shipping section.</p>
-                <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                    <div class="col-md-6 form-group p_star">
-                        <input type="text" class="form-control" id="name" name="name">
-                        <span class="placeholder" data-placeholder="Username or Email"></span>
-                    </div>
-                    <div class="col-md-6 form-group p_star">
-                        <input type="password" class="form-control" id="password" name="password">
-                        <span class="placeholder" data-placeholder="Password"></span>
-                    </div>
-                    <div class="col-md-12 form-group">
-                        <button type="submit" value="submit" class="primary-btn">login</button>
-                        <div class="creat_account">
-                            <input type="checkbox" id="f-option" name="selector">
-                            <label for="f-option">Remember me</label>
-                        </div>
-                        <a class="lost_pass" href="#">Lost your password?</a>
-                    </div>
-                </form>
             </div>
-            <div class="cupon_area">
-                <div class="check_title">
-                    <h2>Have a coupon? <a href="#">Click here to enter your code</a></h2>
-                </div>
-                <input type="text" placeholder="Enter coupon code">
-                <a class="tp_btn" href="#">Apply Coupon</a>
-            </div>
-            <div class="billing_details">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <h3>Billing Details</h3>
-                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="name">
-                                <span class="placeholder" data-placeholder="First name"></span>
-                            </div>
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="name">
-                                <span class="placeholder" data-placeholder="Last name"></span>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
-                            </div>
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="number" name="number">
-                                <span class="placeholder" data-placeholder="Phone number"></span>
-                            </div>
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany">
-                                <span class="placeholder" data-placeholder="Email Address"></span>
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                <select class="country_select">
-                                    <option value="1">Country</option>
-                                    <option value="2">Country</option>
-                                    <option value="4">Country</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add1" name="add1">
-                                <span class="placeholder" data-placeholder="Address line 01"></span>
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add2" name="add2">
-                                <span class="placeholder" data-placeholder="Address line 02"></span>
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="city" name="city">
-                                <span class="placeholder" data-placeholder="Town/City"></span>
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                <select class="country_select">
-                                    <option value="1">District</option>
-                                    <option value="2">District</option>
-                                    <option value="4">District</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP">
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <div class="creat_account">
-                                    <input type="checkbox" id="f-option2" name="selector">
-                                    <label for="f-option2">Create an account?</label>
+            <div class="col-lg-4  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Newsletter</h6>
+                    <p>Stay update with our latest</p>
+                    <div class="" id="mc_embed_signup">
+
+                        <form target="_blank" novalidate="true"
+                              action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                              method="get" class="form-inline">
+
+                            <div class="d-flex flex-row">
+
+                                <input class="form-control" name="EMAIL" placeholder="Enter Email"
+                                       onfocus="this.placeholder = ''"
+                                       onblur="this.placeholder = 'Enter Email '" required="" type="email">
+
+
+                                <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
+                                                                             aria-hidden="true"></i></button>
+                                <div style="position: absolute; left: -5000px;">
+                                    <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
+                                           type="text">
                                 </div>
+
+                                <!-- <div class="col-lg-4 col-md-4">
+                                                <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+                                            </div>  -->
                             </div>
-                            <div class="col-md-12 form-group">
-                                <div class="creat_account">
-                                    <h3>Shipping Details</h3>
-                                    <input type="checkbox" id="f-option3" name="selector">
-                                    <label for="f-option3">Ship to a different address?</label>
-                                </div>
-                                <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
-                            </div>
+                            <div class="info"></div>
                         </form>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="order_box">
-                            <h2>Your Order</h2>
-                            <ul class="list">
-                                <li><a href="#">Product <span>Total</span></a></li>
-                                <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                                <li><a href="#">Fresh Tomatoes <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                                <li><a href="#">Fresh Brocoli <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                            </ul>
-                            <ul class="list list_2">
-                                <li><a href="#">Subtotal <span>$2160.00</span></a></li>
-                                <li><a href="#">Shipping <span>Flat rate: $50.00</span></a></li>
-                                <li><a href="#">Total <span>$2210.00</span></a></li>
-                            </ul>
-                            <div class="payment_item">
-                                <div class="radion_btn">
-                                    <input type="radio" id="f-option5" name="selector">
-                                    <label for="f-option5">Check payments</label>
-                                    <div class="check"></div>
-                                </div>
-                                <p>Please send a check to Store Name, Store Street, Store Town, Store State / County,
-                                    Store Postcode.</p>
-                            </div>
-                            <div class="payment_item active">
-                                <div class="radion_btn">
-                                    <input type="radio" id="f-option6" name="selector">
-                                    <label for="f-option6">Paypal </label>
-                                    <img src="img/product/card.jpg" alt="">
-                                    <div class="check"></div>
-                                </div>
-                                <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
-                                    account.</p>
-                            </div>
-                            <div class="creat_account">
-                                <input type="checkbox" id="f-option4" name="selector">
-                                <label for="f-option4">I’ve read and accept the </label>
-                                <a href="#">terms & conditions*</a>
-                            </div>
-                            <a class="primary-btn" href="#">Proceed to Paypal</a>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget mail-chimp">
+                    <h6 class="mb-20">Instragram Feed</h6>
+                    <ul class="instafeed d-flex flex-wrap">
+                        <li><img src="img/i1.jpg" alt=""></li>
+                        <li><img src="img/i2.jpg" alt=""></li>
+                        <li><img src="img/i3.jpg" alt=""></li>
+                        <li><img src="img/i4.jpg" alt=""></li>
+                        <li><img src="img/i5.jpg" alt=""></li>
+                        <li><img src="img/i6.jpg" alt=""></li>
+                        <li><img src="img/i7.jpg" alt=""></li>
+                        <li><img src="img/i8.jpg" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Follow Us</h6>
+                    <p>Let us be social</p>
+                    <div class="footer-social d-flex align-items-center">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-dribbble"></i></a>
+                        <a href="#"><i class="fa fa-behance"></i></a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--================End Checkout Area =================-->
-
-    <!-- start footer Area -->
-    <footer class="footer-area section_gap">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3  col-md-6 col-sm-6">
-                    <div class="single-footer-widget">
-                        <h6>About Us</h6>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                            ut labore dolore
-                            magna aliqua.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4  col-md-6 col-sm-6">
-                    <div class="single-footer-widget">
-                        <h6>Newsletter</h6>
-                        <p>Stay update with our latest</p>
-                        <div class="" id="mc_embed_signup">
-
-                            <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-                                method="get" class="form-inline">
-
-                                <div class="d-flex flex-row">
-
-                                    <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''"
-                                        onblur="this.placeholder = 'Enter Email '" required="" type="email">
-
-
-                                    <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
-                                            aria-hidden="true"></i></button>
-                                    <div style="position: absolute; left: -5000px;">
-                                        <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
-                                            type="text">
-                                    </div>
-
-                                    <!-- <div class="col-lg-4 col-md-4">
-													<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-												</div>  -->
-                                </div>
-                                <div class="info"></div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3  col-md-6 col-sm-6">
-                    <div class="single-footer-widget mail-chimp">
-                        <h6 class="mb-20">Instragram Feed</h6>
-                        <ul class="instafeed d-flex flex-wrap">
-                            <li><img src="img/i1.jpg" alt=""></li>
-                            <li><img src="img/i2.jpg" alt=""></li>
-                            <li><img src="img/i3.jpg" alt=""></li>
-                            <li><img src="img/i4.jpg" alt=""></li>
-                            <li><img src="img/i5.jpg" alt=""></li>
-                            <li><img src="img/i6.jpg" alt=""></li>
-                            <li><img src="img/i7.jpg" alt=""></li>
-                            <li><img src="img/i8.jpg" alt=""></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="single-footer-widget">
-                        <h6>Follow Us</h6>
-                        <p>Let us be social</p>
-                        <div class="footer-social d-flex align-items-center">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-dribbble"></i></a>
-                            <a href="#"><i class="fa fa-behance"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-                <p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-</p>
-            </div>
+        <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+            <p class="footer-text m-0">
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a
+                    href="https://colorlib.com" target="_blank">Colorlib</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
         </div>
-    </footer>
-    <!-- End footer Area -->
+    </div>
+</footer>
+<!-- End footer Area -->
 
 
-    <script src="js/vendor/jquery-2.2.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+<script src="js/vendor/jquery-2.2.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
         crossorigin="anonymous"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/jquery.ajaxchimp.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.sticky.js"></script>
-    <script src="js/nouislider.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <!--gmaps Js-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-    <script src="js/gmaps.min.js"></script>
-    <script src="js/main.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<!--gmaps Js-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+<script src="js/gmaps.min.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+
+    const customerId = 11; // get it from the paymentRequestDTO
+    const orderId = 1; // get it from the paymentRequestDTO
+
+    // =======================================================
+    // Function to load the user's saved address using AJAX
+    //========================================================
+    function loadSavedAddress() {
+        $.ajax({
+            url: `/api/customers/address/${customerId}`,  // Replace with the correct backend endpoint
+            method: 'GET',
+            success: function (address) {
+                // Prepare the address HTML
+                let addressHTML = '';
+                if (address && address.name) {
+                     addressHTML = `
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Name:</strong></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${address.name}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Address:</strong></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${address.address}, ${address.city}, ${address.country}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Phone:</strong></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${address.phone}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Email:</strong></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">${address.email}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+
+                } else {
+                    addressHTML = `<p>No saved address found.</p>`;
+                }
+
+                // Display address and the Edit button
+                document.getElementById('address-section').innerHTML = `
+                    <div>
+                        ${addressHTML}
+                        <button class="primary-btn" id="edit-address-btn">Edit Address</button>
+                    </div>
+                    <div id="address-form-container" style="display: none;"></div> `;
+
+                // Add event listener for the Edit Address button
+                document.getElementById('edit-address-btn').addEventListener('click', function () {
+                    const addressFormHTML = `
+                    <p>Please enter your address below:</p>
+                    <form id="address-form">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" class="form-control" value="${address ? address.name : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="street">Street:</label>
+                            <input type="text" id="street" class="form-control" value="${address ? address.address : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City:</label>
+                            <input type="text" id="city" class="form-control" value="${address ? address.city : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State:</label>
+                            <input type="text" id="state" class="form-control" value="${address ? address.country : ''}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="text" id="phone" class="form-control" value="${address ? address.phone : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" class="form-control" value="${address ? address.email : ''}" required>
+                        </div>
+                        <button type="button" class="primary-btn" id="save-address-btn">Save Address</button>
+                    </form>
+                `;
+
+                    // Show the address form
+                    document.getElementById('address-form-container').innerHTML = addressFormHTML;
+                    document.getElementById('address-form-container').style.display = 'block';
+
+                    // Add event listener for save address button
+                    document.getElementById('save-address-btn').addEventListener('click', function () {
+                        const addressData = {
+                            name: document.getElementById('name').value,
+                            address: document.getElementById('street').value,
+                            city: document.getElementById('city').value,
+                            country: document.getElementById('state').value,
+                            phone: document.getElementById('phone').value,
+                            email: document.getElementById('email').value
+                        };
+
+                        $.ajax({
+                            url: `/api/customers/address/${customerId}`, // Replace with the correct endpoint
+                            method: 'PUT',
+                            contentType: 'application/json',
+                            data: JSON.stringify(addressData),
+                            success: function (response) {
+                                alert('Address saved successfully!');
+                                loadSavedAddress(); // Reload address to reflect changes
+                            },
+                            error: function (xhr, status, error) {
+                                alert('Failed to save address. Please try again.');
+                                console.log('Error saving address:', status, error);  // Log detailed error
+                            }
+                        });
+                    });
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('Error fetching address:', status, error);  // Log detailed error
+            }
+        });
+    }
+
+
+    //=============================
+    // Load Order details
+    //==============================
+
+    $(document).ready(function () {
+        fetchOrderDetails();
+
+        function fetchOrderDetails() {
+            $.ajax({
+                url: `/api/orders/customers/${customerId}`, // Your endpoint to fetch order details
+                method: 'GET',
+                contentType: 'application/json',
+                success: function (orders) {
+                    // Call a function to populate the order section
+                    populateOrderSection(orders);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching orders:', error);
+                    $('#order-section').html('<p>Error fetching order details. Please try again.</p>');
+                }
+            });
+        }
+
+        function populateOrderSection(orders) {
+
+            // Clear the existing content
+            $('#order-section').empty();
+
+            if (orders.length === 0) {
+                $('#order-section').html('<p>No orders found.</p>');
+                return;
+            }
+
+            // Create HTML content for each order
+            orders.forEach(function (order) {
+                var orderHTML = `
+                    <div class="order">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #000;">
+                                    <th style="text-align: left; padding: 8px;">Product Name</th>
+                                    <th style="text-align: left; padding: 8px;">Price</th>
+                                    <th style="text-align: left; padding: 8px;">Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${order.orderItems.map(item => `
+                                    <tr style="border-bottom: 1px solid #ccc;">
+                                        <td style="padding: 8px;">${item.productName}</td>
+                                        <td style="padding: 8px;">$${item.price}</td>
+                                        <td style="padding: 8px;">${item.quantity}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                // Append the order HTML to the order section
+                $('#order-section').append(orderHTML);
+            });
+
+
+
+
+            orders.forEach(function (order) {
+                var orderItemsHTML = `
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="background-color: #f2f2f2; text-align: left;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Product Name</th>
+                            <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Quantity</th>
+                            <th style="padding: 12px; border: 1px solid #ddd; text-align: right;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${order.orderItems.map(item => `
+                                    <tr>
+                                        <td style="padding: 12px; border: 1px solid #ddd;">${item.productName}</td>
+                                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">${item.quantity}</td>
+                                        <td style="padding: 12px; border: 1px solid #ddd; text-align: right;">$${(item.price * item.quantity).toFixed(2)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+
+
+
+                var subTotal = `
+                    <li><a>Subtotal <span>${order.totalPrice}</span></a></li>
+                `;
+
+                var shipping = `
+                    <li><a>Shipping <span>${order.shippingCost}</span></a></li>
+                `;
+                    var total = `
+                    <li><a> Total <span>${order.totalPrice}</span></a></li>
+                `;
+                var couponHTML = `
+                <li style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px">
+                    <input type="text" id="coupon-code" placeholder="Enter coupon code"
+                           style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+                    <button id="apply-coupon"
+                            style="padding: 8px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Apply
+                    </button>
+                </li>
+            `;
+
+
+                $('#order-items').append(orderItemsHTML);
+                $('#subtotal').append(subTotal);
+                $('#shipping-cost').append(shipping);
+                $('#total-price').append(total);
+                $('#total-price').after(couponHTML);
+
+                });
+
+
+        }
+
+
+
+
+    });
+
+
+    //=========================
+    // Process payment section
+    //=========================
+    // Fetch saved cards from the backend via AJAX
+    function loadSavedCards() {
+        const savedCardsSection = document.getElementById('saved-cards-section');
+        savedCardsSection.innerHTML = '';
+        $.ajax({
+            url: `/api/cards/${customerId}`,  // Update with actual backend endpoint
+            method: 'GET',
+            success: function (cards) {
+                //const savedCardsSection = document.getElementById('saved-cards-section');
+                if (cards.length > 0) {
+                    cards.forEach(card => {
+                        const cardHTML = `
+                        <input type="radio" id="card-${card.id}" name="saved-card" value="Card-${card.id}">
+                        <label for="card-${card.id}">${card.type}  With Number ${card.number} (Exp: ${card.expMonth} ${card.expYear})</label><br>
+                    `;
+
+                        savedCardsSection.insertAdjacentHTML("beforeend", cardHTML);
+
+                    });
+                } else {
+                    savedCardsSection.innerHTML = '<p>You have no saved cards.</p>';
+                }
+            },
+            error: function () {
+                console.log('Failed to load saved cards. Please try again later.');
+            }
+        });
+    }
+
+    // Toggle payment method sections based on the selected payment option
+    document.querySelectorAll('input[name="payment"]').forEach((input) => {
+        input.addEventListener('change', function () {
+            if (this.value === 'Card') {
+                document.getElementById('saved-cards-section').style.display = 'block';
+                document.getElementById('new-card-section').style.display = 'block';
+            } else if (this.value === 'COD') {
+                document.getElementById('saved-cards-section').style.display = 'none';
+                document.getElementById('new-card-section').style.display = 'none';
+            }
+        });
+    });
+
+    function validateCardNumber(cardNumber) {
+        // Remove any spaces or dashes from the input
+        const sanitizedCardNumber = cardNumber.replace(/\s|-/g, '');
+
+        // Check if the card number is 16 digits and starts with '4'
+        const visaCardRegex = /^4\d{15}$/;
+
+        if (visaCardRegex.test(sanitizedCardNumber)) {
+            return true;  // Valid Visa card number
+        } else {
+            return false;  // Invalid Visa card number
+        }
+    }
+
+
+    // Real-time validation for card number
+    document.getElementById('card-number').addEventListener('input', async function () {
+        const cardNumber = this.value;
+        const isValid = await validateCardNumber(cardNumber);
+
+        if (isValid) {
+            document.getElementById('card-number-error').style.display = 'none';
+            document.getElementById('card-number-success').style.display = 'inline';
+        } else {
+            document.getElementById('card-number-error').style.display = 'inline';
+            document.getElementById('card-number-success').style.display = 'none';
+        }
+    });
+
+    // Real-time validation for expiration month
+    document.getElementById('exp-month').addEventListener('input', function () {
+        const expMonth = this.value;
+        if (isNaN(expMonth) || expMonth < 1 || expMonth > 12) {
+            document.getElementById('exp-month-error').style.display = 'inline';
+        } else {
+            document.getElementById('exp-month-error').style.display = 'none';
+        }
+    });
+
+    // Real-time validation for expiration year
+    document.getElementById('exp-year').addEventListener('input', function () {
+        const expYear = this.value;
+        const currentYear = new Date().getFullYear();
+        if (isNaN(expYear) || expYear < currentYear || expYear > currentYear + 10) {
+            document.getElementById('exp-year-error').style.display = 'inline';
+        } else {
+            document.getElementById('exp-year-error').style.display = 'none';
+        }
+    });
+
+    // Real-time validation for CVV
+    document.getElementById('cvv').addEventListener('input', function () {
+        const cvv = this.value;
+        const cvvRegex = /^\d{3,4}$/;  // Basic validation for 3-4 digit CVV
+        if (!cvvRegex.test(cvv)) {
+            document.getElementById('cvv-error').style.display = 'inline';
+        } else {
+            document.getElementById('cvv-error').style.display = 'none';
+        }
+    });
+
+    // Handle saving the card with real-time validated inputs
+    document.getElementById('save-card-btn').addEventListener('click', function (event) {
+        event.preventDefault();
+
+        // If any field shows an error, don't proceed
+        function isElementVisible(el) {
+            return el.offsetWidth > 0 && el.offsetHeight > 0 && getComputedStyle(el).visibility !== 'hidden';
+        }
+
+        const errorMessages = document.querySelectorAll('.error-message');
+        const hasVisibleErrors = Array.from(errorMessages).some(isElementVisible);
+
+        if (hasVisibleErrors) {
+            console.log('Please fix the errors before saving the card.');
+            return;
+        }
+
+
+        // Gather card details (if all inputs are valid)
+        const newCardDetails = {
+            number: document.getElementById('card-number').value,
+            customerId: customerId,
+            customerName: document.getElementById('card-holder').value,
+            expMonth: document.getElementById('exp-month').value,
+            expYear: document.getElementById('exp-year').value,
+            cvv: document.getElementById('cvv').value,
+        };
+
+
+        // Send AJAX request to save the card
+        $.ajax({
+            url: `/api/cards/${customerId}`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(newCardDetails),
+            success: function () {
+                alert('Card saved successfully!');
+                loadSavedCards();  // Reload saved cards after saving the new card
+            },
+            error: function () {
+                console.log('Failed to save card. Please try again.');
+            }
+        });
+
+    });
+
+
+    // Load saved data on page load
+    window.onload = function () {
+        loadSavedAddress();
+        loadSavedCards();
+    };
+
+
+</script>
 </body>
 
 </html>

@@ -7,6 +7,7 @@ import iti.jets.ecommerce.repositories.CustomerRepository;
 import iti.jets.ecommerce.repositories.OrderRepository;
 import iti.jets.ecommerce.repositories.ProductRepository;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private PasswordEncoder passwordEncoder;
     private final OrderRepository orderRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private PromotionService promotionService;
@@ -68,6 +72,24 @@ public class CustomerService {
         return CustomerMapper.toDto(customer);
     }
 
+    /* Get Customer Address */
+    public CustomerAddressDTO getCustomerAddress(int customerId) {
+        CustomerDTO customer = getCustomerById(customerId);
+        return modelMapper.map(customer, CustomerAddressDTO.class);
+    }
+
+    // Edit Customer Address
+    public CustomerAddressDTO editCustomerAddress(int customerId, CustomerAddressDTO customerAddress){
+        CustomerDTO customer = getCustomerById(customerId);
+        System.out.println("addrss is : "+customerAddress.getAddress());
+        customer.setAddress(customerAddress.getAddress());
+        customer.setCity(customerAddress.getCity());
+        customer.setCountry(customerAddress.getCountry());
+        customer.setPhone(customerAddress.getPhone());
+        updateCustomer(customerId, customer);
+        return customerAddress;
+    }
+
     /* Update customer profile By Admin */
     public CustomerDTO updateCustomerByAdmin(int id, CustomerDTOAdmin customerDTO) {
         Customer existingCustomer = customerRepository.findById(id)
@@ -90,10 +112,14 @@ public class CustomerService {
         existingCustomer.setName(existingCustomer.getName());
         existingCustomer.setUsername(customerDTO.getUsername());
         existingCustomer.setEmail(customerDTO.getEmail());
-        existingCustomer.setAddress(existingCustomer.getAddress());
-        existingCustomer.setPhone(existingCustomer.getPhone());
-        existingCustomer.setBirthdate(existingCustomer.getBirthdate());
+        existingCustomer.setAddress(customerDTO.getAddress());
+        existingCustomer.setPhone(customerDTO.getPhone());
+        existingCustomer.setBirthdate(customerDTO.getBirthdate());
         existingCustomer.setJob(existingCustomer.getJob());
+        existingCustomer.setAddress(customerDTO.getAddress());
+        existingCustomer.setCity(customerDTO.getCity());
+        existingCustomer.setCountry(customerDTO.getCountry());
+
 
         if (customerDTO.getPassword() != null && !customerDTO.getPassword().isEmpty()) {
             existingCustomer.setPassword(passwordEncoder.encode(customerDTO.getPassword()));

@@ -1,5 +1,6 @@
 package iti.jets.ecommerce.services;
 
+import iti.jets.ecommerce.dto.CardDTO;
 import iti.jets.ecommerce.dto.PaymentRequestDTO;
 import iti.jets.ecommerce.exceptions.InvalidEmailException;
 import iti.jets.ecommerce.exceptions.InvalidCardNumberException;
@@ -8,27 +9,31 @@ import iti.jets.ecommerce.exceptions.InvalidCvvException;
 import iti.jets.ecommerce.models.Card;
 import iti.jets.ecommerce.repositories.CardRepository;
 import iti.jets.ecommerce.utils.ValidationUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CardService {
+    private final ModelMapper modelMapper;
     private CardRepository cardRepository;
-    public CardService(CardRepository cardRepository) {
+    public CardService(CardRepository cardRepository, ModelMapper modelMapper) {
         this.cardRepository = cardRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public Card save(Card card) {
-        return cardRepository.save(card);
+    public void save(CardDTO card) {
+        cardRepository.save(modelMapper.map(card, Card.class));
     }
 
-    public Card findById(int id) {
-        return cardRepository.findById(id).orElse(null);
+    public CardDTO findById(int id) {
+        return modelMapper.map(cardRepository.findById(id).orElse(null), CardDTO.class);
     }
 
-    public List<Card> findAll() {
-        return cardRepository.findAll();
+    public List<CardDTO> getAllCustomerCards(int customerId) {
+        return cardRepository.findByCustomerId(customerId).stream().map((element) -> modelMapper.map(element, CardDTO.class)).collect(Collectors.toList());
     }
 
     public boolean checkCardAvailability(int cardId) {

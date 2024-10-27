@@ -8,6 +8,7 @@ import iti.jets.ecommerce.services.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -28,6 +29,19 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable int id) {
         CustomerDTO customer = customerService.getCustomerById(id);
         return ResponseEntity.ok(customer);
+    }
+
+    // Get Customer Address
+    @GetMapping("/address/{id}")
+    public ResponseEntity<CustomerAddressDTO> getCustomerAddress(@PathVariable int id) {
+        CustomerAddressDTO customerAddress = customerService.getCustomerAddress(id);
+        return ResponseEntity.ok(customerAddress);
+    }
+
+    // Edit Customer Address
+    @PutMapping("/address/{id}")
+    public ResponseEntity<CustomerAddressDTO> editCustomerAddress(@PathVariable int id, @RequestBody CustomerAddressDTO customerAddress) {
+        return ResponseEntity.ok(customerService.editCustomerAddress(id,customerAddress));
     }
 
     // Update Profile
