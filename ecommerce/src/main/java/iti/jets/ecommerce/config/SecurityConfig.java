@@ -38,6 +38,9 @@ public class SecurityConfig {
     @Autowired
     private CustomAuthenticationSuccessHandler successHandler;
 
+    @Autowired
+    private CustomLogoutHandler logoutHandler;
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -98,6 +101,11 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo.userService(this.oauth2UserService()))
                         .permitAll() // Allow access to login page for OAuth2
                 )
+                .logout(logout-> logout
+                        .logoutUrl("/logout") // Define the logout URL
+                        .addLogoutHandler(logoutHandler) // Add custom logout handler
+                        .logoutSuccessUrl("/home") // Redirect URL after logout
+                        .permitAll())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
                             System.out.println("Blocked access to: " + request.getRequestURI());
