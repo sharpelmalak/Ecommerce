@@ -13,10 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -59,50 +55,43 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        .csrf(csrf -> csrf.disable()) // Disable CSRF protection
+                .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(auth -> auth
-               // Allow access to Swagger UI and OpenAPI documentation without authentication
+                        // Allow access to Swagger UI and OpenAPI documentation without authentication
                         .requestMatchers(
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/swagger-ui.html",
-                                        "/swagger-resources/**",
-                                        "/webjars/**",
-                                        "/api/auth/login",
-                                        "/api/auth/register",
-                                        "/api/g/**",
-                                        "/shop/**",
-                                        "/api/customers/**",
-                                        "/api/products/**",
-                                        "/css/**", "/js/**", "/img/**","/fonts/**",
-                                "/home"
-                                ).permitAll()
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/api/auth/login",
+                                "/api/auth/register",
+                                "/api/admin/**",
+                                "/api/g/**",
+                                "/shop/**",
+                                "/api/customers/**",
+                                "/api/products/**",
+                                "/index.html",
+                                "/css/**", "/js/**", "/images/**",
+                                "/**"
+                        ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
-                                .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
-                .formLogin(form-> form
-                        .loginPage("/api/auth/login")
-                        .successHandler(successHandler)
-                        .failureUrl("/api/auth/login?error=true")
-                        .permitAll())
+                .formLogin(form -> form
+                        .loginPage("/login") // Custom login page
+                        .loginProcessingUrl("/api/auth/login") // Custom login processing URL
+                        .successHandler(successHandler) // Redirect after successful login
+                        .failureUrl("/login?error=true") // Redirect on login failure
+                        .permitAll() // Allow everyone to access the login page
+                )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/api/auth/login") // Custom login page for OAuth2
-                        .defaultSuccessUrl("/shop")
-                        .userInfoEndpoint(userInfo -> userInfo.userService(this.oauth2UserService()))
+                        .loginPage("/login") // Custom login page for OAuth2
+                        .defaultSuccessUrl("/home") // Redirect after successful OAuth2 login
                         .permitAll() // Allow access to login page for OAuth2
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-    @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
-        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
-        return request -> {
-            OAuth2User oAuth2User = delegate.loadUser(request);
-            String email = oAuth2User.getAttribute("email");
-            System.out.println("Email is" + email); // Custom method to save user data in DB
-            return oAuth2User;
-        };
     }
 }

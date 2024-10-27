@@ -28,6 +28,87 @@
     <link rel="stylesheet" href="../css/nouislider.min.css">
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/main.css">
+
+    <style>
+        .card-option {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .card-option:hover {
+            background-color: #f7f7f7;
+        }
+        .card-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .card-option label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .card-option label span {
+            color: #007bff;
+        }
+        .card-option label .card-number {
+            font-weight: normal;
+        }
+        .card-option label .exp-date {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+
+        .card-option {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-option:hover {
+            transform: scale(1.02);
+        }
+
+        .card-option input[type="radio"] {
+            margin-right: 15px;
+        }
+
+        .card-option label {
+            width: 100%;
+        }
+
+        .card-option div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-option label span {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .card-option label .card-number {
+            color: #555;
+        }
+
+        .card-option label .exp-date {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+
+
+    </style>
+
 </head>
 
 <body>
@@ -149,7 +230,7 @@
                     <br>
                     <h4>Payment</h4>
                     <div id="payment-section">
-                        <p>Select Payment Method:</p>
+                        <h6>Select Payment Method:</h6>
 
                         <!-- COD Option -->
                         <input type="radio" id="cod" name="payment" value="COD">
@@ -166,6 +247,7 @@
                         </div>
 
                         <!-- Add New Card Form (Initially hidden) -->
+                        <br>
                         <div id="new-card-section" style="display: none;">
                             <h4>Add New Card</h4>
                             <form id="new-card-form">
@@ -348,7 +430,7 @@
 
 <script>
 
-    const customerId = 11; // get it from the paymentRequestDTO
+    const customerId = 12; // get it from the paymentRequestDTO
     const orderId = 1; // get it from the paymentRequestDTO
 
     // =======================================================
@@ -613,9 +695,25 @@
                 if (cards.length > 0) {
                     cards.forEach(card => {
                         const cardHTML = `
-                        <input type="radio" id="card-${card.id}" name="saved-card" value="Card-${card.id}">
-                        <label for="card-${card.id}">${card.type}  With Number ${card.number} (Exp: ${card.expMonth} ${card.expYear})</label><br>
-                    `;
+    <div class="card-option" style="border: 1px solid #ddd; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer;">
+        <input type="radio" id="card-${card.id}" name="saved-card" value="Card-${card.id}" style="margin-right: 15px;">
+        <label for="card-${card.id}" style="display: block; width: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span style="font-size: 1.1em; font-weight: bold; color: #007bff;">${card.type}</span>
+                    <span style="color: #555;">ending in ****${card.number.slice(-4)}</span>
+                </div>
+                <div style="font-size: 0.9em; color: #888;">
+                    Exp: ${card.expMonth}/${card.expYear}
+                </div>
+            </div>
+        </label>
+    </div>
+`;
+
+
+
+
 
                         savedCardsSection.insertAdjacentHTML("beforeend", cardHTML);
 
@@ -726,6 +824,7 @@
         const newCardDetails = {
             number: document.getElementById('card-number').value,
             customerId: customerId,
+            type: "Visa",
             customerName: document.getElementById('card-holder').value,
             expMonth: document.getElementById('exp-month').value,
             expYear: document.getElementById('exp-year').value,
