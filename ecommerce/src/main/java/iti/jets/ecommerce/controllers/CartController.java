@@ -54,14 +54,12 @@ public class CartController {
     // Get all items in the cart
     @GetMapping
     public String  viewCart(HttpServletRequest request, Model model) {
-        System.out.println("hereeee");
         List<CartItemDTO> cartItems = cartService.getCartItems(request.getSession(),request.getCookies());
         double sum = cartItems.stream()
                 .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
         model.addAttribute("cart", cartItems);
         model.addAttribute("sum", sum);
-        System.out.println("renderrrr");
         return "cart";
     }
 
@@ -124,14 +122,14 @@ public class CartController {
 
     // Clear all items from the cart
     @GetMapping("/check")
-    public ResponseEntity<Void> checkCart(HttpServletRequest request) {
+    public ResponseEntity<Boolean> checkCart(HttpServletRequest request) {
+        System.out.println("landing Cart Check");
         boolean isChanged = cartService.checkCart(request.getSession());
         if (!isChanged) {
-            System.out.println("NOTHING CHANGED SHARPEL");
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(Boolean.TRUE);
         }
 
         System.out.println("CHANGED SHARPEL");
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(Boolean.FALSE);
     }
 }

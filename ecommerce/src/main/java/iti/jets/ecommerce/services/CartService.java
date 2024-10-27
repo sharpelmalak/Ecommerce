@@ -67,6 +67,7 @@ public class CartService {
                 }
             }
         }
+        session.setAttribute("cart", cart);
         return result;
     }
 
@@ -142,6 +143,7 @@ public class CartService {
 
     public List<CartItemDTO> getCartItems(HttpSession session,Cookie[] cookies)
     {
+        checkCart(session);
         List<CartItemDTO> cartItems = (List<CartItemDTO>) session.getAttribute("cart");
         if (cartItems == null) {
             cartItems = loadCartFromCookie(cookies,session);
@@ -158,6 +160,8 @@ public class CartService {
 
 
     public Cookie persistCartInCookie(HttpSession session) {
+
+        checkCart(session);
         List<CartItemDTO> cartItems = (List<CartItemDTO>) session.getAttribute("cart");
 
         if (cartItems != null && !cartItems.isEmpty()) {
@@ -178,6 +182,7 @@ public class CartService {
 
     public List<CartItemDTO> loadCartFromCookie(Cookie[] cookies,HttpSession session) {
         // Retrieve cart cookie
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("cart")) {
@@ -186,6 +191,7 @@ public class CartService {
                     cartJson = new String(Base64.getDecoder().decode(cartJson), StandardCharsets.UTF_8);
                     List<CartItemDTO> cart = convertJsonToCart(cartJson);
                     session.setAttribute("cart", cart);
+                    checkCart(session);
                     return cart;
                 }
             }
