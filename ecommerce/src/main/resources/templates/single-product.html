@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="zxx" class="no-js">
+<!-- <html lang="zxx" class="no-js"> -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="no-js">
+
 
 <head>
     <!-- Mobile Specific Meta -->
@@ -112,8 +114,12 @@
 
         
     </style>
-</head>
+	<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
+
+
+</head>
 
 
 
@@ -209,14 +215,14 @@
 		</div>
 	</section>
 	<!-- End Banner Area -->
-	<!-- --================Single Product Area =================--> --
+	<!-- --================Single Product Area =================-->
 	<div class="product_image_area">
 		<div class="container">
 			<div class="row s_product_inner">
 				<div class="col-lg-6">
 					<div class="s_Product_carousel">
 						<div class="single-prd-item">
-							<img class="img-fluid" th:src="@{${productDTO.image}}" alt="${productDTO.name}" width="50" height="50">
+							<img class="img-fluid" th:src="@{/img/category/watch-1.png}" alt="${productDTO.name}" width="50" height="50">
 						</div>
 						<div class="single-prd-item">
 							<img class="img-fluid" th:src="@{${productDTO.image}}" alt="${productDTO.name}" width="50" height="50">
@@ -283,9 +289,11 @@
 							</button>
 						</div>
 				
-						<div class="card_area d-flex align-items-center">
-							<a class="primary-btn" href="#">Add to Cart</a>
-						</div>
+						<!-- <a class="primary-btn" href="#" th:onclick="|addToCart(${productDTO.id}, document.getElementById('sst').value)|">
+							Add to Cart
+						</a>	 -->
+						<a href="#" class="social-info add-to-cart" data-product-id="${productDTO.id}"><span class="ti-bag"></span><p class="hover-text">Add to Cart</p></a>
+
 					</div>
 				</div>				
 			</div>
@@ -389,7 +397,7 @@
 	</footer>
 	<!-- End footer Area -->
 
-	<script src="../js/vendor/jquery-2.2.4.min.js"></script>
+	<!-- <script src="../js/vendor/jquery-2.2.4.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
 		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
 		crossorigin="anonymous"></script>
@@ -399,11 +407,25 @@
 	<script src="../js/jquery.sticky.js"></script>
 	<script src="../js/nouislider.min.js"></script>
 	<script src="../js/jquery.magnific-popup.min.js"></script>
-	<script src="../js/owl.carousel.min.js"></script>
+	<script src="../js/owl.carousel.min.js"></script> -->
 	<!--gmaps Js-->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="../js/gmaps.min.js"></script>
-	<script src="../js/main.js"></script>
+	<script src="../js/main.js"></script> -->
+	
+	<!-- Other scripts that depend on jQuery should go after this -->
+
+	<script th:src="@{/js/vendor/bootstrap.min.js}"></script>
+	<script th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+	<script th:src="@{/js/jquery.nice-select.min.js}"></script>
+	<script th:src="@{/js/jquery.sticky.js}"></script>
+	<script th:src="@{/js/nouislider.min.js}"></script>
+	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+
+	
+	
 	<script>
 		function increaseQuantity() {
 			var result = document.getElementById('sst');
@@ -420,8 +442,42 @@
 				result.value = qty - 1;
 			}
 		}
+
+		$(document).ready(function (e){
+
+			$(document).on('click', '.add-to-cart', function (e) {
+				e.preventDefault(); // Prevent default link behavior
+				console.log("hello, from sharbel!");
+				// Get the product ID from the data attribute
+				const productId = $(this).data('product-id');
+				const quantity =  document.getElementById('sst'); // Default quantity to 1
+				// AJAX GET request to add the product to the cart
+				$.ajax({
+					url: '/cart/add', // The endpoint for adding to the cart
+					type: 'GET',
+					data: {
+						productId: productId,
+						quantity: quantity
+					},
+					success: function (response) {
+						// Success: handle the response (e.g., update cart UI, show notification)
+						alert('Product added to cart successfully!');
+						// Optionally update the cart count or other UI elements
+						console.log("hello, from sharbel!");
+					},
+					error: function (xhr, status, error) {
+						// Error: handle the error (e.g., show error message)
+						console.log(status)
+						console.log(error)
+						alert('Failed to add product to cart. Please try again.');
+					}
+				});
+			});
+
+		}
+
+		)
 	</script>
-	../
 </body>
 
 </html>

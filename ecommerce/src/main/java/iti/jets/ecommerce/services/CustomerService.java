@@ -53,6 +53,7 @@ public class CustomerService {
 
         // Fetch the categories (interests) based on the IDs
         Set<Category> selectedCategories = new HashSet<>();
+        
         if (customerDTO.getCategoriesIds() != null) {
             for (Integer categoryId : customerDTO.getCategoriesIds()) {
                 Category category = categoryRepository.findById(categoryId).orElse(null);

@@ -7,6 +7,7 @@ import iti.jets.ecommerce.services.CustomUserDetailsService;
 import iti.jets.ecommerce.services.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,49 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private ApplicationContext context;
 
+
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        System.out.println("URL FROM JWT-FILTER : "+request.getRequestURI());
         String authHeader = request.getHeader("Authorization");
+        System.out.println("Authorization : "+authHeader);
         String token = null;
         String userName = null;
+
+        // Check for existing authentication in the security context
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            // If authenticated, check if they are trying to access login or register pages
+            if (request.getRequestURI().equals("/api/auth/login") || request.getRequestURI().equals("/api/auth/register")) {
+                // Redirect if user is already authenticated
+                System.out.println("user is already authenticated from context");
+                successHandler.onAuthenticationSuccess(request,response,SecurityContextHolder.getContext().getAuthentication());
+                return;
+            }
+        }
 
         if(authHeader != null && authHeader.startsWith("Bearer ")){
             token = authHeader.substring(7);
             userName = jwtService.getUsernameFromJwtToken(token);
+        }
+
+
+
+        // If no token from header, check for cookies
+        if (userName == null) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("token".equals(cookie.getName())) {
+                        token = cookie.getValue(); // Get the token from the cookie
+                        userName = jwtService.getUsernameFromJwtToken(token);
+                        break;
+                    }
+                }
+            }
         }
 
         // check it's not null and auth
@@ -50,8 +84,15 @@ public class JwtFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                // If the user is logging in and is already authenticated, call success handler
+                if (request.getRequestURI().equals("/api/auth/login")|| request.getRequestURI().equals("/api/auth/register")) {
+                    successHandler.onAuthenticationSuccess(request, response, authToken);
+                }
+                System.out.println("Authenticated as: " + authToken.getPrincipal());
+                System.out.println("Current authentication in context: " + SecurityContextHolder.getContext().getAuthentication());
             }
         }
+        System.out.println("final authentication in context: " + SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
     }
 }

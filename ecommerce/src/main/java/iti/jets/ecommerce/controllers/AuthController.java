@@ -1,9 +1,12 @@
 package iti.jets.ecommerce.controllers;
 
+import iti.jets.ecommerce.config.CustomAuthenticationSuccessHandler;
 import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.dto.LoginDTO;
 import iti.jets.ecommerce.services.CategoryService;
 import iti.jets.ecommerce.services.CustomerService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.GrantedAuthority;
 import iti.jets.ecommerce.services.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,7 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+
     @Autowired
     private JWTService jwtService;
 
@@ -55,7 +59,7 @@ public class AuthController {
     
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error",required = false) String error) {
+    public String login(@RequestParam(value = "error",required = false) String error, HttpServletRequest request) {
         return "login";
     }
 

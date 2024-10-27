@@ -20,10 +20,8 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Service
 public class CartService {
@@ -165,12 +163,13 @@ public class CartService {
         if (cartItems != null && !cartItems.isEmpty()) {
             // Convert cartItems to a JSON string
             String cartJson = convertCartToJson(cartItems);
+            String base64Cart = Base64.getEncoder().encodeToString(cartJson.getBytes(StandardCharsets.UTF_8)); // Encode to Base64
 
             // Create a cookie to store the cart data
-            Cookie cartCookie = new Cookie("cart", cartJson);
+            Cookie cartCookie = new Cookie("cart", base64Cart);
             cartCookie.setMaxAge(60 * 60 * 24 * 7); // Cookie valid for 7 days
             cartCookie.setPath("/"); // Set the path to ensure the cookie is available throughout the app
-
+            cartCookie.setHttpOnly(false);
            return cartCookie;
         }
         return null;
@@ -184,6 +183,7 @@ public class CartService {
                 if (cookie.getName().equals("cart")) {
                     // Deserialize the cookie's value (JSON string) back into a list of CartItemDTO
                     String cartJson = cookie.getValue();
+                    cartJson = new String(Base64.getDecoder().decode(cartJson), StandardCharsets.UTF_8);
                     List<CartItemDTO> cart = convertJsonToCart(cartJson);
                     session.setAttribute("cart", cart);
                     return cart;
