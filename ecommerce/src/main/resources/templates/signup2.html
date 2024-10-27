@@ -29,7 +29,7 @@
 
         /* Header Styling */
         .header_area {
-            background-color: #666b70; /* Darker color for contrast */
+            background-color: #343a40; /* Darker color for contrast */
             padding: 15px 30px; /* Add padding for spacing */
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
@@ -167,18 +167,19 @@
     <!-- Signup Form -->
     <div class="wrapper">
         <div class="inner">
-            <form id="registrationForm" th:action="@{/register}" method="post">
+            <form id="registrationForm" th:action="@{/register}" method="post" th:object="${customerDTO}">
                 <h3>Sign Up</h3>
-
+            
                 <!-- User Information Fields -->
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Full Name" required>
+                    <input type="text" id="name" name="name" th:field="*{name}" class="form-control" required>
                 </div>
-
+            
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+                    <input type="text" id="username" name="username" th:field="*{username}" class="form-control" required oninput="checkUsername()">
+                    <span id="usernameFeedback" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -253,6 +254,44 @@
     <footer class="footer-area">
         <p class="footer-text">&copy; 2024 WatchAt. All Rights Reserved.</p>
     </footer>
+
+
+
+
+    <!-- ================================ The script of ajax ================================ -->
+    <script>
+        function checkUsername() {
+            const username = document.getElementById("username").value;
+            const feedback = document.getElementById("usernameFeedback");
+
+            if (username.length < 3) {
+                feedback.textContent = "Username must be at least 3 characters.";
+                return;
+            }
+
+            fetch(`/api/auth/check-username?username=${username}`)
+                .then(response => response.json())
+                .then(isAvailable => {
+                    if (isAvailable) {
+                        feedback.textContent = "Username is available";
+                        feedback.classList.remove("text-danger");
+                        feedback.classList.add("text-success");
+                    } else {
+                        feedback.textContent = "Username is already taken";
+                        feedback.classList.remove("text-success");
+                        feedback.classList.add("text-danger");
+                    }
+                })
+                .catch(error => {
+                    feedback.textContent = "Error checking username";
+                    feedback.classList.add("text-danger");
+                });
+        }
+
+
+
+
+    </script>
 
     <!-- Bootstrap & jQuery JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

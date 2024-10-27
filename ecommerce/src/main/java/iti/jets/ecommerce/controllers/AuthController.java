@@ -25,7 +25,10 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerService customerService; 
+    
+    @Autowired
+    private CategoryService category;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -39,13 +42,14 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error",required = false) String error) {
         return "login";
     }
 
     @GetMapping("/registeration-form")
     public String showRegisterationForm(Model  model) {
         CustomerDTO customerDTO = new CustomerDTO();
+        model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("customerDTO", customerDTO);
         return "signup2";
     }
@@ -75,5 +79,11 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "Login Failed"));
         }
     }
-    
+
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> checkUsernameAvailability(@RequestParam("username") String username) {
+        boolean isAvailable = customerService.isUsernameAvailable(username);
+        return ResponseEntity.ok(isAvailable);
+    }    
 }
