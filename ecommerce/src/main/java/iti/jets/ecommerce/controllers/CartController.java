@@ -28,7 +28,7 @@ public class CartController {
     @GetMapping("/add")
     public ResponseEntity<CartItemDTO> addToCart( @RequestParam int productId, @RequestParam int quantity,HttpServletRequest request,HttpServletResponse response) {
         try {
-
+            System.out.println("HEloo adding laning");
             CartItemDTO cartItem = cartService.addProductToCart(request.getSession(), productId, quantity);
             List<CartItemDTO> test = (List<CartItemDTO>)request.getSession().getAttribute("cart");
             Cookie cookie = cartService.persistCartInCookie(request.getSession());
