@@ -39,23 +39,29 @@
             align-items: center;
             transition: background-color 0.3s ease;
         }
+
         .card-option:hover {
             background-color: #f7f7f7;
         }
+
         .card-option input[type="radio"] {
             margin-right: 10px;
         }
+
         .card-option label {
             margin: 0;
             cursor: pointer;
             font-weight: bold;
         }
+
         .card-option label span {
             color: #007bff;
         }
+
         .card-option label .card-number {
             font-weight: normal;
         }
+
         .card-option label .exp-date {
             font-size: 0.9em;
             color: #888;
@@ -295,8 +301,6 @@
                             <br>
                         </div>
                     </div>
-
-
                 </div>
 
                 <!-- Right Column for Order Summary -->
@@ -313,6 +317,16 @@
                             <div id="total-price"></div>
                         </ul>
 
+                        <li style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px">
+                            <input type="text" id="coupon-code" placeholder="Enter coupon code"
+                                   style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;" />
+                            <button id="apply-coupon"
+                                    style="padding: 8px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                Apply
+                            </button>
+                        </li>
+                        <div id="message" class="message"></div>
+                        <br>
                         <a class="primary-btn" id="place-order-btn" href="confirmation.html">Place Order</a>
                     </div>
                 </div>
@@ -430,8 +444,12 @@
 
 <script>
 
-    const customerId = 12; // get it from the paymentRequestDTO
-    const orderId = 1; // get it from the paymentRequestDTO
+    // get all important vars here
+    // customerId, country , total
+    const customerId = 12; // get it from the cart
+    const orderId = 1; // get it from the cart
+    let country = ""
+    let finalTotal = 0;
 
     // =======================================================
     // Function to load the user's saved address using AJAX
@@ -442,9 +460,10 @@
             method: 'GET',
             success: function (address) {
                 // Prepare the address HTML
+                country = address.country;
                 let addressHTML = '';
                 if (address && address.name) {
-                     addressHTML = `
+                    addressHTML = `
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                         <tbody>
                             <tr>
@@ -615,8 +634,6 @@
             });
 
 
-
-
             orders.forEach(function (order) {
                 var orderItemsHTML = `
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
@@ -640,41 +657,41 @@
                     `;
 
 
-
                 var subTotal = `
                     <li><a>Subtotal <span>${order.totalPrice}</span></a></li>
                 `;
 
                 var shipping = `
-                    <li><a>Shipping <span>${order.shippingCost}</span></a></li>
+                    <li><a>Shipping <span id="shipping-value">${order.shippingCost}</span></a></li>
                 `;
-                    var total = `
-                    <li><a> Total <span>${order.totalPrice}</span></a></li>
+                var total = `
+                    <li><a> Total <span id="total-price-value">${order.totalPrice}</span></a></li>
+
                 `;
-                var couponHTML = `
-                <li style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px">
-                    <input type="text" id="coupon-code" placeholder="Enter coupon code"
-                           style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
-                    <button id="apply-coupon"
-                            style="padding: 8px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                        Apply
-                    </button>
-                </li>
-            `;
+
+                // var couponHTML = ` <li
+                //     style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px">
+                //     <input type="text" id="coupon-code" placeholder="Enter coupon code"
+                //            style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;"/>
+                //     <button id="apply-coupon"
+                //             style="padding: 8px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                //         Apply
+                //     </button>
+                // </li>
+                // <div id="message" class="message"></div>
+                //     `;
 
 
                 $('#order-items').append(orderItemsHTML);
                 $('#subtotal').append(subTotal);
                 $('#shipping-cost').append(shipping);
                 $('#total-price').append(total);
-                $('#total-price').after(couponHTML);
+                // $('#total-price').after(couponHTML);
 
-                });
+            });
 
 
         }
-
-
 
 
     });
@@ -695,24 +712,21 @@
                 if (cards.length > 0) {
                     cards.forEach(card => {
                         const cardHTML = `
-    <div class="card-option" style="border: 1px solid #ddd; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer;">
-        <input type="radio" id="card-${card.id}" name="saved-card" value="Card-${card.id}" style="margin-right: 15px;">
-        <label for="card-${card.id}" style="display: block; width: 100%;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <span style="font-size: 1.1em; font-weight: bold; color: #007bff;">${card.type}</span>
-                    <span style="color: #555;">ending in ****${card.number.slice(-4)}</span>
-                </div>
-                <div style="font-size: 0.9em; color: #888;">
-                    Exp: ${card.expMonth}/${card.expYear}
-                </div>
-            </div>
-        </label>
-    </div>
-`;
-
-
-
+                        <div class="card-option" style="border: 1px solid #ddd; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer;">
+                            <input type="radio" id="card-${card.id}" name="saved-card" value="Card-${card.id}" style="margin-right: 15px;">
+                            <label for="card-${card.id}" style="display: block; width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <span style="font-size: 1.1em; font-weight: bold; color: #007bff;">${card.type}</span>
+                                        <span style="color: #555;">ending With ****${card.number.slice(-4)}</span>
+                                    </div>
+                                    <div style="font-size: 0.9em; color: #888;">
+                                        Exp: ${card.expMonth}/${card.expYear}
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    `;
 
 
                         savedCardsSection.insertAdjacentHTML("beforeend", cardHTML);
@@ -855,6 +869,56 @@
         loadSavedAddress();
         loadSavedCards();
     };
+
+    // handle promotion
+
+    document.getElementById("apply-coupon").addEventListener("click", function () {
+        document.getElementById("message").value = "";
+        const couponCode = document.getElementById("coupon-code").value;
+
+        if (!couponCode) {
+            displayMessage("Please enter a coupon code.", "error");
+            return;
+        }
+
+        // Send the request to the promotions API
+        validatePromotion(couponCode, country);
+    });
+
+    function validatePromotion(promotionName, country) {
+        fetch(`/api/promotions/validate?promotionName=${encodeURIComponent(promotionName)}&country=${encodeURIComponent(country)}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data) {
+                    //displayMessage(`Promotion applied: ${data.discountPercentage}% off and free shipping: ${data.freeShipping}`, "success");
+                    displayMessage(`Congratulations`, "success");
+                    // handle discount percent
+
+                    let totalPrice = Number.parseInt(document.getElementById("total-price-value").textContent);
+                    let discount = totalPrice * data.discountPercentage / 100;
+                    console.log(totalPrice)
+                    console.log(discount)
+                    finalTotal = totalPrice - discount;
+                    document.getElementById("total-price-value").textContent = finalTotal;
+                    // handle free shipping
+                    let shipmentCost = data.freeShipping == true ? 0 : 50;
+                    document.getElementById("shipping-value").textContent = shipmentCost.toString();
+                } else {
+                    displayMessage("Invalid promotion code.", "error");
+                }
+            })
+            .catch(error => {
+                displayMessage("Invalid promo code. Please try again.", "error");
+                console.error("Error:", error);
+            });
+    }
+
+    function displayMessage(message, type) {
+        const messageDiv = document.getElementById("message");
+        messageDiv.textContent = message;
+        messageDiv.style.color = type === "success" ? "green" : "red";
+    }
 
 
 </script>

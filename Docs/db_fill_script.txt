@@ -99,11 +99,6 @@ INSERT INTO `ecommerce`.`product` (`name`, `brand`, `price`, `quantity`, `descri
 ('Novel', 'Penguin', 20.00, 80, 'Best-selling novel', 'https://example.com/novel.jpg', FALSE, 1, 3);
 
 -- Insert dummy data into `card`
-INSERT INTO `ecommerce`.`card` (`card_type`, `card_number`, `exp_month`, `exp_year`, `cvv`, `is_deleted`, `customer_id`) VALUES
-('Visa', '4111111111111111', 12, 2025, '123', FALSE, 11),
-('MasterCard', '5500000000000004', 10, 2024, '456', FALSE, 12),
-('Amex', '340000000000009', 8, 2023, '789', FALSE, 13);
-
 INSERT INTO card (card_type, card_number, exp_month, exp_year, cvv, is_deleted, customer_id)
 VALUES
     ('Visa', '4111111111111111', 12, 2025, '123', 0, 11),
@@ -134,3 +129,17 @@ INSERT INTO `ecommerce`.`payment` (`order_id`, `card_id`, `payment_method`, `pay
 (1, 1, 'Card', 'Completed', 'txn12345', 1250.00, 'USD', 'customer1@example.com', NULL, '2024-10-10 16:00:00'),
 (2, 2, 'Card', 'Completed', 'txn12346', 530.00, 'USD', 'customer2@example.com', NULL, '2024-10-11 10:30:00'),
 (3, 3, 'Card', 'Completed', 'txn12347', 50.00, 'USD', 'customer3@example.com', NULL, '2024-10-12 19:00:00');
+
+
+-- Inserting dummy promotions into the Promotion table
+-- Insert dummy data into `promotion`
+INSERT INTO `ecommerce`.`promotion` 
+    (`name`, `discount_percentage`, `free_shipping`, `country`, `start_date`, `end_date`) 
+VALUES 
+    ('validcode1', 15.00, TRUE, 'USA', '2024-10-01', '2024-12-01'),
+    ('Winter Clearance', 20.00, FALSE, 'Canada', '2024-12-01', '2024-12-31'),
+    ('Black Friday', 50.00, FALSE, 'UK', '2024-11-25', '2024-11-28'),
+    ('Holiday Deal', 25.00, FALSE, 'Germany', '2024-12-15', '2025-01-05'),
+    ('New Year Offer', 30.00, FALSE, 'Australia', '2024-12-31', '2025-01-10'),
+    ('Eid Special', 10.00, FALSE, 'UAE', '2024-04-01', '2024-04-30');
+

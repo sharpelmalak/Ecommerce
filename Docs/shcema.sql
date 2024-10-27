@@ -221,6 +221,23 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`payment` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
+-- -----------------------------------------------------
+-- Table `ecommerce`.`promotion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ecommerce`.`promotion` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `discount_percentage` DECIMAL(5, 2),  -- Stores discount as a percentage (e.g., 10.00)
+  `free_shipping` BOOLEAN NOT NULL,     -- True or False for free shipping
+  `country` VARCHAR(100) NULL,          -- Geographic region (e.g., country or city)
+  `start_date` DATE NULL,               -- Promotion start date
+  `end_date` DATE NULL,                 -- Promotion end date
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
