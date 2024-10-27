@@ -147,6 +147,34 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
+        function getTokenFromCookies() {
+            const name = "token=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookies = decodedCookie.split(';');
+            console.log("splitted cookies")
+            console.log(cookies)
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(name) === 0) {
+                    return cookie.substring(name.length, cookie.length);
+                }
+            }
+            return "";
+        }
+
+        console.log("document.cookie:", document.cookie);
+        // Usage
+        const token = getTokenFromCookies();
+        if (token) {
+            console.log("Token from cookie:", token);
+        }
+        else {
+            console.log("can't parse sharpel")
+        }
+
         // Modal open and close logic
         document.getElementById("addProductBtn").addEventListener("click", function () {
             clearFormData();
@@ -172,6 +200,7 @@
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             })
                 .then(response => {

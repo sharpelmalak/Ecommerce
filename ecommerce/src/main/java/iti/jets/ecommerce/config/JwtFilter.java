@@ -31,7 +31,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        System.out.println("URL FROM JWT-FILTER : "+request.getRequestURI());
         String authHeader = request.getHeader("Authorization");
+        System.out.println("Authorization : "+request.getRequestURI());
         String token = null;
         String userName = null;
 
@@ -50,8 +52,11 @@ public class JwtFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("Authenticated as: " + authToken.getPrincipal());
+                System.out.println("Current authentication in context: " + SecurityContextHolder.getContext().getAuthentication());
             }
         }
+        System.out.println("final authentication in context: " + SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
     }
 }

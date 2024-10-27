@@ -10,7 +10,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -59,6 +61,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+//                .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .anonymous(a -> a.disable())
         .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(auth -> auth
                // Allow access to Swagger UI and OpenAPI documentation without authentication
@@ -72,9 +76,11 @@ public class SecurityConfig {
                                         "/api/auth/register",
                                         "/api/g/**",
                                         "/shop/**",
+                                        "/category.html",
                                         "/api/customers/**",
                                         "/api/products/**",
                                         "/css/**", "/js/**", "/img/**","/fonts/**",
+                                "/favicon.ico",
                                 "/home"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
@@ -92,9 +98,17 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo.userService(this.oauth2UserService()))
                         .permitAll() // Allow access to login page for OAuth2
                 )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            System.out.println("Blocked access to: " + request.getRequestURI());
+                            System.out.println("Reason: " + authException.getMessage());
+                            response.sendRedirect("/api/auth/login");
+                        })
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
         DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
