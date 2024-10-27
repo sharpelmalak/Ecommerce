@@ -43,7 +43,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             response.sendRedirect("/api/admin/products");
         } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
-            response.sendRedirect("/test");
+            response.sendRedirect("/home");
         } else {
             response.sendRedirect("/default");  // Fallback URL if role not matched
         }

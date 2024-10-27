@@ -3,10 +3,7 @@ package iti.jets.ecommerce.services;
 import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.models.*;
 import iti.jets.ecommerce.mappers.CustomerMapper;
-import iti.jets.ecommerce.repositories.CategoryRepository;
-import iti.jets.ecommerce.repositories.CustomerRepository;
-import iti.jets.ecommerce.repositories.OrderRepository;
-import iti.jets.ecommerce.repositories.ProductRepository;
+import iti.jets.ecommerce.repositories.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +17,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
-    
+
+
     private final CustomerRepository customerRepository;
     private PasswordEncoder passwordEncoder;
     private final OrderRepository orderRepository;
@@ -31,6 +29,11 @@ public class CustomerService {
 
     @Autowired
     private PromotionService promotionService;
+
+
+    @Autowired
+
+    private UserRepository userRepository;
   
 
     // @Autowired does not have any effect if you are using the constructor : haroun
@@ -146,7 +149,7 @@ public class CustomerService {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return customerRepository.findByUsername(username).isEmpty();
+        return userRepository.findByUsername(username).isEmpty();
     }
 
     

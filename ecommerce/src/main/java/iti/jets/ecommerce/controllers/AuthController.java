@@ -5,8 +5,10 @@ import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.dto.LoginDTO;
 import iti.jets.ecommerce.services.CategoryService;
 import iti.jets.ecommerce.services.CustomerService;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.GrantedAuthority;
 import iti.jets.ecommerce.services.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,16 +40,23 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
+
 
     @Autowired
     private JWTService jwtService;
 
     @PostMapping("/register")
-    public String register(@ModelAttribute CustomerDTO customerDTO,Model model) {
+    public String register(@ModelAttribute CustomerDTO customerDTO, Model model, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Call the service to save the user
         boolean isRegistered = customerService.RegisterCustomer(customerDTO);
         
         if (isRegistered) {
+            successHandler.onAuthenticationSuccess(request,response,authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(
+                            customerDTO.getUsername(), customerDTO.getPassword()))
+            );
             model.addAttribute("successMessage", "Registration successful! Please log in.");
             return "signup3"; // Return to signup form if registration fails            
         } else {
@@ -63,7 +73,7 @@ public class AuthController {
         return "login";
     }
 
-    @GetMapping("/registeration-form")
+    @GetMapping("/register")
     public String showRegisterationForm(Model  model) {
         CustomerDTO customerDTO = new CustomerDTO();
         model.addAttribute("categories", categoryService.getAllCategories());
