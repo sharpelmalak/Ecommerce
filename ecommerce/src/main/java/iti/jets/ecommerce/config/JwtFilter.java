@@ -47,6 +47,7 @@ public class JwtFilter extends OncePerRequestFilter {
             // If authenticated, check if they are trying to access login or register pages
             if (request.getRequestURI().equals("/api/auth/login") || request.getRequestURI().equals("/api/auth/register")) {
                 // Redirect if user is already authenticated
+                System.out.println("user is already authenticated from context");
                 successHandler.onAuthenticationSuccess(request,response,SecurityContextHolder.getContext().getAuthentication());
                 return;
             }
@@ -84,7 +85,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
                 // If the user is logging in and is already authenticated, call success handler
-                if (request.getRequestURI().equals("/api/auth/login")) {
+                if (request.getRequestURI().equals("/api/auth/login")|| request.getRequestURI().equals("/api/auth/register")) {
                     successHandler.onAuthenticationSuccess(request, response, authToken);
                 }
                 System.out.println("Authenticated as: " + authToken.getPrincipal());

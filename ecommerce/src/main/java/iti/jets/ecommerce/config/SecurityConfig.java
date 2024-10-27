@@ -64,7 +64,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .anonymous(a -> a.disable())
         .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(auth -> auth
@@ -79,12 +79,12 @@ public class SecurityConfig {
                                         "/api/auth/register",
                                         "/api/g/**",
                                         "/shop/**",
-                                        "/category.html",
                                         "/api/customers/**",
                                         "/api/products/**",
                                         "/css/**", "/js/**", "/img/**","/fonts/**",
-                                "/favicon.ico",
-                                "/home"
+                                "/home",
+                                "/cart/**",
+                                "/**"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
@@ -97,7 +97,7 @@ public class SecurityConfig {
                         .permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/api/auth/login") // Custom login page for OAuth2
-                        .defaultSuccessUrl("/shop")
+                        .defaultSuccessUrl("/home")
                         .userInfoEndpoint(userInfo -> userInfo.userService(this.oauth2UserService()))
                         .permitAll() // Allow access to login page for OAuth2
                 )
