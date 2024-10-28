@@ -62,6 +62,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             Float maxPrice,
             Pageable pageable);
 
+    Page<Product> findByNameContainingIgnoreCase(
+           String name,
+            Pageable pageable);
+
     @Query("SELECT p FROM Product p WHERE " +
             "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
             "(:brands IS NULL OR p.brand IN :brands) AND " +
