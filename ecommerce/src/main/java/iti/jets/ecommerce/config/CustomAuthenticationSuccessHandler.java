@@ -49,7 +49,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         // Add the cookie to the response
         response.addCookie(jwtCookie);
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-            response.sendRedirect("/api/admin/products");
+            response.sendRedirect("/admin/products");
         } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
             List<CartItemDTO> cartItemDTOList = cartService.loadCart(authentication.getName());
             if (cartItemDTOList != null && !cartItemDTOList.isEmpty()) {

@@ -28,7 +28,7 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired

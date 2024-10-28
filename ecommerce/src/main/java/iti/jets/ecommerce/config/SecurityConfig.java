@@ -74,13 +74,13 @@ public class SecurityConfig {
                                         "/swagger-ui.html",
                                         "/swagger-resources/**",
                                         "/webjars/**",
-                                        "/api/auth/login",
-                                        "/api/auth/register",
-                                        "/api/auth/check-username",
-                                        "/api/g/**",
+                                        "/auth/login",
+                                        "/auth/register",
+                                        "/auth/check-username",
+                                        "/g/**",
                                         "/shop/**",
-                                        "/api/customers/**",
-                                        "/api/products/**",
+                                        "/customers/**",
+                                        "/products/**",
                                         "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
                                         "/home",
                                         "/cart",
@@ -93,17 +93,17 @@ public class SecurityConfig {
                                         "/**",
                                         "/error"
                                 ).permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form-> form
-                        .loginPage("/api/auth/login")
+                        .loginPage("/auth/login")
                         .successHandler(successHandler)
-                        .failureUrl("/api/auth/login?error=true")
+                        .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/api/auth/login") // Custom login page for OAuth2
+                        .loginPage("/auth/login") // Custom login page for OAuth2
                         .defaultSuccessUrl("/home")
                         .userInfoEndpoint(userInfo -> userInfo.userService(this.oauth2UserService()))
                         .permitAll() // Allow access to login page for OAuth2
@@ -117,7 +117,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             System.out.println("Blocked access to: " + request.getRequestURI());
                             System.out.println("Reason: " + authException.getMessage());
-                            //response.sendRedirect("/api/auth/login");
+                            //response.sendRedirect("/auth/login");
                         })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

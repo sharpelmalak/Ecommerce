@@ -188,7 +188,7 @@
 						<ul class="nav navbar-nav menu_nav ml-auto">
 							<li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
 							<li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
-							<li class="nav-item active"><a class="nav-link" href="/api/auth/login">Login</a></li>
+							<li class="nav-item active"><a class="nav-link" href="/auth/login">Login</a></li>
 							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
@@ -230,7 +230,7 @@
             </div>
 
             <!-- Signup Form -->
-            <form id="registrationForm" th:action="@{/api/auth/register}" method="post" th:object="${customerDTO}">
+            <form id="registrationForm" th:action="@{/auth/register}" method="post" th:object="${customerDTO}">
                 <h3>Sign Up</h3>
 
                 <!-- User Information Fields -->
@@ -419,7 +419,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 return;
             }
 
-            fetch(`/api/auth/check-username?username=${username}`)
+            fetch(`/auth/check-username?username=${username}`)
                 .then(response => response.json())
                 .then(isAvailable => {
                     if (isAvailable) {

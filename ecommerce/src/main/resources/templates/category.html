@@ -349,7 +349,7 @@
 		}
 
 		function fetchProducts() {
-			$.get(`/api/products/filter?page=${currentPage}`, function(data) {
+			$.get(`/products/filter?page=${currentPage}`, function(data) {
 				totalPages = data.totalPages;
 				displayProducts(data.content);
 				updatePagination(totalPages, data.pageable.pageNumber);
@@ -423,7 +423,7 @@
 			};
 
 			console.log("filterd"+JSON.stringify(data))
-			$.get('/api/products/filter', data, function(response) {
+			$.get('/products/filter', data, function(response) {
 				totalPages = response.totalPages;
 				displayProducts(response.content);
 				updatePagination(totalPages, response.pageable.pageNumber);
@@ -435,14 +435,14 @@
 		}
 
 		function loadBrands() {
-			$.get('/api/products/brands', function(data) {
+			$.get('/products/brands', function(data) {
 				const brandContainer = $('#brand-checkboxes').empty();
 				data.forEach(brand => brandContainer.append(createCheckbox('brands', brand)));
 			}).fail(error => console.error('Error fetching brands:', error));
 		}
 
 		function loadMaterials() {
-			$.get('/api/products/materials', function(data) {
+			$.get('/products/materials', function(data) {
 				const materialContainer = $('#material-checkboxes').empty();
 				data.forEach(material => materialContainer.append(createCheckbox('materials', material)));
 			}).fail(error => console.error('Error fetching materials:', error));
@@ -461,7 +461,7 @@
 			}
 
 			$.ajax({
-				url: '/api/products/search',  // Endpoint for suggestions
+				url: '/products/search',  // Endpoint for suggestions
 				type: 'GET',
 				data: { name: query },
 				success: function(suggestions) {
@@ -489,7 +489,7 @@
 			if (query === "") return false;
 
 			$.ajax({
-				url: '/api/products/result',  // Endpoint for full search
+				url: '/products/result',  // Endpoint for full search
 				type: 'GET',
 				data: { name : query },
 				success: function(products) {

@@ -168,7 +168,7 @@
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
-                            <li class="nav-item active"><a class="nav-link" href="/api/auth/login">Logout</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="/auth/login">Logout</a></li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
@@ -459,7 +459,7 @@
                 return;
             }
 
-            fetch(`/api/auth/check-username?username=${username}`)
+            fetch(`/auth/check-username?username=${username}`)
                 .then(response => response.json())
                 .then(isAvailable => {
                     if (isAvailable) {

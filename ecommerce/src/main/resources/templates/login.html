@@ -159,14 +159,14 @@
 						<div class="hover">
 							<h4>New to our website?</h4>
 							<p>There are advances being made in science and technology everyday, and a good example of this is the</p>
-							<a class="primary-btn" href="/api/auth/register">Create an Account</a>
+							<a class="primary-btn" href="/auth/register">Create an Account</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-6">
 					<div class="login_form_inner">
 						<h3>Log in to enter</h3>
-						<form class="row login_form" id="contactForm" method="post" action="/api/auth/login">
+						<form class="row login_form" id="contactForm" method="post" action="/auth/login">
 							<div class="col-md-12 form-group">
 								<input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
 							</div>
@@ -326,7 +326,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!--				const keepLoggedIn = $('#keepLoggedIn').is(':checked');-->
 
 <!--				$.ajax({-->
-<!--					url: '/api/auth/login',-->
+<!--					url: '/auth/login',-->
 <!--					type: 'POST',-->
 <!--					contentType: 'application/json',-->
 <!--					data: JSON.stringify({ username: username, password: password }),-->
@@ -375,7 +375,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!--		// 	messageElement.style.display = 'none';-->
 <!--		//-->
 <!--		// 	// AJAX request to the backend-->
-<!--		// 	fetch('/api/auth/login', {-->
+<!--		// 	fetch('/auth/login', {-->
 <!--		// 		method: 'POST',-->
 <!--		// 		headers: {-->
 <!--		// 			'Content-Type': 'application/json',-->
@@ -412,7 +412,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!--<script>-->
 <!--	const token = localStorage.getItem('jwtToken');-->
 
-<!--	fetch('/api/secure-endpoint', {-->
+<!--	fetch('/secure-endpoint', {-->
 <!--		method: 'GET',-->
 <!--		headers: {-->
 <!--			'Authorization': `Bearer ${token}`,-->
