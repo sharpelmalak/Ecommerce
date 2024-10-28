@@ -32,7 +32,7 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a href="cart?action=listByUser" class="cart">
-								<span class="ti-bag"></span>
+								<span class="ti-shopping-cart"></span>
 							</a>
 							<ul class="dropdown-menu">
 								<li class="nav-item"><a class="nav-link" href="cart?action=listByUser">Cart</a></li>
