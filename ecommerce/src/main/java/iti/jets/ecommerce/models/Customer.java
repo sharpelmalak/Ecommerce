@@ -58,7 +58,7 @@ public class Customer extends User implements java.io.Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private Set<Card> cards = new HashSet<>(0);
 
-    @Column(name = "is_deleted", nullable = false)
+    @Column(name = "is_deleted", nullable = true)
     private boolean isDeleted = false;
 
 

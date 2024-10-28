@@ -5,7 +5,7 @@
 	<!-- Mobile Specific Meta -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Favicon-->
-	<link rel="shortcut icon" href="../img/fav.png">
+	<link rel="shortcut icon" th:href="@{/img/fav.png}">
 	<!-- Author Meta -->
 	<meta name="author" content="CodePixar">
 	<!-- Meta Description -->
@@ -115,7 +115,7 @@
 							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="#" class="cart"><span class="ti-shopping-cart"></span></a></li>
+							<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
 							<li class="nav-item">
 								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							</li>
@@ -240,6 +240,34 @@
 			$('#category-list').on('click', 'a', handleCategoryClick);
 			$('#pagination-controls').on('click', 'a', handlePaginationClick);
 			$(document).on('change', 'input[name="brands"], input[name="materials"], #min-price, #max-price', fetchFilteredProducts);
+			$(document).on('click', '.add-to-cart', function (e) {
+				e.preventDefault(); // Prevent default link behavior
+
+				// Get the product ID from the data attribute
+				const productId = $(this).data('product-id');
+				const quantity = 1; // Default quantity to 1
+
+				// AJAX GET request to add the product to the cart
+				$.ajax({
+					url: '/cart/add', // The endpoint for adding to the cart
+					type: 'GET',
+					data: {
+						productId: productId,
+						quantity: quantity
+					},
+					success: function (response) {
+						// Success: handle the response (e.g., update cart UI, show notification)
+						alert('Product added to cart successfully!');
+						// Optionally update the cart count or other UI elements
+					},
+					error: function (xhr, status, error) {
+						// Error: handle the error (e.g., show error message)
+						console.log(status)
+						console.log(error)
+						alert('Failed to add product to cart. Please try again.');
+					}
+				});
+			});
 		});
 
 		function loadCategories() {
@@ -307,16 +335,18 @@
 							<h6 class="l-through">$${(product.price * 1.4).toFixed(2)}</h6>
 						</div>
 						<div class="prd-bottom">
+							<a href="#" class="social-info add-to-cart" data-product-id="${product.id}"><span class="ti-bag"></span><p class="hover-text">Add to bag</p></a>
 							<a href="#" class="social-info"><span class="ti-shopping-cart"></span><p class="hover-text">Add to Cart</p></a>
 							<a href="#" class="social-info"><span class="lnr lnr-heart"></span><p class="hover-text">Wishlist</p></a>
 							<a href="#" class="social-info"><span class="lnr lnr-sync"></span><p class="hover-text">Compare</p></a>
-							<a href="#" class="social-info"><span class="lnr lnr-move"></span><p class="hover-text">View more</p></a>
+							<a href="/details/${product.id}" class="social-info"><span class="lnr lnr-move"></span><p class="hover-text">View more</p></a>
 						</div>
 					</div>
 				</div>
 			</div>
 		`;
 		}
+
 
 		function updatePagination(totalPages, currentPage) {
 			const paginationControls = $('#pagination-controls').empty();

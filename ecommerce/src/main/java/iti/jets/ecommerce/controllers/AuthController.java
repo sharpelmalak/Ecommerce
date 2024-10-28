@@ -1,8 +1,14 @@
 package iti.jets.ecommerce.controllers;
 
+import iti.jets.ecommerce.config.CustomAuthenticationSuccessHandler;
 import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.dto.LoginDTO;
+import iti.jets.ecommerce.services.CategoryService;
 import iti.jets.ecommerce.services.CustomerService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.GrantedAuthority;
 import iti.jets.ecommerce.services.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +18,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,22 +32,53 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerService customerService; 
+    
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
+
+
+    @Autowired
     private JWTService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerDTO> register(@RequestBody CustomerDTO customerDTO) {
-        return ResponseEntity.ok(customerService.RegisterCustomer(customerDTO));
+    public String register(@ModelAttribute CustomerDTO customerDTO, Model model, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Call the service to save the user
+        boolean isRegistered = customerService.RegisterCustomer(customerDTO);
+        
+        if (isRegistered) {
+            successHandler.onAuthenticationSuccess(request,response,authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(
+                            customerDTO.getUsername(), customerDTO.getPassword()))
+            );
+            model.addAttribute("successMessage", "Registration successful! Please log in.");
+            return "signup3"; // Return to signup form if registration fails            
+        } else {
+            model.addAttribute("errorMessage", "Registration failed. Due to Username or Email Exists");
+            model.addAttribute("customerDTO", customerDTO); // Preserve the data
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "login"; // Return to signup form if registration fails
+        }
     }
+    
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error",required = false) String error) {
+    public String login(@RequestParam(value = "error",required = false) String error, HttpServletRequest request) {
         return "login";
+    }
+
+    @GetMapping("/register")
+    public String showRegisterationForm(Model  model) {
+        CustomerDTO customerDTO = new CustomerDTO();
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("customerDTO", customerDTO);
+        return "signup3";
     }
 
     @PostMapping(value = "/login", consumes = {"application/json"}, produces = "application/json")
@@ -67,5 +106,11 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "Login Failed"));
         }
     }
-    
+
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> checkUsernameAvailability(@RequestParam("username") String username) {
+        boolean isAvailable = customerService.isUsernameAvailable(username);
+        return ResponseEntity.ok(isAvailable);
+    }    
 }

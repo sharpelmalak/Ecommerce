@@ -3,9 +3,7 @@ package iti.jets.ecommerce.services;
 import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.models.*;
 import iti.jets.ecommerce.mappers.CustomerMapper;
-import iti.jets.ecommerce.repositories.CustomerRepository;
-import iti.jets.ecommerce.repositories.OrderRepository;
-import iti.jets.ecommerce.repositories.ProductRepository;
+import iti.jets.ecommerce.repositories.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
-    
+
+
     private final CustomerRepository customerRepository;
     private PasswordEncoder passwordEncoder;
     private final OrderRepository orderRepository;
@@ -29,8 +28,17 @@ public class CustomerService {
     private ModelMapper modelMapper;
 
     @Autowired
+    private CategoryRepository categoryRepository; // Make sure to create this repository
+
+
+    @Autowired
     private PromotionService promotionService;
-  
+
+
+    @Autowired
+
+    private UserRepository userRepository;
+
 
     // @Autowired does not have any effect if you are using the constructor : haroun
     public CustomerService(CustomerRepository customerRepository,ProductRepository productRepository,OrderRepository orderRepository,PasswordEncoder passwordEncoder) {
@@ -39,15 +47,39 @@ public class CustomerService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     /* ==================================================== Registeration  ============================================= */
-    public CustomerDTO RegisterCustomer(CustomerDTO customerDTO) {
+    public boolean RegisterCustomer(CustomerDTO customerDTO) {
+        if (customerRepository.existsByUsername(customerDTO.getUsername())) {
+            return false; // Username already taken
+        }
+
+        // Check if email already exists
+        if (customerRepository.existsByEmail(customerDTO.getEmail())) {
+            return false;
+        }
+
+        // Fetch the categories (interests) based on the IDs
+        Set<Category> selectedCategories = new HashSet<>();
         
-        customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
-        Customer customer = CustomerMapper.toEntity(customerDTO);
-        customerRepository.save(customer);
-        return CustomerMapper.toDto(customer);
+        if (customerDTO.getCategoriesIds() != null) {
+            for (Integer categoryId : customerDTO.getCategoriesIds()) {
+                Category category = categoryRepository.findById(categoryId).orElse(null);
+                if (category != null) {
+                    selectedCategories.add(category);
+                }
+            }
+        }
+
+        // Use the mapper to convert DTO to entity
+        Customer customer = CustomerMapper.toEntity(customerDTO, selectedCategories);
+
+        // Hash the password before saving
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+
+        customerRepository.save(customer); // Save the customer with interests
+        return true; // Registration successful
     }
+
 
     public boolean checkPassword(String rawPassword, String hashedPassword) {
         return passwordEncoder.matches(rawPassword, hashedPassword);
@@ -142,9 +174,9 @@ public class CustomerService {
         }
     }
 
-
-
-    
+    public boolean isUsernameAvailable(String username) {
+        return userRepository.findByUsername(username).isEmpty();
+    }
 
 
     /* =========================== Promotions for customer Based on a specific Region (Country) =========================*/
