@@ -84,14 +84,13 @@
     </style>
 </head>
 <body>
-
     <!-- Sidebar Section -->
     <div class="sidebar">
         <h2>Admin Panel</h2>
-        <a th:href="@{/api/admin/products}">Manage Products</a>
-        <a th:href="@{/api/admin/profile/1}">My Profile</a>
-        <a th:href="@{/api/admin/customers}">Customer Profiles</a>
-        <a th:href="@{/api/admin/add-promotion-form}">Create a Promotion</a>
+        <a th:href="@{/admin/products}">Manage Products</a>
+        <a th:href="@{/admin/profile/1}">My Profile</a>
+        <a th:href="@{/admin/customers}">Customer Profiles</a>
+        <a th:href="@{/admin/add-promotion-form}">Create a Promotion</a>
         <a th:href="@{/api/auth/logout}">Logout</a>
     </div>
 
@@ -100,7 +99,7 @@
         <div class="container-fluid">
             <h2>Create New Promotion</h2>
             <div class="card mt-4">
-                <form th:action="@{/api/admin/promotion}" method="post" class="p-4">
+                <form th:action="@{/admin/promotion}" method="post" class="p-4">
                     <!-- Promotion Name -->
                     <div class="form-group">
                         <label for="name">Promotion Name</label>
@@ -139,7 +138,7 @@
 
                     <!-- Buttons -->
                     <button type="submit" class="btn btn-primary">Create Promotion</button>
-                    <a th:href="@{/api/admin/products}" class="btn btn-secondary ml-2">Cancel</a>
+                    <a th:href="@{/admin/products}" class="btn btn-secondary ml-2">Cancel</a>
                 </form>
             </div>
         </div>

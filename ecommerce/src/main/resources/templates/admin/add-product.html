@@ -127,7 +127,7 @@
     </header>
 
     <section th:if="${!productAdded}">
-        <form th:action="@{/api/admin/product}" method="post">
+        <form th:action="@{/admin/product}" method="post">
             <!-- Hidden field for admin ID -->
             <input type="hidden" name="adminId" th:value="${adminId}" />
 
@@ -175,7 +175,7 @@
             <div class="button-container">
                 <button type="submit" class="btn btn-success">Add Product</button>
                 <button type="button" id="cancelBtn" 
-                        th:onclick="'window.location.href=\'' + @{/api/admin/products} + '\''">Cancel</button> 
+                        th:onclick="'window.location.href=\'' + @{/admin/products} + '\''">Cancel</button> 
             </div>
         </form>
     </section>
