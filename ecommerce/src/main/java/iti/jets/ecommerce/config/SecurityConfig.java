@@ -88,8 +88,8 @@ public class SecurityConfig {
                                         "/cart/add",
                                         "/cart/remove/*",
                                         "/cart/update",
-                                        "/cart/clear"
-
+                                        "/cart/clear",
+                                        "/error"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -71,21 +72,22 @@ public class CartService {
 
                 }
             }
+            session.setAttribute("cart", cart);
         }
-        session.setAttribute("cart", cart);
+
         return result;
     }
 
     // Method to add a product to the cart
-    public CartItemDTO addProductToCart(HttpSession session, int productId, int quantity) throws CartException {
+    public CartItemDTO addProductToCart(HttpSession session,Cookie[]cookies, int productId, int quantity) throws CartException {
         ProductDTO productDTO = productService.getProductById(productId);
         if (productDTO == null || productDTO.getQuantity() < quantity) {
             throw new CartException("Product not available or insufficient quantity.");
         }
 
         List<CartItemDTO> cartItems = (List<CartItemDTO>) session.getAttribute("cart");
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
+        if (cartItems == null || cartItems.isEmpty()) {
+            cartItems = loadCartFromCookie(cookies,session);
         }
 
         CartItemDTO existingCartItem = cartItems.stream()
@@ -129,6 +131,7 @@ public class CartService {
         List<CartItemDTO> cartItems = (List<CartItemDTO>) session.getAttribute("cart");
 
         if (cartItems == null) {
+
             throw new CartException("Cart is empty.");
         }
 
@@ -142,8 +145,13 @@ public class CartService {
         return cartItem;
     }
     // Clear all items from the cart
-    public void clearCart(HttpSession session) {
+    public Cookie clearCart(HttpSession session) {
         session.removeAttribute("cart");
+        Cookie cookie = new Cookie("cart", null);
+        cookie.setPath("/"); // Set the path to match the cookie path
+        cookie.setHttpOnly(false); // Ensure the cookie is only accessible via HTTP(S)
+        cookie.setMaxAge(0); // Set cookie age to 0 to delete it
+        return cookie;
     }
 
     public List<CartItemDTO> getCartItems(HttpSession session,Cookie[] cookies)
@@ -166,7 +174,7 @@ public class CartService {
 
     public Cookie persistCartInCookie(HttpSession session) {
 
-        checkCart(session);
+
         List<CartItemDTO> cartItems = (List<CartItemDTO>) session.getAttribute("cart");
 
         if (cartItems != null && !cartItems.isEmpty()) {
@@ -193,11 +201,14 @@ public class CartService {
                 if (cookie.getName().equals("cart")) {
                     // Deserialize the cookie's value (JSON string) back into a list of CartItemDTO
                     String cartJson = cookie.getValue();
-                    cartJson = new String(Base64.getDecoder().decode(cartJson), StandardCharsets.UTF_8);
-                    List<CartItemDTO> cart = convertJsonToCart(cartJson);
-                    session.setAttribute("cart", cart);
-                    checkCart(session);
-                    return cart;
+                    if(cartJson != null)
+                    {
+                        cartJson = new String(Base64.getDecoder().decode(cartJson), StandardCharsets.UTF_8);
+                        List<CartItemDTO> cart = convertJsonToCart(cartJson);
+                        session.setAttribute("cart", cart);
+                        return cart;
+                    }
+
                 }
             }
         }
@@ -243,5 +254,27 @@ public class CartService {
         {
             cartItemRepository.deleteAllByCustomer(customer.get());
         }
+    }
+
+
+    public List<CartItemDTO> mergeCarts(List<CartItemDTO> cartItemDTOList, List<CartItemDTO> clientCart) {
+        List<CartItemDTO> mergedCart = new ArrayList<>(cartItemDTOList);
+        Map<Integer, CartItemDTO> cartItemMap = cartItemDTOList.stream()
+                .collect(Collectors.toMap(item -> item.getProduct().getId(), item -> item));
+
+        for (CartItemDTO clientItem : clientCart) {
+            CartItemDTO existingItem = cartItemMap.get(clientItem.getProduct().getId());
+
+            if (existingItem != null) {
+                // If product exists in both, keep the item with lesser quantity
+                int minQuantity = Math.min(existingItem.getQuantity(), clientItem.getQuantity());
+                existingItem.setQuantity(minQuantity);
+            } else {
+                // If product only exists in client cart, add it to the merged list
+                mergedCart.add(clientItem);
+            }
+
+        }
+        return mergedCart;
     }
 }

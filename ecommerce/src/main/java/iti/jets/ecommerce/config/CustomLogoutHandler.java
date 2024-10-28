@@ -47,9 +47,9 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         Cookie cookie = new Cookie("token", null);
         cookie.setPath("/"); // Set the path to match the cookie path
-        cookie.setHttpOnly(false); // Ensure the cookie is only accessible via HTTP(S)
+        cookie.setHttpOnly(true); // Ensure the cookie is only accessible via HTTP(S)
         cookie.setMaxAge(0); // Set cookie age to 0 to delete it
-
+        response.addCookie(cookie);
         System.out.println("TOKEN DELETED");
         HttpSession session = request.getSession();
         List<CartItemDTO> cart;
@@ -66,13 +66,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             System.out.println("CART IS NOT NULL WE WILL SAVE IT");
             cartService.saveCart(cart,username);
         }
-        System.out.println("AFTER SAVING CART");
-        Cookie cookie2 = new Cookie("cart", null);
-        cookie.setPath("/"); // Set the path to match the cookie path
-        cookie.setHttpOnly(false); // Ensure the cookie is only accessible via HTTP(S)
-        cookie.setMaxAge(0); // Set cookie age to 0 to delete it
-        response.addCookie(cookie);
-        response.addCookie(cookie2);
+
     }
 }
 

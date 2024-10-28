@@ -36,9 +36,15 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("URL FROM JWT-FILTER : "+request.getRequestURI());
+        String uri = request.getRequestURI();
+
+        // Skip the filter for static resources
+        if (uri.startsWith("/css") || uri.startsWith("/js") || uri.startsWith("/img") || uri.startsWith("/fonts")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        System.out.println("URL FROM JWT-FILTER : "+ uri);
         String authHeader = request.getHeader("Authorization");
-        System.out.println("Authorization : "+authHeader);
         String token = null;
         String userName = null;
 
@@ -87,6 +93,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 // If the user is logging in and is already authenticated, call success handler
                 if (request.getRequestURI().equals("/api/auth/login")|| request.getRequestURI().equals("/api/auth/register")) {
                     successHandler.onAuthenticationSuccess(request, response, authToken);
+                    return;
                 }
                 System.out.println("Authenticated as: " + authToken.getPrincipal());
                 System.out.println("Current authentication in context: " + SecurityContextHolder.getContext().getAuthentication());

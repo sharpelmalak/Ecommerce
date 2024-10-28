@@ -17,7 +17,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -33,12 +36,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
+
         System.out.println("IN SUCCESS HANDLER" + request.getRequestURI());
         String token = jwtService.generateToken(authentication.getName());
-
-
-        // Check user roles and redirect accordingly
-
         // Set the JWT token as an HTTP-only cookie
         Cookie jwtCookie = new Cookie("token", token);
         jwtCookie.setHttpOnly(false); // HTTP-only for security
@@ -53,11 +53,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
             List<CartItemDTO> cartItemDTOList = cartService.loadCart(authentication.getName());
             if (cartItemDTOList != null && !cartItemDTOList.isEmpty()) {
+                HttpSession session = request.getSession();
+                List<CartItemDTO> clientCart = cartService.loadCartFromCookie(request.getCookies(),session);
+                List<CartItemDTO> mergedCart = cartService.mergeCarts(cartItemDTOList,clientCart);
+                session.setAttribute("cart", mergedCart);
+                Cookie cookie = cartService.persistCartInCookie(session);
                 cartService.resetCart(authentication.getName());
-//                HttpSession session = request.getSession(true);
-//                session.setAttribute("cart", cartItemDTOList);
-                Cookie cartCookie = cartService.persistCartInCookie(request.getSession());
-                response.addCookie(cartCookie);
+                response.addCookie(cookie);
             }
             response.sendRedirect("/home");
         } else {
