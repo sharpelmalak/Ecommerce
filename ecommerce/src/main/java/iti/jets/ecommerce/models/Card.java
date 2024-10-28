@@ -15,7 +15,8 @@ import lombok.Setter;
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id")
+    private int cardId;
     private String cardType;
     private String cardNumber;
     @Column(name = "exp_month", nullable = false)

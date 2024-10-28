@@ -30,8 +30,11 @@ public class Order implements java.io.Serializable {
     @Column(name = "order_date", nullable = false, length = 19)
     private Timestamp orderDate = Timestamp.from(Instant.now());
 
+    @Column(name = "shipping_cost")
+    private int shippingCost = 50;
+
     @Column(name = "total_price", nullable = false, precision = 12)
-    private float totalPrice;
+    private double totalPrice;
 
     @Column(name = "status", nullable = false)
     private String status;  // Possible values: "Placed", "Confirmed", "Delivered"

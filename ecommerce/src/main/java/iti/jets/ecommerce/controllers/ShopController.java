@@ -18,6 +18,4 @@ public class ShopController {
         return "category";
     }
 
-
-
 }

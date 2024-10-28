@@ -1,6 +1,7 @@
 package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.ProductDTO;
+import iti.jets.ecommerce.services.CategoryService;
 import iti.jets.ecommerce.services.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale.Category;
 
 @RestController
 @RequestMapping("/api/products")
@@ -18,6 +20,7 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
 
     /* Get all products */
     @GetMapping("/products")

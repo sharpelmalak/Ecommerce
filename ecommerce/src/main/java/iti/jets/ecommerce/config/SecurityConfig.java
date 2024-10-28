@@ -10,9 +10,15 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -31,6 +37,9 @@ public class SecurityConfig {
 
     @Autowired
     private CustomAuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    private CustomLogoutHandler logoutHandler;
 
 
     @Bean
@@ -55,6 +64,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .anonymous(a -> a.disable())
         .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(auth -> auth
                // Allow access to Swagger UI and OpenAPI documentation without authentication
@@ -66,32 +77,61 @@ public class SecurityConfig {
                                         "/webjars/**",
                                         "/api/auth/login",
                                         "/api/auth/register",
-                                        "/api/admin/**",
+                                        "/api/auth/check-username",
                                         "/api/g/**",
                                         "/shop/**",
                                         "/api/customers/**",
                                         "/api/products/**",
-                                        "/index.html",
-                                        "/css/**", "/js/**", "/images/**",
+                                        "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
+                                        "/home",
+                                        "/cart",
+                                        "/cart/check",
+                                        "/cart/add",
+                                        "/cart/remove/*",
+                                        "/cart/update",
+                                        "/cart/clear",
+                                        "/user/account/**",
                                         "/**"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .loginPage("/login") // Custom login page
-                        .loginProcessingUrl("/api/auth/login") // Custom login processing URL
-                        .successHandler(successHandler) // Redirect after successful login
-                        .failureUrl("/login?error=true") // Redirect on login failure
-                        .permitAll() // Allow everyone to access the login page
-                )
+                .formLogin(form-> form
+                        .loginPage("/api/auth/login")
+                        .successHandler(successHandler)
+                        .failureUrl("/api/auth/login?error=true")
+                        .permitAll())
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login") // Custom login page for OAuth2
-                        .defaultSuccessUrl("/home") // Redirect after successful OAuth2 login
+                        .loginPage("/api/auth/login") // Custom login page for OAuth2
+                        .defaultSuccessUrl("/home")
+                        .userInfoEndpoint(userInfo -> userInfo.userService(this.oauth2UserService()))
                         .permitAll() // Allow access to login page for OAuth2
+                )
+                .logout(logout-> logout
+                        .logoutUrl("/logout") // Define the logout URL
+                        .addLogoutHandler(logoutHandler) // Add custom logout handler
+                        .logoutSuccessUrl("/home") // Redirect URL after logout
+                        .permitAll())
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            System.out.println("Blocked access to: " + request.getRequestURI());
+                            System.out.println("Reason: " + authException.getMessage());
+                            response.sendRedirect("/api/auth/login");
+                        })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
+        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
+        return request -> {
+            OAuth2User oAuth2User = delegate.loadUser(request);
+            String email = oAuth2User.getAttribute("email");
+            System.out.println("Email is" + email); // Custom method to save user data in DB
+            return oAuth2User;
+        };
     }
 }

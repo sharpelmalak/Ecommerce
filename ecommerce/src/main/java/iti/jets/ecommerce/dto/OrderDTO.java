@@ -18,6 +18,7 @@ public class OrderDTO {
     private int customerId;
     private Date orderDate;
     private String orderStatus;
+    private int shippingCost;
     private double totalPrice;
     private Set<OrderItemDTO> orderItems;
 
@@ -25,21 +26,14 @@ public class OrderDTO {
     }
 
     public OrderDTO(int orderId, int customerId, Date orderDate, String orderStatus, double totalPrice,
-            Set<OrderItemDTO> orderItems) {
+            Set<OrderItemDTO> orderItems , int shippingCost)  {
         this.orderId = orderId;
         this.customerId = customerId;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
         this.totalPrice = totalPrice;
         this.orderItems = orderItems;
+        this.shippingCost = shippingCost;
     }
 
-    // public OrderDTO(Order order) {
-    // this.orderId = order.getId();
-    // this.customerId = order.getCustomer().getId();
-    // this.orderDate = order.getOrderDate();
-    // this.orderStatus = order.getStatus();
-    // this.totalPrice = order.getTotalPrice();
-    // this.orderItems = order.getOrderItemsDTO();
-    // }
 }

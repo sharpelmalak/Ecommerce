@@ -43,6 +43,12 @@ public class ProductService {
         product.setQuantity(productDTO.getQuantity());
         product.setDescription(productDTO.getDescription());
         product.setImage(productDTO.getImage());
+        product.setDeleted(productDTO.isDeleted());
+        product.setBrand(productDTO.getBrand());
+        product.setWaterResistance(productDTO.getWaterResistance());
+        product.setCaseDiameter(productDTO.getCaseDiameter());
+        product.setMaterial(productDTO.getMaterial());
+        product.setGender(productDTO.getGender());
         
         // Fetch the admin by ID or throw ResourceNotFoundException if not found
         Admin admin = adminRepository.findById(adminId)
@@ -53,7 +59,7 @@ public class ProductService {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + productDTO.getCategoryId()));
         product.setCategory(category);
-    
+        
         Product savedProduct = productRepository.save(product);
         return ProductMapper.convertToDTO(savedProduct);
     }
@@ -67,8 +73,10 @@ public class ProductService {
         existingProduct.setQuantity(productDTO.getQuantity());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setImage(productDTO.getImage());
-        // Update other properties if necessary
-
+        existingProduct.setBrand(productDTO.getBrand());
+        existingProduct.setGender(productDTO.getGender());
+        existingProduct.setWaterResistance(productDTO.getWaterResistance());
+        existingProduct.setCaseDiameter(productDTO.getCaseDiameter());
         Product updatedProduct = productRepository.save(existingProduct);
         return ProductMapper.convertToDTO(updatedProduct);
     }
@@ -93,6 +101,15 @@ public class ProductService {
                 .map(ProductMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+
+    public List<ProductDTO> getAllActiveProducts() {
+        return productRepository.findAllByIsDeletedFalse().stream()
+                .map(ProductMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+
 
     /* Get product by ID */
     public ProductDTO getProductById(int id) {
@@ -165,10 +182,22 @@ public class ProductService {
 
     public Page<ProductDTO> getProducts(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice, Pageable pageable) {
         // If no filters are provided, fetch a default set of products
-        if (categoryId == null && (brands == null || brands.isEmpty()) && (materials == null || materials.isEmpty()) && minPrice == null && maxPrice == null) {
+        if ((brands == null || brands.isEmpty()) && (materials == null || materials.isEmpty()) && minPrice == null && maxPrice == null) {
             System.out.println("default called");
-            return getDefaultProducts(pageable);
+            if(categoryId == null)
+            {
+                return getDefaultProducts(pageable);
+            }
+            Page<Product> productPage = productRepository.findByCategoryId(categoryId,pageable); // You can change this to your preferred default query
+
+            List<ProductDTO> productDTOs = productPage.getContent().stream()
+                    .filter(product -> product.isDeleted()==false)
+                    .map(product -> ProductMapper.convertToDTO(product))
+                    .collect(Collectors.toList());
+
+            return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
         } else {
+
             System.out.println("filterd called");
             return getFilteredProducts(categoryId, brands, materials, minPrice, maxPrice, pageable);
         }
@@ -179,6 +208,7 @@ public class ProductService {
         Page<Product> productPage = productRepository.findAll(pageable); // You can change this to your preferred default query
 
         List<ProductDTO> productDTOs = productPage.getContent().stream()
+                .filter(product -> product.isDeleted()==false)
                 .map(product -> ProductMapper.convertToDTO(product))
                 .collect(Collectors.toList());
 
@@ -186,9 +216,17 @@ public class ProductService {
     }
 
     public Page<ProductDTO> getFilteredProducts(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice, Pageable pageable) {
-        Page<Product> productPage = productRepository.findByCategoryIdOrBrandInOrMaterialInOrPriceBetween(categoryId, brands, materials, minPrice, maxPrice, pageable);
-
+        Page<Product> productPage;
+        if(categoryId == null)
+        {
+            productPage = productRepository.findByBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
+        }
+        else
+        {
+            productPage = productRepository.findByCategoryIdAndBrandInOrMaterialInOrPriceBetween(categoryId, brands, materials, minPrice, maxPrice, pageable);
+        }
         List<ProductDTO> productDTOs = productPage.getContent().stream()
+                .filter(product -> product.isDeleted()==false)
                 .map(product -> ProductMapper.convertToDTO(product))
                 .collect(Collectors.toList());
 

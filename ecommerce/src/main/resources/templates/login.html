@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" class="no-js">
 
+
 <head>
 	<!-- Mobile Specific Meta -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Favicon-->
-	<link rel="shortcut icon" href="../img/fav.png">
+	<link rel="shortcut icon" th:href="@{/img/fav.png}">
 	<!-- Author Meta -->
 	<meta name="author" content="CodePixar">
 	<!-- Meta Description -->
@@ -31,37 +32,34 @@
   <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}">
   <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
   <link rel="stylesheet" th:href="@{/css/main.css}">
-
-	<!-- Added For Login as Admin Button  -->
 	<style>
-		.admin-login-btn {
-			display: inline-block;
-			background: #ffba00;
-			border: none;
-			color: #fff;
-			text-transform: uppercase;
-			padding: 12px 30px;
-			font-size: 14px;
-			font-weight: 600;
-			letter-spacing: 1px;
-			cursor: pointer;
-			transition: all 0.3s ease;
-			border-radius: 5px;
-			text-align: center;
-			box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+		.social-login {
+			display: inline-block; /* Aligns buttons horizontally */
+			margin-top: 10px; /* Space above the buttons */
 		}
-	
-		.admin-login-btn:hover {
-			background: #ff9900;
-			box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.2);
-			transform: translateY(-3px);
+
+		.social-btn {
+			width: 100%; /* Make buttons full width for better alignment */
+			padding: 10px; /* Add padding for better click area */
+			font-size: 16px; /* Increase font size for visibility */
+			border: none; /* Remove default button border */
+			border-radius: 5px; /* Rounded corners */
+			cursor: pointer; /* Change cursor to pointer */
 		}
-	
-		.admin-login-container {
-			text-align: center;
-			margin-top: 20px;
+
+		.social-btn:hover {
+			background-color: #f0f0f0; /* Light gray background on hover */
 		}
+
+		#message {
+			color: red; /* Error message color */
+			margin-top: 10px; /* Space above error message */
+			font-size: 14px; /* Font size for error message */
+		}
+
 	</style>
+
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -72,7 +70,7 @@
 			<nav class="navbar navbar-expand-lg navbar-light main_box">
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="index.html"><img src="../img/logo.png" alt=""></a>
+					<a class="navbar-brand logo_h" href="index.html"><img th:src="@{/img/logo.png}" alt=""></a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
@@ -114,7 +112,7 @@
 							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+							<li class="nav-item"><a href="#" class="cart"><span class="ti-shopping-cart"></span></a></li>
 							<li class="nav-item">
 								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							</li>
@@ -157,57 +155,53 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="login_box_img">
-						<img class="img-fluid" src="../img/login.jpg" alt="">
+						<img class="img-fluid" th:src="@{/img/login.jpg}" alt="">
 						<div class="hover">
 							<h4>New to our website?</h4>
 							<p>There are advances being made in science and technology everyday, and a good example of this is the</p>
-							<a class="primary-btn" href="registration.html">Create an Account</a>
+							<a class="primary-btn" href="/api/auth/register">Create an Account</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-6">
 					<div class="login_form_inner">
 						<h3>Log in to enter</h3>
-						<form class="row login_form" action="/api/auth/login" method="post" id="contactForm" >
+						<form class="row login_form" id="contactForm" method="post" action="/api/auth/login">
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+								<input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required>
 							</div>
 							<div class="col-md-12 form-group">
 								<div class="creat_account">
-									<input type="checkbox" id="f-option2" name="selector">
-									<label for="f-option2">Keep me logged in</label>
+									<input type="checkbox" id="keepLoggedIn" name="keepLoggedIn">
+									<label for="keepLoggedIn">Keep me logged in</label>
 								</div>
 							</div>
 							<div class="col-md-12 form-group">
-								<button type="submit" value="submit" class="primary-btn">Log In</button>
+								<p id="message" style="color: red; display: none;"></p> <!-- Message display -->
+							</div>
+							<div class="col-md-12 form-group">
+								<button type="submit" class="primary-btn">Log In</button>
 								<a href="#">Forgot Password?</a>
 							</div>
 
 						</form>
-					<div>
 						<div class="col-md-12 form-group">
 							<!-- Google Login Button -->
-							<a th:href="@{/oauth2/authorization/google}">
-								<button>Login with Google</button>
+							<a th:href="@{/oauth2/authorization/google}" class="social-login">
+								<button type="button" class="btn social-btn">Login with Google</button>
 							</a>
-							<a th:href="@{/oauth2/authorization/facebook}">
-								<button>Login with FaceBook</button>
+							<a th:href="@{/oauth2/authorization/facebook}" class="social-login">
+								<button type="button" class="btn social-btn">Login with Facebook</button>
 							</a>
 
 							<!-- Optional: Error message for login failure -->
 							<div th:if="${param.error}">
-								<p>Invalid username or password</p>
+								<p class="error-message">Invalid username or password</p>
 							</div>
 						</div>
-					</div>
-
-					<!-- Add "Login As Admin" Button -->
-					<div class="col-md-12 form-group admin-login-container">
-						<a href="/ECommerceWebApp/GoToAdminLogin" class="admin-login-btn">Login As Admin</a>
-					</div>
 
 					</div>
 				</div>
@@ -262,14 +256,14 @@
 					<div class="single-footer-widget mail-chimp">
 						<h6 class="mb-20">Instragram Feed</h6>
 						<ul class="instafeed d-flex flex-wrap">
-							<li><img src="img/i1.jpg" alt=""></li>
-							<li><img src="img/i2.jpg" alt=""></li>
-							<li><img src="img/i3.jpg" alt=""></li>
-							<li><img src="img/i4.jpg" alt=""></li>
-							<li><img src="img/i5.jpg" alt=""></li>
-							<li><img src="img/i6.jpg" alt=""></li>
-							<li><img src="img/i7.jpg" alt=""></li>
-							<li><img src="img/i8.jpg" alt=""></li>
+<!--							<li><img src="img/i1.jpg" alt=""></li>-->
+<!--							<li><img src="img/i2.jpg" alt=""></li>-->
+<!--							<li><img src="img/i3.jpg" alt=""></li>-->
+<!--							<li><img src="img/i4.jpg" alt=""></li>-->
+<!--							<li><img src="img/i5.jpg" alt=""></li>-->
+<!--							<li><img src="img/i6.jpg" alt=""></li>-->
+<!--							<li><img src="img/i7.jpg" alt=""></li>-->
+<!--							<li><img src="img/i8.jpg" alt=""></li>-->
 						</ul>
 					</div>
 				</div>
@@ -296,21 +290,135 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</footer>
 	<!-- End footer Area -->
 
+	<script th:src="@{/js/vendor/bootstrap.min.js}"></script>
+	<script th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+	<script th:src="@{/js/jquery.nice-select.min.js}"></script>
+	<script th:src="@{/js/jquery.sticky.js}"></script>
+	<script th:src="@{/js/nouislider.min.js}"></script>
+	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
 
-	<script src="../js/vendor/jquery-2.2.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-	 crossorigin="anonymous"></script>
-	<script src="../js/vendor/bootstrap.min.js"></script>
-	<script src="../js/jquery.ajaxchimp.min.js"></script>
-	<script src="../js/jquery.nice-select.min.js"></script>
-	<script src="../js/jquery.sticky.js"></script>
-	<script src="../js/nouislider.min.js"></script>
-	<script src="../js/jquery.magnific-popup.min.js"></script>
-	<script src="../js/owl.carousel.min.js"></script>
-	<!--gmaps Js-->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-	<script src="../js/gmaps.min.js"></script>
-	<script src="../js/main.js"></script>
+
+	<script>
+
+	</script>
+
+<!--	<script>-->
+<!--		$(document).ready(function() {-->
+<!--			$('#contactForm').on('submit', function(e) {-->
+<!--				e.preventDefault();-->
+
+<!--				const username = $('#username').val();-->
+<!--				const password = $('#password').val();-->
+<!--				const keepLoggedIn = $('#keepLoggedIn').is(':checked');-->
+
+<!--				$.ajax({-->
+<!--					url: '/api/auth/login',-->
+<!--					type: 'POST',-->
+<!--					contentType: 'application/json',-->
+<!--					data: JSON.stringify({ username: username, password: password }),-->
+<!--					success: function(response) {-->
+<!--						console.log(response)-->
+<!--						const token = response.token;-->
+<!--						if (keepLoggedIn) {-->
+<!--							localStorage.setItem('token', token);-->
+<!--						} else {-->
+<!--							sessionStorage.setItem('token', token);-->
+<!--						}-->
+
+<!--						const role = response.role;-->
+<!--						if (role === 'ROLE_ADMIN') {-->
+<!--							console.log("adminnnnnnnnn")-->
+<!--							window.location.href = '/api/admin/products'-->
+<!--							//window.location.href = '/admin/home';-->
+<!--						} else if (role === 'ROLE_CUSTOMER') {-->
+<!--							window.location.href = '/customer/home';-->
+<!--						} else {-->
+<!--							window.location.href = '/home';-->
+<!--						}-->
+<!--					},-->
+<!--					error: function(xhr) {-->
+<!--						$('#message').text('Invalid username or password').show();-->
+<!--					}-->
+<!--				});-->
+<!--			});-->
+<!--		});-->
+
+<!--	</script>-->
+
+
+<!--	// old version remember id of form-->
+<!--	<script>-->
+<!--		// document.getElementById('loginForm').addEventListener('submit', function(event) {-->
+<!--		// 	event.preventDefault(); // Prevent the default form submission-->
+<!--		//-->
+<!--		// 	const username = document.getElementById('username').value;-->
+<!--		// 	const password = document.getElementById('password').value;-->
+<!--		// 	const keepLoggedIn = document.getElementById('keepLoggedIn').checked;-->
+<!--		// 	const messageElement = document.getElementById('message'); // Get message element-->
+<!--		//-->
+<!--		// 	// Clear any previous messages-->
+<!--		// 	messageElement.textContent = '';-->
+<!--		// 	messageElement.style.display = 'none';-->
+<!--		//-->
+<!--		// 	// AJAX request to the backend-->
+<!--		// 	fetch('/api/auth/login', {-->
+<!--		// 		method: 'POST',-->
+<!--		// 		headers: {-->
+<!--		// 			'Content-Type': 'application/json',-->
+<!--		// 		},-->
+<!--		// 		body: JSON.stringify({ username, password })-->
+<!--		// 	})-->
+<!--		// 			.then(response => {-->
+<!--		// 				if (response.ok) {-->
+<!--		// 					return response.json(); // Parse JSON response-->
+<!--		// 				}-->
+<!--		// 				throw new Error('Login failed!'); // Handle unsuccessful login-->
+<!--		// 			})-->
+<!--		// 			.then(data => {-->
+<!--		// 				// Save the token to localStorage or sessionStorage based on "Keep me logged in"-->
+<!--		// 				if (keepLoggedIn) {-->
+<!--		// 					localStorage.setItem('jwtToken', data.token); // Keep token in localStorage-->
+<!--		// 				} else {-->
+<!--		// 					sessionStorage.setItem('jwtToken', data.token); // Keep token in sessionStorage-->
+<!--		// 				}-->
+<!--		// 				// Optionally redirect or display a success message-->
+<!--		// 				window.location.href = '/home'; // Redirect to home or dashboard-->
+<!--		// 			})-->
+<!--		// 			.catch(error => {-->
+<!--		// 				console.error('Error:', error);-->
+<!--		// 				messageElement.textContent = 'Login failed. Please check your credentials and try again.'; // Update message-->
+<!--		// 				messageElement.style.display = 'block'; // Show message-->
+<!--		// 			});-->
+<!--		// });-->
+
+<!--	</script>-->
+
+
+<!-- secure endpoint-->
+<!--<script>-->
+<!--	const token = localStorage.getItem('jwtToken');-->
+
+<!--	fetch('/api/secure-endpoint', {-->
+<!--		method: 'GET',-->
+<!--		headers: {-->
+<!--			'Authorization': `Bearer ${token}`,-->
+<!--			'Content-Type': 'application/json'-->
+<!--		}-->
+<!--	})-->
+<!--			.then(response => {-->
+<!--				if (response.status === 401) {-->
+<!--					alert('Unauthorized! Please log in.');-->
+<!--					// Redirect to login page or handle re-authentication-->
+<!--				} else {-->
+<!--					return response.json();-->
+<!--				}-->
+<!--			})-->
+<!--			.then(data => console.log(data))-->
+<!--			.catch(error => console.error('Error:', error));-->
+
+<!--</script>-->
 </body>
 
 </html>

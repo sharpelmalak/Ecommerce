@@ -2,14 +2,22 @@ package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.services.*;
-import iti.jets.ecommerce.models.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@RestController
+
+
+
+@Controller
+@SessionAttributes("productDTO")
 @RequestMapping("/api/admin")
 public class AdminController {
 
@@ -22,23 +30,86 @@ public class AdminController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private PromotionService promotionService;
+
+    
+    @Autowired
+    private OrderServiceImpl orderServiceImpl;
+
     
     /* ============================================================================================ */
     /*                            Admin Functionalities Related to Products                         */
     /* ============================================================================================ */
-    /* Create a Product */
     @PostMapping("/product")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO, @RequestParam int adminId) {
-        ProductDTO returnedProductDTO = productService.createProduct(productDTO, adminId);
-        return ResponseEntity.ok(returnedProductDTO);
+    public String createProduct(@ModelAttribute ProductDTO productDTO, @RequestParam int adminId,Model model,
+            RedirectAttributes redirectAttributes) {
+        ProductDTO savedProduct = productService.createProduct(productDTO, adminId);
+        // Add attributes to display on the success page
+        redirectAttributes.addFlashAttribute("productAdded", true);
+        redirectAttributes.addFlashAttribute("successMessage", "Product created successfully!");
+        // Store productDTO in session
+        model.addAttribute("productDTO", savedProduct);
+        return "redirect:/api/admin/product_success"; // Redirect to the success page
     }
 
-    /* Update an existing product */
-    @PutMapping("/product/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable int id, @RequestBody ProductDTO productDTO) {
-        ProductDTO updatedProductDTO = productService.updateProduct(id, productDTO);
-        return ResponseEntity.ok(updatedProductDTO);
+    @GetMapping("/product_success")
+    public String productSuccessPage(Model model) {
+        // Retrieve productDTO from the model
+        ProductDTO productDTO = (ProductDTO) model.getAttribute("productDTO");
+    
+        // Add it to the model if needed for the view
+        model.addAttribute("productDTO", productDTO);
+        return "admin/product_success"; // Display the success message and details on this page
     }
+
+
+    @GetMapping("/product/addForm")
+    public String showAddProductForm(Model model) {
+        int adminId = 1; // Replace this with the dynamic admin ID logic as needed
+        model.addAttribute("adminId", adminId);
+        model.addAttribute("productDTO", new ProductDTO()); /*  Add an empty productDTO to the model */
+        model.addAttribute("productAdded", false);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "admin/add-product";
+    }
+
+    @GetMapping("/product/editForm")
+    public String showEditProductForm(@RequestParam int id, Model model) {
+        int adminId = 1; // Replace this with dynamic admin ID logic as needed
+        model.addAttribute("adminId", adminId);
+    
+        ProductDTO productDTO = productService.getProductById(id);
+        model.addAttribute("productDTO", productDTO);
+        model.addAttribute("productUpdated", false);
+        model.addAttribute("categories", categoryService.getAllCategories());
+    
+        return "admin/edit-product";
+    }
+    
+
+    @PostMapping("/product/{id}")
+    public String updateProduct(@PathVariable int id, @ModelAttribute ProductDTO productDTO, Model model, RedirectAttributes redirectAttributes) {
+        // Call the service to update the product
+        ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
+        // Set success message and updated product
+        redirectAttributes.addFlashAttribute("productUpdated", true);
+        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+        model.addAttribute("productDTO", updatedProduct);
+    
+        return "redirect:/api/admin/product_update_success";
+    }
+    
+    @GetMapping("/product_update_success")
+    public String productUpdateSuccessPage(Model model) {
+        ProductDTO productDTO = (ProductDTO) model.getAttribute("productDTO");
+        model.addAttribute("productDTO", productDTO);
+        return "admin/product_update_success";
+    }
+
 
     /* Delete a product (soft delete) */
     @DeleteMapping("/product/{id}")
@@ -47,11 +118,28 @@ public class AdminController {
         return ResponseEntity.ok("Product deleted successfully");
     }
 
+
+    /* method to get all the products (Active and non-Active) ,left for future usage : Haroun */
     /* Get all products */
+    /*
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+    public String getAllProducts(Model model) {
         List<ProductDTO> productDTOs = productService.getAllProducts();
-        return ResponseEntity.ok(productDTOs);
+        List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
+        model.addAttribute("productList", productDTOs);
+        model.addAttribute("categoryList", categoryDTOs);
+        return "admin/admin-panel";
+        // return ResponseEntity.ok(productDTOs);
+    }
+    */
+
+    @GetMapping("/products")
+    public String getAllProducts(Model model) {
+        List<ProductDTO> productDTOs = productService.getAllActiveProducts(); // Use the updated method
+        List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
+        model.addAttribute("productList", productDTOs);
+        model.addAttribute("categoryList", categoryDTOs);
+        return "admin/admin-panel";
     }
 
     /* Get a specific product by ID */
@@ -67,17 +155,22 @@ public class AdminController {
     /* ============================================================================================ */
     /* Get all customers */
     @GetMapping("/customers")
-    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+    public String getAllCustomers(Model model) {
         List<CustomerDTO> customers = customerService.getAllCustomers();
-        return ResponseEntity.ok(customers);
+        model.addAttribute("customersList", customers);
+        return "admin/customers";
+        // return ResponseEntity.ok(customers);
     }
 
     /* Get a specific customer by ID */
     @GetMapping("/customer/{id}")
-    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable int id) {
+    public String getCustomerById(@PathVariable int id,Model model) {
         CustomerDTO customerDTO = customerService.getCustomerById(id);
-        return ResponseEntity.ok(customerDTO);
+        model.addAttribute("customer", customerDTO);
+        return "admin/customer";
+        // return ResponseEntity.ok(customerDTO); /* if we want to return a raw json */
     }
+
 
     /* Update a customer profile */
     @PutMapping("/customer/{id}")
@@ -90,11 +183,24 @@ public class AdminController {
     /* Delete a customer (soft delete) */
     @DeleteMapping("/customer/{id}")
     public ResponseEntity<String> deleteCustomer(@PathVariable int id) {
-        if(customerService.deleteCustomer(id) == "deleted");{
+        if (customerService.deleteCustomer(id).equals("deleted")) {
             return ResponseEntity.ok("Customer deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
         }
     }
 
+
+    /*  Get Order History */
+    @GetMapping("/{customerId}/orders")
+    public String getOrderHistory(@PathVariable int customerId, Model model) {
+        List<OrderDTO> orders = orderServiceImpl.getOrdersByCustomer(customerId);
+        CustomerDTO customerDTO = customerService.getCustomerById(customerId);
+        model.addAttribute("customer", customerDTO);
+        model.addAttribute("orders", orders);
+        return "admin/orderHistory";
+        // return ResponseEntity.ok(orders);
+    }
     
 
 
@@ -104,12 +210,13 @@ public class AdminController {
     /* ============================================================================================ */
     /* Get admin profile */
     @GetMapping("/profile/{adminId}")
-    public ResponseEntity<AdminDTO> getAdminProfile(@PathVariable int adminId) {
+    public String getAdminProfile(@PathVariable int adminId, Model model) {
         AdminDTO adminDTO = adminService.getAdminProfile(adminId);
-        return ResponseEntity.ok(adminDTO);
+        model.addAttribute("admin", adminDTO);
+        return "admin/admin-profile"; // Assuming this is the name of your Thymeleaf template
     }
 
-
+    
     /* Get all admins */
     @GetMapping("/profiles")
     public ResponseEntity<List<AdminDTO>> getAllAdmins() {
@@ -131,4 +238,23 @@ public class AdminController {
         adminService.changePassword(adminId, passwordChangeDTO);
         return ResponseEntity.ok("Password changed successfully");
     }
+
+
+    /* ================= Create Promotions  ==================== */
+    @GetMapping("/add-promotion-form")
+    public String showPromotionForm(Model model) {
+        return "admin/add-promotion";
+    }
+
+
+    @PostMapping("/promotion")
+    public String createPromotion(@ModelAttribute PromotionDTO promotionDTO, Model model) {
+
+    // Add success message and promotion details to the model
+    model.addAttribute("successMessage", "Promotion created successfully!");
+    model.addAttribute("promotionDTO", promotionService.createPromotion(promotionDTO));
+    // Redirect to the success page
+    return "admin/promotion-success"; 
+}
+
 }

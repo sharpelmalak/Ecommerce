@@ -35,6 +35,7 @@ public class CategoryService {
 
         return convertToDTO(category);
     }
+    
     private CategoryDTO convertToDTO(Category category) {
         CategoryDTO dto = new CategoryDTO();
         dto.setName(category.getName());
