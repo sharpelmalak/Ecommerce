@@ -93,10 +93,18 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size) {
 
-        System.out.println(categoryId);
-        System.out.println(minPrice);
-        System.out.println(maxPrice);
         Pageable pageable = PageRequest.of(page, size);
         return productService.getProducts(categoryId, brands, materials, minPrice, maxPrice, pageable);
     }
+
+    @GetMapping("/result")
+    public Page<ProductDTO> getProductsFilterName(
+            @RequestParam String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.getProducts(name,pageable);
+    }
+
 }

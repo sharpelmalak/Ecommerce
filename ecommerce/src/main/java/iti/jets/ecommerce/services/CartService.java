@@ -96,7 +96,7 @@ public class CartService {
                 .orElse(null);
 
         if (existingCartItem != null) {
-            existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
+            existingCartItem.setQuantity(quantity);
         } else {
             CartItemDTO newCartItem = new CartItemDTO();
             newCartItem.setQuantity(quantity);

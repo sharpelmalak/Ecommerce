@@ -203,6 +203,16 @@ public class ProductService {
         }
     }
 
+    public Page<ProductDTO> getProducts (String name, Pageable pageable) {
+        // If no filters are provided, fetch a default set of products
+            Page<Product> productPage = productRepository.findByNameContainingIgnoreCase(name,pageable); // You can change this to your preferred default query
+            List<ProductDTO> productDTOs = productPage.getContent().stream()
+                    .filter(product -> product.isDeleted()==false)
+                    .map(product -> ProductMapper.convertToDTO(product))
+                    .collect(Collectors.toList());
+            return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
+    }
+
     private Page<ProductDTO> getDefaultProducts(Pageable pageable) {
         // Fetch the first page of products (adjust the size as needed)
         Page<Product> productPage = productRepository.findAll(pageable); // You can change this to your preferred default query
@@ -217,18 +227,18 @@ public class ProductService {
 
     public Page<ProductDTO> getFilteredProducts(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice, Pageable pageable) {
         Page<Product> productPage;
-        if(categoryId == null)
-        {
-            productPage = productRepository.findByBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
-        }
-        else
-        {
-            productPage = productRepository.findByCategoryIdAndBrandInOrMaterialInOrPriceBetween(categoryId, brands, materials, minPrice, maxPrice, pageable);
-        }
-        List<ProductDTO> productDTOs = productPage.getContent().stream()
-                .filter(product -> product.isDeleted()==false)
-                .map(product -> ProductMapper.convertToDTO(product))
-                .collect(Collectors.toList());
+        List<ProductDTO> productDTOs;
+        if(minPrice == null) minPrice = 0.0F;
+        if(maxPrice == null) maxPrice = Float.MAX_VALUE;
+        productPage = productRepository.findByBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
+        productDTOs = productPage.getContent().stream()
+                    .filter(product ->{
+                        if(categoryId == null)
+                        return product.isDeleted()==false;
+                        else return product.isDeleted()==false&& product.getCategory().getId()==categoryId;
+                    })
+                    .map(product -> ProductMapper.convertToDTO(product))
+                    .collect(Collectors.toList());
 
         System.out.println("list " + productDTOs.size());
         return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
