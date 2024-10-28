@@ -5,6 +5,7 @@ import iti.jets.ecommerce.models.*;
 import iti.jets.ecommerce.mappers.CustomerMapper;
 import iti.jets.ecommerce.repositories.*;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,11 @@ public class CustomerService {
     private final OrderRepository orderRepository;
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     private CategoryRepository categoryRepository; // Make sure to create this repository
-    
+
 
     @Autowired
     private PromotionService promotionService;
@@ -34,7 +38,7 @@ public class CustomerService {
     @Autowired
 
     private UserRepository userRepository;
-  
+
 
     // @Autowired does not have any effect if you are using the constructor : haroun
     public CustomerService(CustomerRepository customerRepository,ProductRepository productRepository,OrderRepository orderRepository,PasswordEncoder passwordEncoder) {
@@ -51,7 +55,7 @@ public class CustomerService {
 
         // Check if email already exists
         if (customerRepository.existsByEmail(customerDTO.getEmail())) {
-            return false; 
+            return false;
         }
 
         // Fetch the categories (interests) based on the IDs
@@ -98,6 +102,24 @@ public class CustomerService {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
         return CustomerMapper.toDto(customer);
+    }
+
+    /* Get Customer Address */
+    public CustomerAddressDTO getCustomerAddress(int customerId) {
+        CustomerDTO customer = getCustomerById(customerId);
+        return modelMapper.map(customer, CustomerAddressDTO.class);
+    }
+
+    // Edit Customer Address
+    public CustomerAddressDTO editCustomerAddress(int customerId, CustomerAddressDTO customerAddress){
+        CustomerDTO customer = getCustomerById(customerId);
+        System.out.println("addrss is : "+customerAddress.getAddress());
+        customer.setAddress(customerAddress.getAddress());
+        customer.setCity(customerAddress.getCity());
+        customer.setCountry(customerAddress.getCountry());
+        customer.setPhone(customerAddress.getPhone());
+        updateCustomer(customerId, customer);
+        return customerAddress;
     }
 
     /* Update customer profile By Admin */
@@ -166,7 +188,7 @@ public class CustomerService {
         return userRepository.findByUsername(username).isEmpty();
     }
 
-    
+
     /* =========================== Promotions for customer Based on a specific Region (Country) =========================*/
     /* Get Promotion For a cutomer Based on its location (Country) */
     public List<Promotion> getPromotionsForCustomer(Customer customer) {

@@ -29,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO createOrder(OrderDTO orderDTO) {
         Order newOrder = modelMapper.map(orderDTO, Order.class);
         // check availability of each order item
+
         newOrder.getOrderItems().stream()
                 .forEach(orderItem -> {
                     boolean isAvailable = productService.checkProductAvailability(orderItem.getProduct().getId(), orderItem.getQuantity());
@@ -37,8 +38,11 @@ public class OrderServiceImpl implements OrderService {
                         throw new ItemNotAvailableException("Product with ID " + orderItem.getProduct().getId() + " is not available in the required quantity.");
                     }
                 });
+        double subTotal = newOrder.getOrderItems().stream()
+                .mapToDouble(item -> item.getCurrentPrice() * item.getQuantity())  // Calculate price * quantity for each item
+                .sum();
 
-        // check payment method success ( To be Implemented)
+        newOrder.setTotalPrice(subTotal + newOrder.getShippingCost());
 
         // save to db
         newOrder = orderRepository.save(newOrder);
@@ -58,6 +62,7 @@ public class OrderServiceImpl implements OrderService {
                 .stream().map((element) -> modelMapper.map(element, OrderDTO.class)).collect(Collectors.toList());
     }
 
+    // For Admins
     @Override
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();

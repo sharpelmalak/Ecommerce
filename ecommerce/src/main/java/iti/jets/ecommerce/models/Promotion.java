@@ -18,14 +18,18 @@ public class Promotion {
 
     private String name;
 
+    @Column(name = "discount_percentage")
     private Double discountPercentage;
 
-    private boolean freeShipping;
+    @Column(name = "free_shipping")
+    private boolean freeShipping = false;
 
     private String country;  /*  Geographic region (e.g., country or city) */
 
+    @Column(name = "start_date")
     private LocalDate startDate;
 
+    @Column(name = "end_date")
     private LocalDate endDate;
 
     // Lombok will handle the getters, setters, constructors, and other methods
