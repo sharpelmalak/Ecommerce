@@ -228,8 +228,10 @@ public class ProductService {
     public Page<ProductDTO> getFilteredProducts(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice, Pageable pageable) {
         Page<Product> productPage;
         List<ProductDTO> productDTOs;
-        if(minPrice == null) minPrice = 0.0F;
-        if(maxPrice == null) maxPrice = Float.MAX_VALUE;
+        if(minPrice != null || maxPrice != null){
+            if(minPrice==null)minPrice=0.0F;
+            if(maxPrice==null)maxPrice=Float.MAX_VALUE;
+        }
         productPage = productRepository.findByBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
         productDTOs = productPage.getContent().stream()
                     .filter(product ->{

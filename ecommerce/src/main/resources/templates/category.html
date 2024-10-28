@@ -411,6 +411,7 @@
 		}
 
 		function fetchFilteredProducts() {
+			if(totalPages<currentPage)currentPage=totalPages
 			const data = {
 				brands: getSelectedValues('brands'),
 				materials: getSelectedValues('materials'),
