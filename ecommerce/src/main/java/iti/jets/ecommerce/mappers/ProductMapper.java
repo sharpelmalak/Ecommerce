@@ -23,4 +23,5 @@ public class ProductMapper {
         dto.setWaterResistance(product.getWaterResistance());
         return dto;
     }
+
 }

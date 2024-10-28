@@ -69,7 +69,11 @@ public class AuthController {
     
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error",required = false) String error, HttpServletRequest request) {
+    public String login(@RequestParam(value = "error",required = false) String error, Model model) {
+       if(error != null && error.equals("true"))
+       {
+           model.addAttribute("errorMessage", "Invalid credentials");
+       }
         return "login";
     }
 
@@ -110,7 +114,10 @@ public class AuthController {
 
     @GetMapping("/check-username")
     public ResponseEntity<Boolean> checkUsernameAvailability(@RequestParam("username") String username) {
+        System.out.println("Checking availability for username: " + username);
         boolean isAvailable = customerService.isUsernameAvailable(username);
         return ResponseEntity.ok(isAvailable);
     }    
+
+
 }

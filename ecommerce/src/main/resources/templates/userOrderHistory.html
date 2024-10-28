@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
+    <!-- intl-tel-input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        body {
+            background-color: #f4f7f9;
+        }
+        .main-content {
+            padding: 50px;
+            margin-top: 90px; /* Increased space for header */
+            margin-bottom: 60px; /* Added space below the content */
+        }
+        .card { 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+            margin-bottom: 30px; /* Increased bottom margin of card */
+        }
+        footer { 
+            margin-top: 40px; /* Increased space above the footer */
+            text-align: center; 
+            background-color: #343a40; 
+            color: white; 
+            padding: 20px 0; /* Increased padding for better spacing */
+        }
+        .table th, .table td { 
+            text-align: center; 
+        }
+        /* Order Status Colors */
+        .status-pending { color: #ffc107; font-weight: bold; }
+        .status-shipped { color: #17a2b8; font-weight: bold; }
+        .status-delivered { color: #28a745; font-weight: bold; }
+        .status-canceled { color: #dc3545; font-weight: bold; }
+        
+        .navbar-brand img {
+            max-width: 200%;
+            height: auto;
+        }
+        .header_area {
+            background-color: #ffffff; /* Light background */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .main_menu {
+            padding: 10px 0; /* Top and bottom padding */
+        }
+
+            .navbar-nav:last-child {
+                margin-left: 0; /* Remove left margin for the cart */
+            }
+
+
+            .navbar-nav {
+                margin-right: 20px; /* Space between the navbar items and cart */
+            }
+
+            .navbar-nav .nav-link {
+                padding: 15px; /* Adjust padding for better spacing */
+            }
+            .navbar-nav .nav-link {
+                font-weight: 500; /* Slightly bolder font */
+                color: #333; /* Darker text color */
+                transition: color 0.3s ease; /* Smooth transition for hover effect */
+            }
+
+            .navbar-nav .nav-link:hover {
+                color: #007bff; /* Change color on hover */
+                text-decoration: underline; /* Underline effect on hover */
+            }
+
+            .navbar-toggler {
+                border: none; /* Remove border from the toggler */
+            }
+
+            .navbar-toggler-icon {
+                background-color: #007bff; /* Custom color for toggler icon */
+            }
+
+            .cart-icon {
+                font-size: 24px; /* Increase cart icon size */
+                color: #007bff; /* Match with theme color */
+            }
+
+            .cart-icon:hover {
+                color: #0056b3; /* Darker color on hover */
+            }
+
+    </style>
+</head>
+<body>
+    <header class="header_area sticky-header">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light main_box">
+                <div class="container">
+                    <a class="navbar-brand logo_h" href="/home">
+                        <img src="/img/logo3.PNG" alt="Logo" style="height: 50px; width: auto;">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto"> <!-- Changed from me-auto to ms-auto -->
+                            <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="/api/auth/login">Login</a></li>
+                            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                        </ul>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a href="/cart" class="nav-link cart-icon"><span class="fas fa-shopping-cart"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- End Header Area -->
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="card p-4">
+                <h1 class="text-center" th:text="'Order History for ' + ${customer.username}"></h1>
+
+                <!-- No orders message -->
+                <div th:if="${#lists.isEmpty(orders)}" class="alert alert-info text-center">
+                    <p>No orders found for this user.</p>
+                </div>
+
+                <!-- Orders Table -->
+                <div th:if="${!#lists.isEmpty(orders)}">
+                    <table class="table table-bordered table-hover mt-4">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Total Price</th>
+                                <th>Date Created</th>
+                                <th>Order Items</th>
+                                <th>Order Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td th:text="${order.orderId}"></td>
+                                <td class="price" th:text="'$' + ${#numbers.formatDecimal(order.totalPrice, 1, 2)}"></td>
+                                <td th:text="${order.orderDate}"></td>
+                                <td>
+                                    <ul>
+                                        <li th:each="item : ${order.orderItems}">
+                                            <strong th:text="${item.productName}"></strong>
+                                            (x<span th:text="${item.quantity}"></span>) - 
+                                            <span th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)}"></span>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td th:classappend="status-pending" th:if="${order.orderStatus == 'Pending'}" th:text="${order.orderStatus}"></td>
+                                <td th:classappend="status-shipped" th:if="${order.orderStatus == 'Shipped'}" th:text="${order.orderStatus}"></td>
+                                <td th:classappend="status-delivered" th:if="${order.orderStatus == 'Delivered'}" th:text="${order.orderStatus}"></td>
+                                <td th:classappend="status-canceled" th:if="${order.orderStatus == 'Canceled'}" th:text="${order.orderStatus}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- Start Footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-6 col-sm-6 text-center"> <!-- Added text-center class -->
+                <div class="single-footer-widget">
+                    <h6>About Us</h6>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 text-center"> <!-- Added text-center class -->
+                <div class="single-footer-widget">
+                    <h6>Newsletter</h6>
+                    <p>Stay updated with our latest</p>
+                    <div class="" id="mc_embed_signup">
+                        <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="form-inline">
+                            <div class="d-flex flex-row justify-content-center"> <!-- Centered the input and button -->
+                                <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" required="" type="email">
+                                <button class="btn btn-default" type="submit">Subscribe</button>
+                            </div>
+                            <div class="info"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer Area -->
+
+    <!-- End Footer Area -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

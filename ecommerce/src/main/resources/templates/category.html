@@ -60,6 +60,40 @@
 			color:  #ffba00;
 		}
 
+		/* Style for suggestions dropdown */
+		#suggestions {
+			display: none; /* Initially hidden */
+			position: absolute;
+			top: 100%; /* Aligns directly below the input box */
+			left: 0;
+			width: 100%; /* Matches input width */
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-top: none; /* Avoid double border with input */
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			z-index: 1000;
+			max-height: 200px; /* Limits height */
+			overflow-y: auto; /* Adds scroll if suggestions exceed max height */
+		}
+
+		#suggestions li {
+			padding: 10px;
+			cursor: pointer;
+			border-bottom: 1px solid #eee;
+		}
+
+		#suggestions li:last-child {
+			border-bottom: none; /* Removes border from last item */
+		}
+
+		#suggestions li:hover {
+			background-color: #f5f5f5;
+		}
+
+
 	</style>
 	<!-- jQuery CDN -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -126,13 +160,17 @@
 		</div>
 		<div class="search_input" id="search_input_box">
 			<div class="container">
-				<form class="d-flex justify-content-between">
-					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
-					<button type="submit" class="btn"></button>
+				<form class="d-flex justify-content-between" onsubmit="return performSearch();">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here" oninput="showSuggestions(this.value)">
+					<button type="submit" class="btn">Search</button>
 					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
 				</form>
+				<!-- Suggestions List -->
+				<ul id="suggestions"></ul>
 			</div>
+
 		</div>
+
 	</header>
 	<!-- End Header Area -->
 
@@ -350,7 +388,6 @@
 
 		function updatePagination(totalPages, currentPage) {
 			const paginationControls = $('#pagination-controls').empty();
-
 			if (currentPage > 0) {
 				paginationControls.append(createPaginationLink(currentPage - 1, 'prev-arrow', '<i class="fa fa-long-arrow-left"></i>'));
 			}
@@ -377,6 +414,7 @@
 		}
 
 		function fetchFilteredProducts() {
+			if(totalPages<currentPage)currentPage=totalPages
 			const data = {
 				brands: getSelectedValues('brands'),
 				materials: getSelectedValues('materials'),
@@ -387,7 +425,7 @@
 				size: 8
 			};
 
-			console.log("filterd"+data)
+			console.log("filterd"+JSON.stringify(data))
 			$.get('/api/products/filter', data, function(response) {
 				totalPages = response.totalPages;
 				displayProducts(response.content);
@@ -416,6 +454,63 @@
 		function createCheckbox(name, value) {
 			return `<label><input type="checkbox" name="${name}" value="${value}"> ${value}</label><br>`;
 		}
+
+		// Function to fetch and display suggestions as user types
+		function showSuggestions(query) {
+			const suggestionList = $('#suggestions').empty();
+			if (query.length < 2) {
+				$('#suggestions').hide();
+				return;
+			}
+
+			$.ajax({
+				url: '/api/products/search',  // Endpoint for suggestions
+				type: 'GET',
+				data: { name: query },
+				success: function(suggestions) {
+					console.log(suggestions)
+					if (suggestions.length === 0) {
+						suggestionList.hide();
+						return;
+					}
+					suggestions.forEach(suggestion => {
+						suggestionList.append(`<li onclick="selectSuggestion('${suggestion.name}')">${suggestion.name}</li>`);
+					});
+					suggestionList.show();
+				}
+			});
+		}
+		// Function to set suggestion in search input
+		function selectSuggestion(suggestion) {
+			console.log(suggestion)
+			$('#search_input').val(suggestion);
+			$('#suggestions').hide();
+			performSearch()
+		}
+		function performSearch() {
+			const query = $('#search_input').val().trim();
+			if (query === "") return false;
+
+			$.ajax({
+				url: '/api/products/result',  // Endpoint for full search
+				type: 'GET',
+				data: { name : query },
+				success: function(products) {
+					totalPages = products.totalPages;
+					displayProducts(products.content);
+					updatePagination(totalPages, products.pageable.pageNumber);
+					$('#suggestions').hide();
+				},
+				error: function (err) {
+					alert("error")
+				}
+			});
+
+			return false; // Prevents form submission
+		}
+
+
+
 	</script>
 
 </body>

@@ -65,7 +65,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .anonymous(a -> a.disable())
         .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(auth -> auth
                // Allow access to Swagger UI and OpenAPI documentation without authentication
@@ -91,7 +90,8 @@ public class SecurityConfig {
                                         "/cart/update",
                                         "/cart/clear",
                                         "/user/account/**",
-                                        "/**"
+                                        "/**",
+                                        "/error"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
@@ -117,13 +117,14 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             System.out.println("Blocked access to: " + request.getRequestURI());
                             System.out.println("Reason: " + authException.getMessage());
-                            response.sendRedirect("/api/auth/login");
+                            //response.sendRedirect("/api/auth/login");
                         })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
+    
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
         DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();

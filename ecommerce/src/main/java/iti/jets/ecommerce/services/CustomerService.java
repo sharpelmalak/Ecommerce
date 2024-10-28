@@ -141,21 +141,31 @@ public class CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
 
         /* Incoming in DTO */
-        existingCustomer.setName(existingCustomer.getName());
-        existingCustomer.setUsername(customerDTO.getUsername());
+        existingCustomer.setName(customerDTO.getName());
         existingCustomer.setEmail(customerDTO.getEmail());
-        existingCustomer.setAddress(customerDTO.getAddress());
-        existingCustomer.setPhone(customerDTO.getPhone());
-        existingCustomer.setBirthdate(customerDTO.getBirthdate());
-        existingCustomer.setJob(existingCustomer.getJob());
         existingCustomer.setAddress(customerDTO.getAddress());
         existingCustomer.setCity(customerDTO.getCity());
         existingCustomer.setCountry(customerDTO.getCountry());
+        existingCustomer.setPhone(customerDTO.getPhone());
+        existingCustomer.setBirthdate(customerDTO.getBirthdate());
+        existingCustomer.setJob(customerDTO.getJob());
 
+
+        if (customerDTO.getUsername() != null && !customerDTO.getUsername().isEmpty()) {
+            existingCustomer.setUsername(customerDTO.getUsername());
+        }
 
         if (customerDTO.getPassword() != null && !customerDTO.getPassword().isEmpty()) {
             existingCustomer.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         }
+
+        // Update categories if they exist in DTO
+        if (customerDTO.getCategoriesIds() != null) {
+            List<Category> updatedCategories = categoryRepository.findAllById(customerDTO.getCategoriesIds());
+            Set<Category> categories = new HashSet<>(updatedCategories); 
+            existingCustomer.setCategories(categories);
+        }
+
 
         Customer updatedCustomer = customerRepository.save(existingCustomer);
         return CustomerMapper.toDto(updatedCustomer);
