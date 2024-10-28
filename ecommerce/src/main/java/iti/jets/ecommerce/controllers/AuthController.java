@@ -77,12 +77,12 @@ public class AuthController {
         return "login";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/registeration")
     public String showRegisterationForm(Model  model) {
         CustomerDTO customerDTO = new CustomerDTO();
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("customerDTO", customerDTO);
-        return "signup3";
+        return "signup";
     }
 
     @PostMapping(value = "/login", consumes = {"application/json"}, produces = "application/json")
