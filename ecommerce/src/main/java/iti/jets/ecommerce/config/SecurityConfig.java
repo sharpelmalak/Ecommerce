@@ -82,14 +82,16 @@ public class SecurityConfig {
                                         "/shop/**",
                                         "/api/customers/**",
                                         "/api/products/**",
-                                        "/css/**", "/js/**", "/img/**", "/fonts/**",
+                                        "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
                                         "/home",
                                         "/cart",
                                         "/cart/check",
                                         "/cart/add",
                                         "/cart/remove/*",
                                         "/cart/update",
-                                        "/cart/clear"
+                                        "/cart/clear",
+                                        "/user/account/**",
+                                        "/**"
                                 ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import iti.jets.ecommerce.dto.ProductDTO;
 import iti.jets.ecommerce.services.ProductService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -33,6 +35,6 @@ public class HomeController {
         List<ProductDTO> productList = productService.getAllProducts();
         model.addAttribute("productList", productList);
         return "admin/admin-panel";
-    }
+    }    
 }
 
