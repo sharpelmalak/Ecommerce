@@ -249,6 +249,7 @@
 								</div>
 								<div class="info"></div>
 							</form>
+							<input type="hidden" id="errorMessage" th:value="${errorMessage}" />
 						</div>
 					</div>
 				</div>
@@ -300,17 +301,28 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script th:src="@{/js/main.js}"></script>
 
 
-	<script>
 
+		<script>
+			// Function to show an alert if an error message exists
+			function showErrorPopup(message) {
+				if (message) {
+					alert(message);
+				}
+			}
+				// Get the error message from the hidden input
+			const errorMessage = document.getElementById('errorMessage').value;
+				// Show popup if there's an error
+			showErrorPopup(errorMessage);
 	</script>
 
-<!--	<script>-->
-<!--		$(document).ready(function() {-->
-<!--			$('#contactForm').on('submit', function(e) {-->
-<!--				e.preventDefault();-->
 
-<!--				const username = $('#username').val();-->
-<!--				const password = $('#password').val();-->
+	<!--	<script>-->
+	<!--		$(document).ready(function() {-->
+	<!--			$('#contactForm').on('submit', function(e) {-->
+	<!--				e.preventDefault();-->
+
+	<!--				const username = $('#username').val();-->
+	<!--				const password = $('#password').val();-->
 <!--				const keepLoggedIn = $('#keepLoggedIn').is(':checked');-->
 
 <!--				$.ajax({-->

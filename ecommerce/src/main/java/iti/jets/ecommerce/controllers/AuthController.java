@@ -69,7 +69,11 @@ public class AuthController {
     
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error",required = false) String error, HttpServletRequest request) {
+    public String login(@RequestParam(value = "error",required = false) String error, Model model) {
+       if(error != null && error.equals("true"))
+       {
+           model.addAttribute("errorMessage", "Invalid credentials");
+       }
         return "login";
     }
 

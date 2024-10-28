@@ -11,6 +11,7 @@ import iti.jets.ecommerce.models.CartItem;
 import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.repositories.CartItemRepository;
 import iti.jets.ecommerce.repositories.CustomerRepository;
+import iti.jets.ecommerce.repositories.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -31,6 +33,9 @@ public class CartService {
     private ProductService productService;
 
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     public CartService(CartItemRepository cartItemRepository, ProductService productService,CustomerRepository customerRepository) {
@@ -199,19 +204,29 @@ public class CartService {
         return new ArrayList<>();
     }
 
-    public  void saveCart(HttpSession session)
+
+
+    public  void saveCart(List<CartItemDTO> cart,String username)
     {
-        List<CartItemDTO> cart = (List<CartItemDTO>) session.getAttribute("cart");
         if (cart != null && !cart.isEmpty()) {
-            List<CartItem> cartItems = CartItemMapper.toEntity(cart);
-            cartItemRepository.saveAll(cartItems);
+            Customer customer = customerRepository.findByUsername(username).get();
+            List<CartItem> cartItems = CartItemMapper.toEntity(cart,customer,productRepository);
+            System.out.println("inn"+cartItems);
+            try{
+                cartItemRepository.saveAll(cartItems);
+            }catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+
         }
 
     }
 
-    public  List<CartItemDTO> loadCart(int customerId)
+    @Transactional
+    public  List<CartItemDTO> loadCart(String username)
     {
-        Optional<Customer> customer = customerRepository.findById(customerId);
+        Optional<Customer> customer = customerRepository.findByUsername(username);
         if(customer.isPresent())
         {
             List<CartItem> cartItems = cartItemRepository.findByCustomer(customer.get());
@@ -219,9 +234,11 @@ public class CartService {
         }
         return null;
     }
-    public  void resetCart(int customerId)
+
+    @Transactional
+    public  void resetCart(String username)
     {
-        Optional<Customer> customer = customerRepository.findById(customerId);
+        Optional<Customer> customer = customerRepository.findByUsername(username);
         if(customer.isPresent())
         {
             cartItemRepository.deleteAllByCustomer(customer.get());
