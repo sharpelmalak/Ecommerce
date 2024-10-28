@@ -580,12 +580,13 @@
 
         function fetchOrderDetails() {
             $.ajax({
-                url: `/api/orders/customers/${customerId}`, // Your endpoint to fetch order details
+                url: `/cart/checkout`, // Your endpoint to fetch order details
                 method: 'GET',
                 contentType: 'application/json',
-                success: function (orders) {
+                success: function (items) {
                     // Call a function to populate the order section
-                    populateOrderSection(orders);
+                    console.log(items)
+                    populateOrderSection(items);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching orders:', error);
@@ -594,18 +595,18 @@
             });
         }
 
-        function populateOrderSection(orders) {
+        function populateOrderSection(items) {
 
             // Clear the existing content
             $('#order-section').empty();
 
-            if (orders.length === 0) {
+            if (items.length === 0) {
                 $('#order-section').html('<p>No orders found.</p>');
                 return;
             }
 
             // Create HTML content for each order
-            orders.forEach(function (order) {
+            items.forEach(function (item) {
                 var orderHTML = `
                     <div class="order">
                         <table style="width: 100%; border-collapse: collapse;">
@@ -617,13 +618,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                ${order.orderItems.map(item => `
                                     <tr style="border-bottom: 1px solid #ccc;">
-                                        <td style="padding: 8px;">${item.productName}</td>
-                                        <td style="padding: 8px;">$${item.price}</td>
+                                        <td style="padding: 8px;">${item.product.name}</td>
+                                        <td style="padding: 8px;">$${item.product.price}</td>
                                         <td style="padding: 8px;">${item.quantity}</td>
                                     </tr>
-                                `).join('')}
                             </tbody>
                         </table>
                     </div>
@@ -634,7 +633,7 @@
             });
 
 
-            orders.forEach(function (order) {
+            items.forEach(function (item) {
                 var orderItemsHTML = `
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                     <thead>
@@ -647,9 +646,9 @@
                             <tbody>
                                 ${order.orderItems.map(item => `
                                     <tr>
-                                        <td style="padding: 12px; border: 1px solid #ddd;">${item.productName}</td>
+                                        <td style="padding: 12px; border: 1px solid #ddd;">${item.product.name}</td>
                                         <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">${item.quantity}</td>
-                                        <td style="padding: 12px; border: 1px solid #ddd; text-align: right;">$${(item.price * item.quantity).toFixed(2)}</td>
+                                        <td style="padding: 12px; border: 1px solid #ddd; text-align: right;">$${(item.product.price * item.quantity).toFixed(2)}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -657,17 +656,17 @@
                     `;
 
 
-                var subTotal = `
-                    <li><a>Subtotal <span>${order.totalPrice}</span></a></li>
-                `;
-
-                var shipping = `
-                    <li><a>Shipping <span id="shipping-value">${order.shippingCost}</span></a></li>
-                `;
-                var total = `
-                    <li><a> Total <span id="total-price-value">${order.totalPrice}</span></a></li>
-
-                `;
+                // var subTotal = `
+                //     <li><a>Subtotal <span>${order.totalPrice}</span></a></li>
+                // `;
+                //
+                // var shipping = `
+                //     <li><a>Shipping <span id="shipping-value">${order.shippingCost}</span></a></li>
+                // `;
+                // var total = `
+                //     <li><a> Total <span id="total-price-value">${order.totalPrice}</span></a></li>
+                //
+                // `;
 
                 // var couponHTML = ` <li
                 //     style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px">
@@ -683,9 +682,9 @@
 
 
                 $('#order-items').append(orderItemsHTML);
-                $('#subtotal').append(subTotal);
-                $('#shipping-cost').append(shipping);
-                $('#total-price').append(total);
+                // $('#subtotal').append(subTotal);
+                // $('#shipping-cost').append(shipping);
+                // $('#total-price').append(total);
                 // $('#total-price').after(couponHTML);
 
             });

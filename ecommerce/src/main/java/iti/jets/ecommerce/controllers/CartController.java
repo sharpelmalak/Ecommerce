@@ -113,4 +113,16 @@ public class CartController {
         }
         return ResponseEntity.ok(Boolean.FALSE);
     }
+
+
+    // Get all items in the cart
+    @GetMapping("/checkout")
+    public ResponseEntity<List<CartItemDTO>>  cartCheckout(HttpServletRequest request, Model model) {
+        List<CartItemDTO> cartItems = cartService.getCartItems(request.getSession(),request.getCookies());
+        if(cartItems!=null && !cartItems.isEmpty())
+        {
+            return ResponseEntity.ok(cartItems);
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
 }
