@@ -6,20 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- intl-tel-input CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
 
-    <link rel="stylesheet" href="../css/linearicons.css">
-    <link rel="stylesheet" href="../css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/themify-icons.css">
-    <link rel="stylesheet" href="../css/bootstrap.css">
-    <link rel="stylesheet" href="../css/owl.carousel.css">
-    <link rel="stylesheet" href="../css/nice-select.css">
-    <link rel="stylesheet" href="../css/nouislider.min.css">
-    <link rel="stylesheet" href="../css/ion.rangeSlider.css" />
-    <link rel="stylesheet" href="../css/ion.rangeSlider.skinFlat.css" />
-    <link rel="stylesheet" href="../css/magnific-popup.css">
-    <link rel="stylesheet" href="../css/main.css">
+
+    <!--
+		CSS
+		============================================= -->
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}">
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}">
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}">
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
 
     <style>
         .interest-bubble {
@@ -44,7 +50,7 @@
             transition: all 0.3s ease;
         }
 
-        .interest-bubble input[type="checkbox"]:checked + label {
+        .interest-bubble input[type="checkbox"]:checked+label {
             background-color: #28a745;
             border-color: #28a745;
             color: white;
@@ -52,7 +58,8 @@
 
         body {
             margin: 0;
-            padding-top: 200px; /* Adjust this value as needed */
+            padding-top: 200px;
+            /* Adjust this value as needed */
             color: #2e323c;
             background: #f5f6fa;
             position: relative;
@@ -100,338 +107,337 @@
             border: 0;
             margin-bottom: 1rem;
         }
+
+        .navbar-brand img {
+            max-width: 20%;
+            /* Prevents the image from overflowing its container */
+            height: auto;
+        }
+
+        /* Adjusts the main container layout */
+        .profile-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 50px;
+            /* Adds space between avatar and personal details */
+            margin-top: 50px;
+        }
+
+        /* Left section for avatar */
+        .profile-avatar {
+            flex: 1;
+            max-width: 250px;
+        }
+
+        /* Right section for personal details */
+        .profile-details {
+            flex: 2;
+            padding-left: 30px;
+        }
+
+        /* Footer styling */
+        .footer-area {
+            margin-top: 50px;
+        }
     </style>
 
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 </head>
 
 <body>
 
-<!-- Start Header Area -->
-	<header class="header_area sticky-header">
-		<div class="main_menu">
-			<nav class="navbar navbar-expand-lg navbar-light main_box">
-				<div class="container">
-					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="/home"><img src="img/logo3.PNG" alt=""></a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-							<li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
-							<li class="nav-item active"><a class="nav-link" href="/api/auth/login">Login</a></li>
-							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-						</ul>
-						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-		</div>
-	</header>
-	<!-- End Header Area -->
+    <!-- Start Header Area -->
+    <header class="header_area sticky-header">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light main_box">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <a class="navbar-brand logo_h" href="/home"><img src="/img/logo3.PNG" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto">
+                            <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="/api/auth/login">Logout</a></li>
+                            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item"><a href="/cart" class="cart"><span class="ti-bag"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- End Header Area -->
 
-<div class="container">
-    <div class="row gutters">
-        <!-- Profile Section -->
-        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="account-settings">
-                        <div class="user-profile">
-                            <div class="user-avatar">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User Avatar">
-                            </div>
-                            <!-- Display Username and Email (Fetched from database) -->
-                            <h5 class="user-name">${user.username}</h5>
-                            <h6 class="user-email">${user.email}</h6>
+
+    <div class="container profile-container">
+        <!-- Avatar Section -->
+        <div class="profile-avatar card h-100">
+            <div class="card-body">
+                <div class="account-settings">
+                    <div class="user-profile">
+                        <div class="user-avatar text-center">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User Avatar"
+                                class="img-fluid">
                         </div>
+                        <h5 class="user-name text-center">
+                            <input type="text" id="username" name="username" th:value="${CustomerDTO.username}"
+                                class="form-control text-center" readonly>
+                        </h5>
+                        <h6 class="user-email text-center">
+                            <input type="email" id="email" name="email" th:value="${CustomerDTO.email}"
+                                class="form-control text-center" readonly>
+                        </h6>
                     </div>
-                    <!-- Button to View Past Orders -->
-                    <div class="mt-3 text-center">
-                        <form action="/ECommerceWebApp/userAcc?action=viewOrders" method="POST">
-                            <button type="submit" class="btn btn-primary">View Orders</button>
-                        </form>
-                    </div>
-
+                </div>
+                <div class="mt-3 text-center">
+                    <form th:action="@{/user/{customerId}/orders(customerId=${CustomerDTO.id})}" method="GET">
+                        <button type="submit" class="btn btn-primary">View Orders</button>
+                    </form>
                 </div>
             </div>
         </div>
-    <!-- Editable Personal Details Form Section -->
-    <div class="container mt-5">
-        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <form th:object="${CustomerDTO}" action="/user/account/update" method="POST">
-                        <div class="row gutters">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <h6 class="mb-2 text-primary">Personal Details</h6>
-                            </div>
 
-                            <!-- Full Name -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="name">Full Name</label>
-                                    <input type="text" id="name" name="name" th:field="*{name}" class="form-control" required>
+        <!-- Personal Details Form Section -->
+        <div class="profile-details card h-100">
+            <div class="card-body">
+                <form th:object="${CustomerDTO}" action="/user/account/update" method="POST">
+                    <input type="hidden" th:field="*{id}" />
+                    <h6 class="mb-2 text-primary">Personal Details</h6>
+                    <div class="row gutters">
+                        <!-- Full Name -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" th:field="*{name}" class="form-control"
+                                    required>
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div th:text="${CustomerDTO.isDeleted ? 'Not Active' : 'Active'}"
+                                    class="form-control status-box"
+                                    th:classappend="${CustomerDTO.isDeleted ? 'text-danger' : 'text-success'}">
+                                    <!-- Text will be replaced by Thymeleaf -->
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Username -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="text" id="username" name="username" th:field="*{username}" class="form-control" required>
-                                    <span id="usernameFeedback" class="text-danger"></span>
-                                </div>
+
+
+                        <!-- Date of Birth -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="birthdate">Date of Birth</label>
+                                <input type="date" class="form-control" id="birthdate" name="birthdate"
+                                    th:field="*{birthdate}" required>
                             </div>
+                        </div>
 
-                            <!-- Date of Birth -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="birthdate">Date of Birth</label>
-                                    <input type="date" class="form-control" id="birthdate" name="birthdate" th:field="*{birthdate}" required>
-                                </div>
+                        <!-- Email -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" th:field="*{email}" class="form-control"
+                                    required>
                             </div>
+                        </div>
 
-                            <!-- Email -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" th:field="*{email}" class="form-control" required>
-                                </div>
+                        <!-- Password -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" th:field="*{password}"
+                                    class="form-control" pattern=".{6,}"
+                                    title="Password must be at least 6 characters long.">
                             </div>
+                        </div>
 
-                            <!-- Password -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" id="password" name="password" th:field="*{password}" class="form-control" required pattern=".{6,}" title="Password must be at least 6 characters long.">
-                                </div>
+
+                        <!-- Address -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address" th:field="*{address}"
+                                    class="form-control" required>
                             </div>
+                        </div>
 
-                            <!-- Address -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <input type="text" id="address" name="address" th:field="*{address}" class="form-control" required>
-                                </div>
+                        <!-- City -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" th:field="*{city}" class="form-control"
+                                    required>
                             </div>
+                        </div>
 
-                            <!-- City -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="city">City</label>
-                                    <input type="text" id="city" name="city" th:field="*{city}" class="form-control" required>
-                                </div>
+                        <!-- Country -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <input type="text" id="country" name="country" th:field="*{country}"
+                                    class="form-control" required>
                             </div>
+                        </div>
 
-                            <!-- Country -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="country">Country</label>
-                                    <input type="text" id="country" name="country" th:field="*{country}" class="form-control" required>
-                                </div>
+                        <!-- Phone -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" th:field="*{phone}" class="form-control"
+                                    required>
                             </div>
+                        </div>
 
-                            <!-- Phone -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" id="phone" name="phone" th:field="*{phone}" class="form-control" required>
-                                </div>
+                        <!-- Job -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="job">Job</label>
+                                <input type="text" id="job" name="job" th:field="*{job}" class="form-control">
                             </div>
+                        </div>
 
-                            <!-- Job -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="job">Job</label>
-                                    <input type="text" id="job" name="job" th:field="*{job}" class="form-control">
-                                </div>
-                            </div>
-
-                            <!-- Interests Section -->
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label><b>Select Your Interests</b></label>
-                                    <div class="d-flex flex-wrap">
-                                        <div th:each="category : ${categories}" class="interest-bubble">
-                                            <input type="checkbox" th:id="${'category' + category.id}" th:name="categories" th:value="${category.id}" />
-                                            <label th:for="${'category' + category.id}" th:text="${category.name}"></label>
-                                        </div>
+                        <!-- Interests Section -->
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label><b>Select Your Interests</b></label>
+                                <div class="d-flex flex-wrap">
+                                    <div th:each="category : ${categories}" class="interest-bubble">
+                                        <input type="checkbox" th:id="${'category' + category.id}" th:name="categories"
+                                            th:value="${category.id}" />
+                                        <label th:for="${'category' + category.id}" th:text="${category.name}"></label>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Form Buttons -->
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">Update Profile</button>
-                                    <button type="reset" class="btn btn-secondary">Cancel</button>
-                                </div>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-		<!-- Separate Password Form Section -->
-        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 mt-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <form action="/ECommerceWebApp/userAcc?action=changePassword" method="POST">
-                        <div class="row gutters">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <h6 class="mb-2 text-primary">Change Password</h6>
-                            </div>
 
-                            <!-- Old Password Input -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="oldPassword">Old Password</label>
-                                    <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="Enter old password" required>
-                                </div>
-                            </div>
 
-                            <!-- New Password Input -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="password">New Password</label>
-                                    <input type="password" class="form-control" id="password" name="newPassword" placeholder="Enter new password" minlength="6" required>
-                                </div>
-                            </div>
+    <!-- start footer Area -->
+    <footer class="footer-area section_gap">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3  col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>About Us</h6>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                            ut labore dolore
+                            magna aliqua.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4  col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>Newsletter</h6>
+                        <p>Stay update with our latest</p>
+                        <div class="" id="mc_embed_signup">
 
-                            <!-- Confirm Password Input -->
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="confirmPassword">Confirm New Password</label>
-                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password" minlength="6" required>
+                            <form target="_blank" novalidate="true"
+                                action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                                method="get" class="form-inline">
+
+                                <div class="d-flex flex-row">
+
+                                    <input class="form-control" name="EMAIL" placeholder="Enter Email"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+                                        required="" type="email">
+
+
+                                    <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
+                                            aria-hidden="true"></i></button>
+                                    <div style="position: absolute; left: -5000px;">
+                                        <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
+                                            type="text">
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="info"></div>
+                            </form>
                         </div>
-
-                        <!-- Form Buttons for Password Change -->
-                        <div class="row gutters">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">Update Password</button>
-                                    <button type="reset" class="btn btn-secondary">Cancel</button>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="col-lg-3  col-md-6 col-sm-6">
+                    <div class="single-footer-widget mail-chimp">
+                        <h6 class="mb-20">Instragram Feed</h6>
+                        <ul class="instafeed d-flex flex-wrap">
+                            <li><img src="img/i1.jpg" alt=""></li>
+                            <li><img src="img/i2.jpg" alt=""></li>
+                            <li><img src="img/i3.jpg" alt=""></li>
+                            <li><img src="img/i4.jpg" alt=""></li>
+                            <li><img src="img/i5.jpg" alt=""></li>
+                            <li><img src="img/i6.jpg" alt=""></li>
+                            <li><img src="img/i7.jpg" alt=""></li>
+                            <li><img src="img/i8.jpg" alt=""></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>Follow Us</h6>
+                        <p>Let us be social</p>
+                        <div class="footer-social d-flex align-items-center">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-dribbble"></i></a>
+                            <a href="#"><i class="fa fa-behance"></i></a>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- start footer Area -->
-	<footer class="footer-area section_gap">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3  col-md-6 col-sm-6">
-					<div class="single-footer-widget">
-						<h6>About Us</h6>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
-							magna aliqua.
-						</p>
-					</div>
-				</div>
-				<div class="col-lg-4  col-md-6 col-sm-6">
-					<div class="single-footer-widget">
-						<h6>Newsletter</h6>
-						<p>Stay update with our latest</p>
-						<div class="" id="mc_embed_signup">
-
-							<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-							 method="get" class="form-inline">
-
-								<div class="d-flex flex-row">
-
-									<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
-									 required="" type="email">
-
-
-									<button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
-									<div style="position: absolute; left: -5000px;">
-										<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
-									</div>
-
-									<!-- <div class="col-lg-4 col-md-4">
-													<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-												</div>  -->
-								</div>
-								<div class="info"></div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3  col-md-6 col-sm-6">
-					<div class="single-footer-widget mail-chimp">
-						<h6 class="mb-20">Instragram Feed</h6>
-						<ul class="instafeed d-flex flex-wrap">
-							<li><img src="img/i1.jpg" alt=""></li>
-							<li><img src="img/i2.jpg" alt=""></li>
-							<li><img src="img/i3.jpg" alt=""></li>
-							<li><img src="img/i4.jpg" alt=""></li>
-							<li><img src="img/i5.jpg" alt=""></li>
-							<li><img src="img/i6.jpg" alt=""></li>
-							<li><img src="img/i7.jpg" alt=""></li>
-							<li><img src="img/i8.jpg" alt=""></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-2 col-md-6 col-sm-6">
-					<div class="single-footer-widget">
-						<h6>Follow Us</h6>
-						<p>Let us be social</p>
-						<div class="footer-social d-flex align-items-center">
-							<a href="#"><i class="fa fa-facebook"></i></a>
-							<a href="#"><i class="fa fa-twitter"></i></a>
-							<a href="#"><i class="fa fa-dribbble"></i></a>
-							<a href="#"><i class="fa fa-behance"></i></a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-				<p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+                <p class="footer-text m-0">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;
+                    <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is
+                    made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                        target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
-                            </div>
-                        </div>
-        </footer>
-                    <!-- End footer Area -->
+            </div>
+        </div>
+    </footer>
+    <!-- End footer Area -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 
 
- <!-- ================================ The script of ajax ================================ -->
 
 
-<script>
+    <!-- ================================ The script of ajax ================================ -->
 
-    const phoneInputField = document.querySelector("#phone");
-    const phoneInput = window.intlTelInput(phoneInputField, {
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js", // for formatting/validation etc.
-        initialCountry: "auto",
-        geoIpLookup: function (callback) {
-            fetch('https://ipinfo.io/json?token=c341c7c125c720') // Replace with your own IPinfo token
+    <script>
+        const phoneInputField = document.querySelector("#phone");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js", // for formatting/validation etc.
+            initialCountry: "auto",
+            geoIpLookup: function (callback) {
+                fetch('https://ipinfo.io/json?token=c341c7c125c720') // Replace with your own IPinfo token
                     .then((response) => response.json())
                     .then((data) => {
                         callback(data.country);
@@ -439,9 +445,8 @@
                     .catch(() => {
                         callback('us');
                     });
-        }
-    });
-
+            }
+        });
 
         function checkUsername() {
             const username = document.getElementById("username").value;
@@ -449,6 +454,8 @@
 
             if (username.length < 3) {
                 feedback.textContent = "Username must be at least 3 characters.";
+                feedback.classList.add("text-danger");
+                feedback.classList.remove("text-success");
                 return;
             }
 
@@ -457,73 +464,75 @@
                 .then(isAvailable => {
                     if (isAvailable) {
                         feedback.textContent = "Username is available";
-                        feedback.classList.remove("text-danger");
                         feedback.classList.add("text-success");
+                        feedback.classList.remove("text-danger");
                     } else {
                         feedback.textContent = "Username is already taken";
                         feedback.classList.add("text-danger");
+                        feedback.classList.remove("text-success");
                     }
                 })
                 .catch(error => console.error('Error checking username:', error));
         }
 
-         // Set the max date for date of birth to today
-    function setMaxDate() {
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById("birthdate").setAttribute("max", today);
-    }
 
-    // Validate date of birth on blur
-    document.getElementById("birthdate").onblur = function () {
-        const dobInput = this;
-        const dobError = document.getElementById("dobError");
-
-        // Reset error message
-        dobError.style.display = "none";
-
-        // Check if the date of birth is in the future
-        if (new Date(dobInput.value) > new Date()) {
-            dobError.style.display = "block"; // Show error message
+        // Set the max date for date of birth to today
+        function setMaxDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById("birthdate").setAttribute("max", today);
         }
-    };
 
-    // Validate password on blur
-    document.getElementById("password").onblur = function () {
-        const passwordInput = this;
-        const passwordError = document.getElementById("passwordError");
+        // Validate date of birth on blur
+        document.getElementById("birthdate").onblur = function () {
+            const dobInput = this;
+            const dobError = document.getElementById("dobError");
 
-        // Reset error message
-        passwordError.style.display = "none";
+            // Reset error message
+            dobError.style.display = "none";
 
-        // Check if the password is at least 6 characters long
-        if (passwordInput.value.length < 6) {
-            passwordError.style.display = "block"; // Show error message
-        }
-    };
-  
+            // Check if the date of birth is in the future
+            if (new Date(dobInput.value) > new Date()) {
+                dobError.style.display = "block"; // Show error message
+            }
+        };
 
-    
+        // Validate password on blur
+        document.getElementById("password").onblur = function () {
+            const passwordInput = this;
+            const passwordError = document.getElementById("passwordError");
+
+            // Reset error message
+            passwordError.style.display = "none";
+
+            // Check if the password is at least 6 characters long
+            if (passwordInput.value.length < 6) {
+                passwordError.style.display = "block"; // Show error message
+            }
+        };
 
 
 
-</script>
 
- <!-- Bootstrap JS and dependencies -->
+
+
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-	<script th:src="@{/js/vendor/bootstrap.min.js}"></script>
-	<script th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
-	<script th:src="@{/js/jquery.nice-select.min.js}"></script>
-	<script th:src="@{/js/jquery.sticky.js}"></script>
-	<script th:src="@{/js/nouislider.min.js}"></script>
-	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
-	<script th:src="@{/js/owl.carousel.min.js}"></script>
-	<script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/vendor/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+    <script th:src="@{/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/js/jquery.sticky.js}"></script>
+    <script th:src="@{/js/nouislider.min.js}"></script>
+    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 
 
 </body>
-</html>
 
+</html>

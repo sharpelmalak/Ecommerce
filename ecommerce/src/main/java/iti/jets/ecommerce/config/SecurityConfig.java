@@ -124,6 +124,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
         DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();

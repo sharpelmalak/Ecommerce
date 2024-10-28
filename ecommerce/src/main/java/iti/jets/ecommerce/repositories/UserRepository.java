@@ -1,11 +1,12 @@
 package iti.jets.ecommerce.repositories;
 
 import iti.jets.ecommerce.models.User;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    Optional<User> findByUsername(String email);
+
+public interface UserRepository extends JpaRepository<User, Integer> {
+    Optional<User> findByUsername(String username);
 }
