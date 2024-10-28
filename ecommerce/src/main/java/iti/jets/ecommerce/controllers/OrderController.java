@@ -2,6 +2,7 @@
 package iti.jets.ecommerce.controllers;
 
 
+import iti.jets.ecommerce.dto.CartItemDTO;
 import iti.jets.ecommerce.dto.OrderDTO;
 import iti.jets.ecommerce.services.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class OrderController {
 
     // Create new Order
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
-        return ResponseEntity.ok(orderService.createOrder(orderDTO));
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody int customerId, List<CartItemDTO> cartItems, String shippingAddress, String paymentMethod) {
+        return ResponseEntity.ok(orderService.createOrder(customerId, cartItems, shippingAddress, paymentMethod));
     }
 
     // Get all orders for a specific user (Customer action)

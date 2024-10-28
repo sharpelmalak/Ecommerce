@@ -36,14 +36,17 @@ public class Order implements java.io.Serializable {
     @Column(name = "total_price", nullable = false, precision = 12)
     private double totalPrice;
 
+    @Column(name = "shipping_address" , nullable = false)
+    private String shippingAddress;
+
     @Column(name = "status", nullable = false)
     private String status;  // Possible values: "Placed", "Confirmed", "Delivered"
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>(0);
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    private Payment payment;
+    @Column(name = "payment_method")
+    private String paymentMethod;
 
     public Order(Customer customer, float totalPrice, String status) {
         this.customer = customer;

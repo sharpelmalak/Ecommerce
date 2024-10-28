@@ -921,6 +921,42 @@
     }
 
 
+    // place order handling
+    $(document).ready(function() {
+        // When the "Place Order" button is clicked
+        $('#place-order-btn').click(function(event) {
+            event.preventDefault();
+
+            // Prepare checkout data (you can customize how you get this data)
+            const checkoutData = {
+                items: JSON.parse(localStorage.getItem('cartItems')),  // Example of getting items from LocalStorage
+                customerId: 12345,  // Replace this with dynamic customer ID from session or frontend
+                shippingAddress: $('#shippingAddress').val(),
+                paymentMethod: $('input[name="paymentMethod"]:checked').val()
+            };
+
+            // AJAX call to send the checkout request to the backend
+            $.ajax({
+                url: '/api/orders/checkout',  // Backend endpoint to place the order
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(checkoutData),
+                success: function(orderDTO) {
+                    // Handle the returned OrderDTO
+                    console.log('Order placed successfully:', orderDTO);
+
+                    // Redirect to confirmation page, passing the order ID
+                    window.location.href = `/confirmation?orderId=${orderDTO.orderId}`;
+                },
+                error: function(error) {
+                    console.error('Error during checkout:', error);
+                    alert('Failed to place the order. Please try again.');
+                }
+            });
+        });
+    });
+
+
 </script>
 </body>
 

@@ -24,7 +24,7 @@ public class Payment {
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "card_id", nullable = false) // New field
+    @JoinColumn(name = "card_id") // New field
     private Card card;
 
     @Column(name = "payment_method", nullable = false, length = 50)
@@ -34,7 +34,7 @@ public class Payment {
     private String paymentStatus;  // 'Pending', 'Completed', 'Failed'
 
     @Column(name = "transaction_id", length = 255)
-    private String transactionId;  // For Stripe/Fawry: external transaction reference
+    private String transactionId;  // For external transaction reference
 
     @Column(name = "amount", nullable = false, precision = 10)
     private double amount;
@@ -44,9 +44,6 @@ public class Payment {
 
     @Column(name = "customer_email", length = 255)
     private String customerEmail;  // For Stripe/Fawry
-
-    @Column(name = "fawry_reference", length = 255)
-    private String fawryReference;  // Fawry specific reference
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false)
