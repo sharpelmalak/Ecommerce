@@ -46,7 +46,7 @@ public class CustomerMapper {
         customer.setCity(dto.getCity());
         customer.setCountry(dto.getCountry());
         customer.setPhone(dto.getPhone());
-        customer.setDeleted(dto.isDeleted());
+        customer.setIsDeleted(dto.getIsDeleted());
         
         // Set categories to the customer
         customer.setCategories(categories); // Assuming Customer has a setCategories method
@@ -70,9 +70,10 @@ public class CustomerMapper {
         dto.setCity(customer.getCity());
         dto.setCountry(customer.getCountry());
         dto.setPhone(customer.getPhone());
-        dto.setDeleted(customer.isDeleted());
+        dto.setIsDeleted(customer.getIsDeleted());
         dto.setCity(customer.getCity());
         dto.setCountry(customer.getCountry());
+
 
          // If categories are associated with the customer, collect their IDs
          if (customer.getCategories() != null) {

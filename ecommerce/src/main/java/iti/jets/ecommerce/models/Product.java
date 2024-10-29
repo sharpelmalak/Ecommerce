@@ -57,7 +57,7 @@ public class Product implements java.io.Serializable {
 
     // Watch-specific fields
     private String material;
-    private int caseDiameter;
+    private int caseDiameter=0;
     private String waterResistance;
     private String gender;
 

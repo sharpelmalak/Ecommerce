@@ -304,6 +304,7 @@
                 </div>
 
                 <!-- Right Column for Order Summary -->
+                <!-- Right Column for Order Summary -->
                 <div class="col-lg-4">
                     <div class="order_box">
                         <h2>Order Summary</h2>
@@ -330,6 +331,7 @@
                         <a class="primary-btn" id="place-order-btn" href="confirmation.html">Place Order</a>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -443,13 +445,6 @@
 <script src="js/main.js"></script>
 
 <script>
-
-    // get all important vars here
-    // customerId, country , total
-    const customerId = 12; // get it from the cart
-    const orderId = 1; // get it from the cart
-    let country = ""
-    let finalTotal = 0;
 
     // =======================================================
     // Function to load the user's saved address using AJAX
@@ -572,9 +567,13 @@
 
 
     //=============================
-    // Load Order details
+    // Load Cart Items
     //==============================
-
+    // save this as global | don't repeat api calls
+    let itemsTotalPrice = 0;
+    let globalCartItems = "";
+    let customerId = 12;
+    let country = "USA" // get from customer id
     $(document).ready(function () {
         fetchOrderDetails();
 
@@ -584,9 +583,11 @@
                 method: 'GET',
                 contentType: 'application/json',
                 success: function (items) {
+                    globalCartItems = items;
                     // Call a function to populate the order section
-                    console.log(items)
+                    console.log(items);
                     populateOrderSection(items);
+                    populateOrderSummary(items);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching orders:', error);
@@ -596,104 +597,114 @@
         }
 
         function populateOrderSection(items) {
-
             // Clear the existing content
             $('#order-section').empty();
 
             if (items.length === 0) {
-                $('#order-section').html('<p>No orders found.</p>');
+                $('#order-section').html('<p>No items found in your cart.</p>');
                 return;
             }
 
-            // Create HTML content for each order
+            // Create table structure for cart items
+            var cartItemsTable = `
+            <table style="width: 100%; border-collapse: collapse;" id="cart-items-table">
+                <thead>
+                    <tr style="border-bottom: 2px solid #000;">
+                        <th style="text-align: left; padding: 8px;">Product Name</th>
+                        <th style="text-align: left; padding: 8px;">Price</th>
+                        <th style="text-align: left; padding: 8px;">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        `;
+
+            // Append the table to the order section
+            $('#order-section').append(cartItemsTable);
+
+            // Populate the table with cart items
             items.forEach(function (item) {
-                var orderHTML = `
-                    <div class="order">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="border-bottom: 2px solid #000;">
-                                    <th style="text-align: left; padding: 8px;">Product Name</th>
-                                    <th style="text-align: left; padding: 8px;">Price</th>
-                                    <th style="text-align: left; padding: 8px;">Quantity</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                    <tr style="border-bottom: 1px solid #ccc;">
-                                        <td style="padding: 8px;">${item.product.name}</td>
-                                        <td style="padding: 8px;">$${item.product.price}</td>
-                                        <td style="padding: 8px;">${item.quantity}</td>
-                                    </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-
-                // Append the order HTML to the order section
-                $('#order-section').append(orderHTML);
+                itemsTotalPrice+=item.product.price;
+                var cartItemsHtml = `
+                <tr style="border-bottom: 1px solid #ccc;">
+                    <td style="padding: 8px;">${item.product.name}</td>
+                    <td style="padding: 8px;">$${item.product.price.toFixed(2)}</td>
+                    <td style="padding: 8px;">${item.quantity}</td>
+                </tr>
+            `;
+                // Append each row to the table's tbody
+                $('#cart-items-table tbody').append(cartItemsHtml);
             });
+        }
+    });
 
 
-            items.forEach(function (item) {
-                var orderItemsHTML = `
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                    <thead>
-                        <tr style="background-color: #f2f2f2; text-align: left;">
-                            <th style="padding: 12px; border: 1px solid #ddd;">Product Name</th>
-                            <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Quantity</th>
-                            <th style="padding: 12px; border: 1px solid #ddd; text-align: right;">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${order.orderItems.map(item => `
-                                    <tr>
-                                        <td style="padding: 12px; border: 1px solid #ddd;">${item.product.name}</td>
-                                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">${item.quantity}</td>
-                                        <td style="padding: 12px; border: 1px solid #ddd; text-align: right;">$${(item.product.price * item.quantity).toFixed(2)}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    `;
+    // ==============================
+    // Render order summary
+    //====================================
 
+    // Function to populate the order summary
+    function populateOrderSummary(cartItems, shippingCost = 50) {
+        // Clear any existing content
+        $('#order-items').empty();
+        $('#subtotal').empty();
+        $('#shipping-cost').empty();
+        $('#total-price').empty();
 
-                // var subTotal = `
-                //     <li><a>Subtotal <span>${order.totalPrice}</span></a></li>
-                // `;
-                //
-                // var shipping = `
-                //     <li><a>Shipping <span id="shipping-value">${order.shippingCost}</span></a></li>
-                // `;
-                // var total = `
-                //     <li><a> Total <span id="total-price-value">${order.totalPrice}</span></a></li>
-                //
-                // `;
-
-                // var couponHTML = ` <li
-                //     style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px">
-                //     <input type="text" id="coupon-code" placeholder="Enter coupon code"
-                //            style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;"/>
-                //     <button id="apply-coupon"
-                //             style="padding: 8px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                //         Apply
-                //     </button>
-                // </li>
-                // <div id="message" class="message"></div>
-                //     `;
-
-
-                $('#order-items').append(orderItemsHTML);
-                // $('#subtotal').append(subTotal);
-                // $('#shipping-cost').append(shipping);
-                // $('#total-price').append(total);
-                // $('#total-price').after(couponHTML);
-
-            });
-
-
+        // If no cart items, show a message
+        if (!cartItems || cartItems.length === 0) {
+            $('#order-items').html('<p>No items in your cart.</p>');
+            return;
         }
 
+        // Step 1: Render the Cart Items Table
+        let subtotal = 0;
+        let orderItemsHTML = `
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr style="background-color: #f2f2f2; text-align: left;">
+                    <th style="padding: 12px; border: 1px solid #ddd;">Product Name</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Quantity</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: right;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${cartItems.map(item => {
+            let itemTotal = item.product.price * item.quantity;
+            subtotal += itemTotal;
 
-    });
+            return `
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd;">${item.product.name}</td>
+                            <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">${item.quantity}</td>
+                            <td style="padding: 12px; border: 1px solid #ddd; text-align: right;">$${itemTotal.toFixed(2)}</td>
+                        </tr>
+                    `;
+        }).join('')}
+            </tbody>
+        </table>
+    `;
+
+        // Step 2: Calculate total and populate subtotal, shipping, and total
+        let total = subtotal + shippingCost;
+        let subTotalHTML = `<li><a>Subtotal <span>$${subtotal.toFixed(2)}</span></a></li>`;
+        let shippingCostHTML = `<li><a>Shipping <span id="shipping-value">$${shippingCost.toFixed(2)}</span></a></li>`;
+        let totalPriceHTML = `<li><a>Total <span id="total-price-value">$${total.toFixed(2)}</span></a></li>`;
+
+        // Append the generated HTML to the respective sections
+        $('#order-items').append(orderItemsHTML);
+        $('#subtotal').append(subTotalHTML);
+        $('#shipping-cost').append(shippingCostHTML);
+        $('#total-price').append(totalPriceHTML);
+
+        // Step 3: Add event listener for applying the coupon
+        // $('#apply-coupon').on('click', function() {
+        //     var couponCode = $('#coupon-code').val();
+        //     applyCoupon(couponCode, subtotal, shippingCost);
+        // });
+    }
+
 
 
     //=========================
@@ -715,13 +726,14 @@
                             <input type="radio" id="card-${card.id}" name="saved-card" value="Card-${card.id}" style="margin-right: 15px;">
                             <label for="card-${card.id}" style="display: block; width: 100%;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
+                                   <div style="display: flex; gap: 10px;">
                                         <span style="font-size: 1.1em; font-weight: bold; color: #007bff;">${card.type}</span>
                                         <span style="color: #555;">ending With ****${card.number.slice(-4)}</span>
                                     </div>
-                                    <div style="font-size: 0.9em; color: #888;">
+                                    <div style="font-size: 0.9em; color: #888; margin-top: 5px;">
                                         Exp: ${card.expMonth}/${card.expYear}
                                     </div>
+
                                 </div>
                             </label>
                         </div>
@@ -869,40 +881,44 @@
         loadSavedCards();
     };
 
-    // handle promotion
 
+    // ==============================
+    // Handle Promotion code
+    //====================================
     document.getElementById("apply-coupon").addEventListener("click", function () {
-        document.getElementById("message").value = "";
         const couponCode = document.getElementById("coupon-code").value;
+        const messageDiv = document.getElementById("message");
+
+        messageDiv.textContent = "";
 
         if (!couponCode) {
             displayMessage("Please enter a coupon code.", "error");
             return;
         }
 
-        // Send the request to the promotions API
-        validatePromotion(couponCode, country);
-    });
-
-    function validatePromotion(promotionName, country) {
-        fetch(`/api/promotions/validate?promotionName=${encodeURIComponent(promotionName)}&country=${encodeURIComponent(country)}`)
+        console.log("total = " + itemsTotalPrice)
+        // Fetch and validate the coupon
+        fetch(`/api/promotions/validate?promotionName=${encodeURIComponent(couponCode)}&country=${encodeURIComponent(country)}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 if (data) {
-                    //displayMessage(`Promotion applied: ${data.discountPercentage}% off and free shipping: ${data.freeShipping}`, "success");
-                    displayMessage(`Congratulations`, "success");
-                    // handle discount percent
+                    displayMessage("Congratulations! Promotion applied.", "success");
 
-                    let totalPrice = Number.parseInt(document.getElementById("total-price-value").textContent);
-                    let discount = totalPrice * data.discountPercentage / 100;
-                    console.log(totalPrice)
-                    console.log(discount)
-                    finalTotal = totalPrice - discount;
-                    document.getElementById("total-price-value").textContent = finalTotal;
-                    // handle free shipping
-                    let shipmentCost = data.freeShipping == true ? 0 : 50;
-                    document.getElementById("shipping-value").textContent = shipmentCost.toString();
+                    // Handle shipping cost
+                    const shippingCost = data.freeShipping ? 0 : 50;
+                    document.getElementById("shipping-value").textContent = shippingCost.toFixed(2);
+                    // Handle total discount and total price
+                    const discount = (itemsTotalPrice * data.discountPercentage) / 100;
+                    const finalTotal = itemsTotalPrice - discount;
+                    //totalPriceElement.textContent = finalTotal.toFixed(2); // Ensure proper decimal forma
+
+
+                    const totalPriceElement = itemsTotalPrice - data.discountPercentage;
+                    let totalPrice = totalPriceElement.toFixed(2);
+                    document.getElementById("total-price-value").textContent = totalPrice;
+
+
+
                 } else {
                     displayMessage("Invalid promotion code.", "error");
                 }
@@ -911,7 +927,7 @@
                 displayMessage("Invalid promo code. Please try again.", "error");
                 console.error("Error:", error);
             });
-    }
+    });
 
     function displayMessage(message, type) {
         const messageDiv = document.getElementById("message");
@@ -919,24 +935,25 @@
         messageDiv.style.color = type === "success" ? "green" : "red";
     }
 
-
+    //==================================================================================================
     // place order handling
+    //==================================================================================================
     $(document).ready(function() {
         // When the "Place Order" button is clicked
         $('#place-order-btn').click(function(event) {
             event.preventDefault();
 
-            // Prepare checkout data (you can customize how you get this data)
+            // Prepare checkout data
             const checkoutData = {
-                items: JSON.parse(localStorage.getItem('cartItems')),  // Example of getting items from LocalStorage
-                customerId: 12345,  // Replace this with dynamic customer ID from session or frontend
                 shippingAddress: $('#shippingAddress').val(),
-                paymentMethod: $('input[name="paymentMethod"]:checked').val()
+                items: globalCartItems,  // Your cart items
+                paymentMethod: $('input[name="payment"]:checked').val(),
+                totalPrice: itemsTotalPrice
             };
 
             // AJAX call to send the checkout request to the backend
             $.ajax({
-                url: '/api/orders/checkout',  // Backend endpoint to place the order
+                url: '/api/orders',  // Backend endpoint to place the order
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(checkoutData),
@@ -944,8 +961,23 @@
                     // Handle the returned OrderDTO
                     console.log('Order placed successfully:', orderDTO);
 
-                    // Redirect to confirmation page, passing the order ID
-                    window.location.href = `/confirmation?orderId=${orderDTO.orderId}`;
+                    // After order is placed, send AJAX request to clear the cart
+                    $.ajax({
+                        url: '/cart/clear',  // Backend endpoint to clear the cart
+                        method: 'DELETE',  // Assuming it's a POST request to clear the cart
+                        success: function() {
+                            console.log('Cart cleared successfully.');
+
+                            // Redirect to confirmation page after cart is cleared
+                            window.location.href = '/checkout/confirm';
+                        },
+                        error: function(error) {
+                            console.error('Error clearing the cart:', error);
+                            alert('Failed to clear the cart, but your order was placed.');
+                        }
+                    });
+                    let orderId = orderDTO.product.id
+                    window.location.href = `/checkout/confirm?orderId=${orderId}`;  // Proceed to confirmation even if cart clearing fails
                 },
                 error: function(error) {
                     console.error('Error during checkout:', error);
@@ -954,6 +986,7 @@
             });
         });
     });
+
 
 
 </script>

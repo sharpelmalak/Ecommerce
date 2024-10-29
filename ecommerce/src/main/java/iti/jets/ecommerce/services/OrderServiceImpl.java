@@ -10,9 +10,11 @@ import iti.jets.ecommerce.repositories.ProductRepository;
 import iti.jets.ecommerce.services.payment.PaymentService;
 import iti.jets.ecommerce.services.payment.PaymentServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashSet;
@@ -43,39 +45,45 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDTO createOrder(int customerId , List<CartItemDTO> cartItems, String shippingAddress, String paymentMethod) {
+    public OrderDTO createOrder(CheckoutRequest checkoutRequest) {
         // successful order is :
-        // all input parameters not null
-        // customer id is valid
         // all cart items found
         // payment success or cash on delivery
 
         // find the customer by customer id
-        Customer customer = customerRepository.findById(customerId)
+        Customer customer = customerRepository.findById(12) // edit
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
         // Create a new order
         Order order = new Order();
         order.setCustomer(customer);  // Associate the customer with the order
         order.setShippingAddress(customer.getAddress());
-        order.setPaymentMethod(paymentMethod);
+        order.setPaymentMethod(checkoutRequest.getPaymentMethod());
 
         // Calculate total price and add order items
         double totalPrice = 0;
         Set<OrderItem> orderItems = new HashSet<>();
-        for (CartItemDTO item : cartItems) {
+        for (CartItemDTO item : checkoutRequest.getItems()) {
             Product product = productRepository.findById(item.getProduct().getId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-            if (product != null) {
-                double itemTotal = product.getPrice() * item.getQuantity();
-                totalPrice += itemTotal;
 
-                OrderItem orderItem = new OrderItem();
-                orderItem.setProduct(product);
-                orderItem.setQuantity(item.getQuantity());
-                orderItem.setCurrentPrice(product.getPrice());
-                orderItems.add(orderItem);
-            }
+           if(product.getQuantity() >= item.getQuantity()) {
+               double itemTotal = product.getPrice() * item.getQuantity();
+               totalPrice += itemTotal;
+               // persist updated Product
+               product.setQuantity( product.getQuantity() - item.getQuantity());
+               productRepository.save(product);
+                // add to order items
+               OrderItem orderItem = new OrderItem();
+               orderItem.setProduct(product);
+               orderItem.setQuantity(item.getQuantity());
+               orderItem.setCurrentPrice(product.getPrice());
+               orderItems.add(orderItem);
+           }
+           else{
+               throw new ItemNotAvailableException("Product not available");
+           }
+
         }
         order.setTotalPrice(totalPrice);
         order.setOrderItems(orderItems);
@@ -85,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
         // payment method : COD , Card , PayPal
         PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
         paymentRequestDTO.setOrderId(order.getId());
-        paymentRequestDTO.setPaymentMethod(paymentMethod);
+        paymentRequestDTO.setPaymentMethod(checkoutRequest.getPaymentMethod());
         paymentRequestDTO.setCurrency("EGY");
         paymentRequestDTO.setAmount(totalPrice);
         paymentRequestDTO.setCustomerEmail(customer.getEmail());
@@ -93,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         PaymentDTO paymentDTO = paymentService.processPayment(paymentRequestDTO);
 
         // finally : after all steps ok -> save the order in db and notify customer order created
-        if(paymentMethod.equals("COD") || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
+        if(checkoutRequest.getPaymentMethod().equals("COD") || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
             order.setOrderDate( new Timestamp(Instant.now().toEpochMilli()));
             order.setStatus("placed");
             orderRepository.save(order);

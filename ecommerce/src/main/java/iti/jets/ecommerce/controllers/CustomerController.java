@@ -53,8 +53,8 @@ public class CustomerController {
 
     /*  Place Order */
     @PostMapping("/{customerId}/order")
-    public ResponseEntity<String> placeOrder(@PathVariable int customerId, List<CartItemDTO> cartItems, String shippingAddress, String paymentMethod) {
-        orderServiceImpl.createOrder(customerId,cartItems,shippingAddress,paymentMethod);
+    public ResponseEntity<String> placeOrder(@RequestBody CheckoutRequest checkoutRequest) {
+        orderServiceImpl.createOrder(checkoutRequest);
         return ResponseEntity.ok("Order placed successfully.");
         /* in case we want to return OrderDTO instead of a successful message  */
         /*  OrderDTO placedOrderDTO  = orderServiceImpl.createOrder(orderDTO); 

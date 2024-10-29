@@ -176,7 +176,7 @@ public class CustomerService {
         Optional<Customer> customer = customerRepository.findById(id);
         if (customer.isPresent()) {
             Customer existingCustomer = customer.get();
-            existingCustomer.setDeleted(true);
+            existingCustomer.setIsDeleted(true);
             customerRepository.save(existingCustomer);
             return "deleted";
         } else {
