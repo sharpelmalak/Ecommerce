@@ -265,6 +265,9 @@
                         <button type="submit" class="btn btn-primary">View Orders</button>
                     </form>
                 </div>
+                <div class="mt-3 text-center">
+                <button type="submit" class="btn btn-primary" id="tracking">Track Your Order</button>
+                </div>
             </div>
         </div>
 
@@ -514,6 +517,11 @@
     <!-- ================================ The script of ajax ================================ -->
 
     <script>
+
+        // order tracking redirection
+        document.getElementById('tracking').addEventListener('click', function() {
+        window.location.href = '/checkout/track';});
+        //=================
         const phoneInputField = document.querySelector("#phone");
         const phoneInput = window.intlTelInput(phoneInputField, {
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js", // for formatting/validation etc.

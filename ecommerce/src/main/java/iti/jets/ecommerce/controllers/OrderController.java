@@ -1,10 +1,7 @@
 
 package iti.jets.ecommerce.controllers;
 
-import iti.jets.ecommerce.dto.CartItemDTO;
-import iti.jets.ecommerce.dto.CheckoutRequest;
-import iti.jets.ecommerce.dto.CustomerDTO;
-import iti.jets.ecommerce.dto.OrderDTO;
+import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.repositories.CustomerRepository;
@@ -60,6 +57,15 @@ public class OrderController {
     public ResponseEntity<Void> updateOrderStatus(@PathVariable Integer orderId, @RequestParam String status) {
         orderService.updateOrderStatus(orderId, status);
         return ResponseEntity.ok().build();
+    }
+
+
+    // track the order
+    @PostMapping ("/tracking")
+    public ResponseEntity<OrderDTO> trackOrder(@RequestBody OrderTrackingRequest request) {
+        System.out.println(Integer.parseInt(request.getOrderId()));
+        OrderDTO trackedOrder = orderService.trackOrder(Integer.parseInt(request.getOrderId()), request.getEmail());
+        return ResponseEntity.ok(trackedOrder);
     }
 
 }

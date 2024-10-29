@@ -16,5 +16,6 @@ public interface OrderService {
     List<OrderDTO> getAllOrders();
 
     void updateOrderStatus(int orderId, String status);
+    OrderDTO trackOrder(int orderId, String customerEmail);
 
 }
