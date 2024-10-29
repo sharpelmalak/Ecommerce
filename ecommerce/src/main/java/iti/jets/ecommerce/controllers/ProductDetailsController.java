@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import iti.jets.ecommerce.services.ProductService;
 
 
-
 @Controller
 @RequestMapping("/details")
 public class ProductDetailsController {
