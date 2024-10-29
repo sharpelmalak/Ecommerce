@@ -21,15 +21,16 @@ public class JWTService {
     private final int jwtExpirationMs = 86400000; // 24 hours
 
 
-    public String generateToken(String username) {
-
+    public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role); // Add role as a claim
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(getKey(),SignatureAlgorithm.HS256).compact();
+                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public Key getKey(){
@@ -41,6 +42,11 @@ public class JWTService {
         System.out.println("token: " + extractClaim(token, Claims::getSubject));
         return extractClaim(token, Claims::getSubject);
     }
+
+    public String getRoleFromJwtToken(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(token);
