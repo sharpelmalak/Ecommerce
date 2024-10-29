@@ -50,23 +50,27 @@ public class CustomLogoutHandler implements LogoutHandler {
         cookie.setHttpOnly(true); // Ensure the cookie is only accessible via HTTP(S)
         cookie.setMaxAge(0); // Set cookie age to 0 to delete it
         response.addCookie(cookie);
-        System.out.println("TOKEN DELETED");
+
+        if (username != null && ("ROLE_CUSTOMER").equals(jwtService.getRoleFromJwtToken(token))) {
+            handleCustomerCart(request,username);
+        }
+
+
+    }
+
+    private void handleCustomerCart(HttpServletRequest request,String username)
+    {
         HttpSession session = request.getSession();
         List<CartItemDTO> cart;
         if (session != null && session.getAttribute("cart") != null) {
-            System.out.println("SESSION IS NOT NULL");
-           cart = (List<CartItemDTO>) session.getAttribute("cart");
-           System.out.println("CART IS NOT NULL");
+            cart = (List<CartItemDTO>) session.getAttribute("cart");
         }
         else {
             cart = cartService.loadCartFromCookie(request.getCookies(),session);
-            System.out.println("CART FROM COOK" + cart);
         }
         if(cart != null && !cart.isEmpty()) {
-            System.out.println("CART IS NOT NULL WE WILL SAVE IT");
             cartService.saveCart(cart,username);
         }
-
     }
 }
 

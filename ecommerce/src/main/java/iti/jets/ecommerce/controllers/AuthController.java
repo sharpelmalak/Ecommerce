@@ -94,12 +94,12 @@ public class AuthController {
                             loginDTO.getUsername(), loginDTO.getPassword()));
 
             if (authentication.isAuthenticated()) {
-                String token = jwtService.generateToken(loginDTO.getUsername());
                 String role = authentication.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .findFirst()
                         .orElse("CUSTOMER"); // Default to USER if no role is found
 
+                String token = jwtService.generateToken(loginDTO.getUsername(),role);
                 Map<String, String> response = new HashMap<>();
                 response.put("token", token);
                 response.put("role", role);
