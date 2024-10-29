@@ -42,7 +42,7 @@ public class Order implements java.io.Serializable {
     @Column(name = "status", nullable = false)
     private String status;  // Possible values: "Placed", "Confirmed", "Delivered"
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> orderItems = new HashSet<>(0);
 
     @Column(name = "payment_method")

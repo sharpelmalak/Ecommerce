@@ -56,60 +56,45 @@ public class OrderServiceImpl implements OrderService {
         order.setShippingAddress(customer.getAddress());
         order.setPaymentMethod(checkoutRequest.getPaymentMethod());
 
-        // Calculate total price and add order items
+// Calculate total price and add order items
         double totalPrice = 0;
         Set<OrderItem> orderItems = new HashSet<>();
         for (CartItemDTO item : checkoutRequest.getItems()) {
             Product product = productRepository.findById(item.getProduct().getId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-           if(product.getQuantity() >= item.getQuantity()) {
-               double itemTotal = product.getPrice() * item.getQuantity();
-               totalPrice += itemTotal;
-               // persist updated Product
-               product.setQuantity( product.getQuantity() - item.getQuantity());
-               productRepository.save(product);
-                // add to order items
-               OrderItem orderItem = new OrderItem();
-               orderItem.setProduct(product);
-               orderItem.setQuantity(item.getQuantity());
-               orderItem.setCurrentPrice(product.getPrice());
-               orderItems.add(orderItem);
-           }
-           else{
-               throw new ItemNotAvailableException("Product not available");
-           }
+            if (product.getQuantity() >= item.getQuantity()) {
+                double itemTotal = product.getPrice() * item.getQuantity();
+                totalPrice += itemTotal;
 
-        }
-        order.setTotalPrice(totalPrice);
-        order.setOrderItems(orderItems);
+                product.setQuantity(product.getQuantity() - item.getQuantity());
+                productRepository.save(product);
 
-        // send payment request
-        // result of payment [success,failed]
-        // payment method : COD , Card , PayPal
-        PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
-        paymentRequestDTO.setOrderId(order.getId());
-        paymentRequestDTO.setPaymentMethod(checkoutRequest.getPaymentMethod());
-        paymentRequestDTO.setCurrency("EGY");
-        paymentRequestDTO.setAmount(totalPrice);
-        paymentRequestDTO.setCustomerEmail(customer.getEmail());
-        paymentRequestDTO.setCustomerMobile(customer.getPhone());
-        PaymentDTO paymentDTO = paymentService.processPayment(paymentRequestDTO);
+                // Add to order items
+                OrderItem orderItem = new OrderItem();
+                orderItem.setProduct(product);
+                orderItem.setQuantity(item.getQuantity());
+                orderItem.setCurrentPrice(product.getPrice());
 
-        // finally : after all steps ok -> save the order in db and notify customer order created
-        if(checkoutRequest.getPaymentMethod().equals("COD") || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
-            order.setOrderDate( new Timestamp(Instant.now().toEpochMilli()));
-            order.setStatus("placed");
-            try{
-                orderRepository.save(order);
-            }catch (Exception e)
-            {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                // Set the order on the orderItem
+                orderItem.setOrder(order);
+
+                // Add orderItem to order's orderItems set
+                order.getOrderItems().add(orderItem);
+            } else {
+                throw new ItemNotAvailableException("Product not available");
             }
-
         }
+
+// Set total price and save the order
+        order.setTotalPrice(totalPrice);
+        order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
+        order.setStatus("placed");
+
+        orderRepository.save(order);  // This should cascade and save orderItems
+
         return modelMapper.map(order, OrderDTO.class);
+
     }
 
     @Override
