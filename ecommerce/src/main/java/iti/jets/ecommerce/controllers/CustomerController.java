@@ -2,14 +2,18 @@ package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.*;
 
+import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -33,8 +37,16 @@ public class CustomerController {
 
     // Get Customer Address
     @GetMapping("/address/{id}")
-    public ResponseEntity<CustomerAddressDTO> getCustomerAddress(@PathVariable int id) {
-        CustomerAddressDTO customerAddress = customerService.getCustomerAddress(id);
+    public ResponseEntity<CustomerAddressDTO> getCustomerAddress(@PathVariable int id ) {
+        // get valid customer id
+        Customer customer = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Assuming the customer ID is stored in a custom UserDetails implementation or directly in the principal
+            customer = (Customer) authentication.getPrincipal();
+        }
+        System.out.println("customer id : "+customer.getId());
+        CustomerAddressDTO customerAddress = customerService.getCustomerAddress(customer.getId());
         return ResponseEntity.ok(customerAddress);
     }
 

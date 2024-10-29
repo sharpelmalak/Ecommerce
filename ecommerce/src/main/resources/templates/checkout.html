@@ -246,6 +246,8 @@
                         <input type="radio" id="card" name="payment" value="Card">
                         <label for="card">Credit/Debit Card</label><br>
 
+
+
                         <!-- Saved Cards Section (Initially hidden) -->
                         <div id="saved-cards-section" style="display: none;">
                             <p>Your Saved Cards:</p>
@@ -328,7 +330,7 @@
                         </li>
                         <div id="message" class="message"></div>
                         <br>
-                        <a class="primary-btn" id="place-order-btn" href="confirmation.html">Place Order</a>
+                        <a class="primary-btn" id="place-order-btn"  >Place Order</a>
                     </div>
                 </div>
 
@@ -444,6 +446,7 @@
 <script src="js/gmaps.min.js"></script>
 <script src="js/main.js"></script>
 
+
 <script>
 
     // =======================================================
@@ -451,7 +454,7 @@
     //========================================================
     function loadSavedAddress() {
         $.ajax({
-            url: `/api/customers/address/${customerId}`,  // Replace with the correct backend endpoint
+            url: `/api/customers/address/0`,  // Replace with the correct backend endpoint
             method: 'GET',
             success: function (address) {
                 // Prepare the address HTML
@@ -574,6 +577,7 @@
     let globalCartItems = "";
     let customerId = 12;
     let country = "USA" // get from customer id
+    let orderId;
     $(document).ready(function () {
         fetchOrderDetails();
 
@@ -781,7 +785,9 @@
     }
 
 
-    // Real-time validation for card number
+
+
+// Real-time validation for card number
     document.getElementById('card-number').addEventListener('input', async function () {
         const cardNumber = this.value;
         const isValid = await validateCardNumber(cardNumber);
