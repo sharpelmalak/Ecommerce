@@ -95,7 +95,7 @@
             <span th:text="${errorMessage}"></span>
         </div>
 
-        <form id="loginForm" th:action="@{/api/auth/login}" method="POST">
+        <form id="loginForm" th:action="@{/auth/login}" method="POST">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" required>

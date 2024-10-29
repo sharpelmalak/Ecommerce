@@ -53,7 +53,7 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("successMessage", "Product created successfully!");
         // Store productDTO in session
         model.addAttribute("productDTO", savedProduct);
-        return "redirect:/api/admin/product_success"; // Redirect to the success page
+        return "redirect:/admin/product_success"; // Redirect to the success page
     }
 
     @GetMapping("/product_success")
@@ -99,7 +99,7 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("productUpdated", true);
         redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
         model.addAttribute("productDTO", updatedProduct);
-        return "redirect:/api/admin/product_update_success";
+        return "redirect:/admin/product_update_success";
     }
     
     @GetMapping("/product_update_success")

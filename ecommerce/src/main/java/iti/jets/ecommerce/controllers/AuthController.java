@@ -29,7 +29,7 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -59,7 +59,7 @@ public class AuthController {
                             customerDTO.getUsername(), customerDTO.getPassword()))
             );
             model.addAttribute("successMessage", "Registration successful! Please log in.");
-            return "signup3"; // Return to signup form if registration fails            
+            return "signup"; // Return to signup form if registration fails            
         } else {
             model.addAttribute("errorMessage", "Registration failed. Due to Username or Email Exists");
             model.addAttribute("customerDTO", customerDTO); // Preserve the data

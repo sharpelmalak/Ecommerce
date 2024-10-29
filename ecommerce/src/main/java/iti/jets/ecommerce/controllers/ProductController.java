@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale.Category;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
