@@ -1,5 +1,6 @@
 package iti.jets.ecommerce.config;
 
+import iti.jets.ecommerce.services.CustomOAuth2UserService;
 import iti.jets.ecommerce.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,10 @@ public class SecurityConfig {
     private CustomLogoutHandler logoutHandler;
 
 
+    @Autowired
+    private CustomOAuth2UserService oAuth2UserService;
+
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -82,16 +87,16 @@ public class SecurityConfig {
                                         "/customers/**",
                                         "/products/**",
                                         "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
-                                        "/home",
+                                  "/api/category/**",
+                                "/home",
                                         "/cart",
                                         "/cart/check",
                                         "/cart/add",
                                         "/cart/remove/*",
                                         "/cart/update",
                                         "/cart/clear",
-                                        "/user/account/**",
-                                        "/**",
-                                        "/error"
+                                        "/error",
+                                "/details/**"
                                 ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
@@ -105,7 +110,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/auth/login") // Custom login page for OAuth2
                         .defaultSuccessUrl("/home")
-                        .userInfoEndpoint(userInfo -> userInfo.userService(this.oauth2UserService()))
+                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
                         .permitAll() // Allow access to login page for OAuth2
                 )
                 .logout(logout-> logout
@@ -117,7 +122,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             System.out.println("Blocked access to: " + request.getRequestURI());
                             System.out.println("Reason: " + authException.getMessage());
-                            //response.sendRedirect("/auth/login");
+                            response.sendRedirect("/auth/login");
                         })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -125,14 +130,5 @@ public class SecurityConfig {
     }
 
     
-    @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
-        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
-        return request -> {
-            OAuth2User oAuth2User = delegate.loadUser(request);
-            String email = oAuth2User.getAttribute("email");
-            System.out.println("Email is" + email); // Custom method to save user data in DB
-            return oAuth2User;
-        };
-    }
+
 }

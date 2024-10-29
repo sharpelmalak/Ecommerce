@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,12 +94,12 @@ public class AuthController {
                             loginDTO.getUsername(), loginDTO.getPassword()));
 
             if (authentication.isAuthenticated()) {
-                String token = jwtService.generateToken(loginDTO.getUsername());
                 String role = authentication.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .findFirst()
                         .orElse("CUSTOMER"); // Default to USER if no role is found
 
+                String token = jwtService.generateToken(loginDTO.getUsername(),role);
                 Map<String, String> response = new HashMap<>();
                 response.put("token", token);
                 response.put("role", role);
@@ -117,7 +118,21 @@ public class AuthController {
         System.out.println("Checking availability for username: " + username);
         boolean isAvailable = customerService.isUsernameAvailable(username);
         return ResponseEntity.ok(isAvailable);
-    }    
+    }
+
+
+    @GetMapping("/status")
+    public ResponseEntity<?> checkAuthenticationStatus(Principal principal) {
+        if (principal != null) {
+            // User is authenticated
+            Map<String, Object> response = new HashMap<>();
+            response.put("authenticated", true);
+            return ResponseEntity.ok(response);
+        } else {
+            // User is not authenticated
+            return ResponseEntity.ok(Collections.singletonMap("authenticated", false));
+        }
+    }
 
 
 }

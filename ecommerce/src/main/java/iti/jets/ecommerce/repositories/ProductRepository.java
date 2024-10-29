@@ -80,4 +80,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             Pageable pageable
     );
 
+
+    // Method to find the first 8 products
+    List<Product> findTop8ByOrderByIdAsc();
+
+    // Custom query to find the last 8 products
+    @Query(value = "SELECT * FROM Product p ORDER BY p.id DESC LIMIT 8", nativeQuery = true)
+    List<Product> findLast8Products();
+
 }
