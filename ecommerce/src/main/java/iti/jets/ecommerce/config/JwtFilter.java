@@ -99,6 +99,13 @@ public class JwtFilter extends OncePerRequestFilter {
                 System.out.println("Current authentication in context: " + SecurityContextHolder.getContext().getAuthentication());
             }
         }
+
+        if (request.getRequestURI().equals("/checkout") && SecurityContextHolder.getContext().getAuthentication()==null) {
+            // Redirect if user is already authenticated
+            String requestUri = request.getRequestURI();
+            // Store the original URL in the session
+            request.getSession().setAttribute("redirectAfterLogin", requestUri);
+        }
         System.out.println("final authentication in context: " + SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
     }

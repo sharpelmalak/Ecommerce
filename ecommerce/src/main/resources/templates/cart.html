@@ -100,6 +100,32 @@
         }
 
     </style>
+    <style>
+        /* Base style for cart images */
+        .media .d-flex img {
+            width: 80px;             /* Default width for larger screens */
+            height: 80px;            /* Default height for larger screens */
+            object-fit: cover;       /* Maintain aspect ratio by cropping */
+            border-radius: 5px;      /* Optional: add slight rounding */
+        }
+
+        /* Medium screens (tablets) */
+        @media (max-width: 768px) {
+            .media .d-flex img {
+                width: 60px;         /* Slightly smaller on tablets */
+                height: 60px;
+            }
+        }
+
+        /* Small screens (mobile) */
+        @media (max-width: 576px) {
+            .media .d-flex img {
+                width: 50px;         /* Further reduce size on mobile */
+                height: 50px;
+            }
+        }
+    </style>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 </head>
@@ -227,7 +253,7 @@
                             </td>
                             <td>
                                 <button th:onclick="'removeFromCart(' + ${cartItem.product.id} + ')'" class="remove-btn">
-                                    <i class="fas fa-trash"></i> Remove
+                                     Remove
                                 </button>
                             </td>
                         </tr>
@@ -248,7 +274,7 @@
                             <td>
                                 <div class="checkout_btn_inner d-flex align-items-center">
                                     <a class="gray_btn" href="/shop">Continue Shopping</a>
-                                    <a class="primary-btn" href="#">Proceed to checkout</a>
+                                    <a class="primary-btn" href="/checkout">Proceed to checkout</a>
                                 </div>
                             </td>
                         </tr>

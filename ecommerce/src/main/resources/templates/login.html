@@ -175,21 +175,6 @@
 	<!-- End Header Area -->
 
 
-	<!-- Start Banner Area -->
-	<section class="banner-area organic-breadcrumb">
-		<div class="container">
-			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-				<div class="col-first">
-					<h1>Login/Register</h1>
-					<nav class="d-flex align-items-center">
-						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-						<a href="category.html">Login/Register</a>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Banner Area -->
 
 	<!--================Login Box Area =================-->
 	<section class="login_box_area section_gap">
@@ -210,6 +195,11 @@
 					<div class="login_form_inner">
 						<h3>Log in to enter</h3>
 						<form class="row login_form" id="contactForm" method="post" action="/auth/login">
+
+							<div class="col-md-12 form-group">
+								<p th:if="${errorMessage}" id="message" style="color: #c60505">Invalid Credentials</p> <!-- Message display -->
+							</div>
+
 							<div class="col-md-12 form-group">
 								<input type="text" class="form-control" id="username" name="username"
 									placeholder="Username" onfocus="this.placeholder = ''"
@@ -226,9 +216,7 @@
 									<label for="keepLoggedIn">Keep me logged in</label>
 								</div>
 							</div>
-							<div class="col-md-12 form-group">
-								<p id="message" style="color: red; display: none;"></p> <!-- Message display -->
-							</div>
+
 							<div class="col-md-12 form-group">
 								<button type="submit" class="primary-btn">Log In</button>
 								<a href="#">Forgot Password?</a>
@@ -244,10 +232,6 @@
 								<button type="button" class="btn social-btn">Login with Facebook</button>
 							</a>
 
-							<!-- Optional: Error message for login failure -->
-							<div th:if="${param.error}">
-								<p class="error-message">Invalid username or password</p>
-							</div>
 						</div>
 
 					</div>
@@ -373,20 +357,11 @@
 
 
 	<script>
-		// Function to show an alert if an error message exists
-		function showErrorPopup(message) {
-			if (message) {
-				alert(message);
-			}
-		}
-		// Get the error message from the hidden input
-		const errorMessage = document.getElementById('errorMessage').value;
-		// Show popup if there's an error
-		showErrorPopup(errorMessage);
+
+
 
 		$(document).ready(function () {
 			checkAuthStatus();
-			conslole.log("ay haga 2")
 			$('#search_input').on('keypress', function (e) {
 				if (e.key === 'Enter') {
 					e.preventDefault(); // Prevents the form submission if search is inside a form
@@ -401,7 +376,6 @@
 				type: 'GET',
 				success: function (response) {
 					if (response.authenticated) {
-						console.log("ay haga")
 						// User is authenticated
 						$('#dropdown-menu-auth').html(`
                         <li class="nav-item"><a class="nav-link" href="/user/account">My-Account</a></li>

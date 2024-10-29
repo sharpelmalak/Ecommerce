@@ -2,14 +2,18 @@ package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.*;
 
+import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -32,16 +36,18 @@ public class CustomerController {
     }
 
     // Get Customer Address
-    @GetMapping("/address/{id}")
-    public ResponseEntity<CustomerAddressDTO> getCustomerAddress(@PathVariable int id) {
-        CustomerAddressDTO customerAddress = customerService.getCustomerAddress(id);
+    @GetMapping("/address")
+    public ResponseEntity<CustomerAddressDTO> getCustomerAddress(Principal principal) {
+        String username = principal.getName();
+        CustomerDTO customerDTO = customerService.getCustomerByUserName(username);
+        CustomerAddressDTO customerAddress = customerService.getCustomerAddress(customerDTO.getId());
         return ResponseEntity.ok(customerAddress);
     }
 
     // Edit Customer Address
-    @PutMapping("/address/{id}")
-    public ResponseEntity<CustomerAddressDTO> editCustomerAddress(@PathVariable int id, @RequestBody CustomerAddressDTO customerAddress) {
-        return ResponseEntity.ok(customerService.editCustomerAddress(id,customerAddress));
+    @PutMapping("/address")
+    public ResponseEntity<CustomerAddressDTO> editCustomerAddress( @RequestBody CustomerAddressDTO customerAddress) {
+        return ResponseEntity.ok(customerService.editCustomerAddress(customerAddress));
     }
 
     // Update Profile
@@ -53,8 +59,8 @@ public class CustomerController {
 
     /*  Place Order */
     @PostMapping("/{customerId}/order")
-    public ResponseEntity<String> placeOrder(@PathVariable OrderDTO orderDTO) {
-        orderServiceImpl.createOrder(orderDTO);
+    public ResponseEntity<String> placeOrder(@RequestBody CheckoutRequest checkoutRequest) {
+        orderServiceImpl.createOrder(checkoutRequest,new Customer());
         return ResponseEntity.ok("Order placed successfully.");
         /* in case we want to return OrderDTO instead of a successful message  */
         /*  OrderDTO placedOrderDTO  = orderServiceImpl.createOrder(orderDTO); 

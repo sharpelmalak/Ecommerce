@@ -59,7 +59,7 @@ public class Customer extends User implements java.io.Serializable {
     private Set<Card> cards = new HashSet<>(0);
 
     @Column(name = "is_deleted", nullable = true)
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
 
     

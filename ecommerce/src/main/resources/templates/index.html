@@ -71,6 +71,25 @@
 		background-color: #f5f5f5;
 	}
 
+	/* Base styles for product images */
+	.single-product img {
+		width: 100%;         /* Full width of the card */
+		height: 250px;       /* Default height for medium to large screens */
+		object-fit: cover;   /* Crop image to fill dimensions */
+	}
+
+	/* Adjust image height for smaller screens */
+	@media (max-width: 768px) {
+		.single-product img {
+			height: 200px;   /* Reduce height on tablets */
+		}
+	}
+
+	@media (max-width: 576px) {
+		.single-product img {
+			height: 150px;   /* Further reduce height on mobile devices */
+		}
+	}
 
  </style>
 

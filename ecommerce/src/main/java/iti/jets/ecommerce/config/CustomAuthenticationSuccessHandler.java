@@ -51,11 +51,22 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         jwtCookie.setPath("/"); // Set the path to allow access for your entire app
         jwtCookie.setMaxAge(7 * 24 * 60 * 60); // Optional: Set cookie expiration (7 days)
         response.addCookie(jwtCookie);
+        // Retrieve the original URL from the session
+
+
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             response.sendRedirect("/admin/products");
         } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
             handleCartForUser(authentication.getName(),request,response);
-            response.sendRedirect("/home");
+            String redirectUrl = (String) request.getSession().getAttribute("redirectAfterLogin");
+
+            if (redirectUrl != null) {
+                // Remove the URL from the session to prevent future redirects
+                request.getSession().removeAttribute("redirectAfterLogin");
+                // Redirect to the original requested URL
+                response.sendRedirect(redirectUrl);
+            }
+            else response.sendRedirect("/home");
         } else {
             response.sendRedirect("/auth/login");  // Fallback URL if role not matched
         }
