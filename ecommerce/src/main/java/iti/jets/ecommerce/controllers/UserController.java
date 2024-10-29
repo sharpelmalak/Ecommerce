@@ -63,7 +63,7 @@ public class UserController {
         int customerId = customerDto.getId();
         customerService.updateCustomer(customerId, customerDto);
         // Redirect to the GET method to reload the updated data
-        return "redirect:/user/account/" + customerId;
+        return "redirect:/user/account";
     }
     
 }
