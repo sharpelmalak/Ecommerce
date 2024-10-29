@@ -454,7 +454,7 @@
     //========================================================
     function loadSavedAddress() {
         $.ajax({
-            url: `/api/customers/address`,  // Replace with the correct backend endpoint
+            url: `/customers/address`,  // Replace with the correct backend endpoint
             method: 'GET',
             success: function (address) {
                 // Prepare the address HTML
@@ -546,7 +546,7 @@
                         };
 
                         $.ajax({
-                            url: `/api/customers/address`, // Replace with the correct endpoint
+                            url: `/customers/address`, // Replace with the correct endpoint
                             method: 'PUT',
                             contentType: 'application/json',
                             data: JSON.stringify(addressData),
@@ -719,7 +719,7 @@
         const savedCardsSection = document.getElementById('saved-cards-section');
         savedCardsSection.innerHTML = '';
         $.ajax({
-            url: `/api/cards`,  // Update with actual backend endpoint
+            url: `/cards`,  // Update with actual backend endpoint
             method: 'GET',
             success: function (cards) {
                 //const savedCardsSection = document.getElementById('saved-cards-section');
@@ -864,7 +864,7 @@
 
         // Send AJAX request to save the card
         $.ajax({
-            url: `/api/cards`,
+            url: `/cards`,
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(newCardDetails),
@@ -903,7 +903,7 @@
 
         console.log("total = " + itemsTotalPrice)
         // Fetch and validate the coupon
-        fetch(`/api/promotions/validate?promotionName=${encodeURIComponent(couponCode)}&country=${encodeURIComponent(country)}`)
+        fetch(`/promotions/validate?promotionName=${encodeURIComponent(couponCode)}&country=${encodeURIComponent(country)}`)
             .then(response => response.json())
             .then(data => {
                 if (data) {
@@ -958,7 +958,7 @@
 
             // AJAX call to send the checkout request to the backend
             $.ajax({
-                url: '/api/orders',  // Backend endpoint to place the order
+                url: '/orders',  // Backend endpoint to place the order
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(checkoutData),
