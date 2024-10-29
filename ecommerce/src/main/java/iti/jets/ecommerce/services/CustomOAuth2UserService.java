@@ -56,7 +56,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             username = user.get().getUsername();
         }
         // Generate JWT
-        String token = jwtService.generateToken(username);
+        String token = jwtService.generateToken(username,"ROLE_CUSTOMER");
 
         // Create and add the token cookie
         Cookie jwtCookie = new Cookie("token", token);
