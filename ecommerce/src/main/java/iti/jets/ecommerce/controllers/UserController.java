@@ -1,5 +1,6 @@
 package iti.jets.ecommerce.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,9 @@ public class UserController {
     @Autowired
     private OrderServiceImpl orderServiceImpl;
 
-    @GetMapping("/account/{id}")
-    public String showUserAccount(@PathVariable int id,Model model) {
-        model.addAttribute("CustomerDTO", customerService.getCustomerById(id));
+    @GetMapping("/account")
+    public String showUserAccount(Model model, Principal principal) {
+        model.addAttribute("CustomerDTO", customerService.getCustomerByUserName(principal.getName()));
         model.addAttribute("categories", categoryService.getAllCategories());
         return "userAcc";
     }
