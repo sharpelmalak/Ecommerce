@@ -454,7 +454,7 @@
     //========================================================
     function loadSavedAddress() {
         $.ajax({
-            url: `/api/customers/address/0`,  // Replace with the correct backend endpoint
+            url: `/api/customers/address`,  // Replace with the correct backend endpoint
             method: 'GET',
             success: function (address) {
                 // Prepare the address HTML

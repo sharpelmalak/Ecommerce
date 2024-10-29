@@ -36,17 +36,11 @@ public class CustomerController {
     }
 
     // Get Customer Address
-    @GetMapping("/address/{id}")
-    public ResponseEntity<CustomerAddressDTO> getCustomerAddress(@PathVariable int id ) {
-        // get valid customer id
-        Customer customer = null;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            // Assuming the customer ID is stored in a custom UserDetails implementation or directly in the principal
-            customer = (Customer) authentication.getPrincipal();
-        }
-        System.out.println("customer id : "+customer.getId());
-        CustomerAddressDTO customerAddress = customerService.getCustomerAddress(customer.getId());
+    @GetMapping("/address")
+    public ResponseEntity<CustomerAddressDTO> getCustomerAddress(Principal principal) {
+        String username = principal.getName();
+        CustomerDTO customerDTO = customerService.getCustomerByUserName(username);
+        CustomerAddressDTO customerAddress = customerService.getCustomerAddress(customerDTO.getId());
         return ResponseEntity.ok(customerAddress);
     }
 
