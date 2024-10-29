@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,12 +78,12 @@ public class AuthController {
         return "login";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/registeration")
     public String showRegisterationForm(Model  model) {
         CustomerDTO customerDTO = new CustomerDTO();
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("customerDTO", customerDTO);
-        return "signup3";
+        return "signup";
     }
 
     @PostMapping(value = "/login", consumes = {"application/json"}, produces = "application/json")
@@ -117,7 +118,21 @@ public class AuthController {
         System.out.println("Checking availability for username: " + username);
         boolean isAvailable = customerService.isUsernameAvailable(username);
         return ResponseEntity.ok(isAvailable);
-    }    
+    }
+
+
+    @GetMapping("/status")
+    public ResponseEntity<?> checkAuthenticationStatus(Principal principal) {
+        if (principal != null) {
+            // User is authenticated
+            Map<String, Object> response = new HashMap<>();
+            response.put("authenticated", true);
+            return ResponseEntity.ok(response);
+        } else {
+            // User is not authenticated
+            return ResponseEntity.ok(Collections.singletonMap("authenticated", false));
+        }
+    }
 
 
 }

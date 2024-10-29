@@ -162,7 +162,7 @@
 			<div class="container">
 				<form class="d-flex justify-content-between" onsubmit="return performSearch();">
 					<input type="text" class="form-control" id="search_input" placeholder="Search Here" oninput="showSuggestions(this.value)">
-					<button type="submit" class="btn">Search</button>
+					<button type="submit" class="btn"></button>
 					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
 				</form>
 				<!-- Suggestions List -->
@@ -251,6 +251,9 @@
 	</div>
 
 
+	<input type="hidden" id="queryValue" th:value="${query}">
+	<input type="hidden" id="searchValue" th:value="${search}">
+
 	<!-- Other scripts that depend on jQuery should go after this -->
 
 	<script th:src="@{/js/vendor/bootstrap.min.js}"></script>
@@ -267,12 +270,22 @@
 		let totalPages = 0;
 		let selectedCategory = null;
 
+
+
 		$(document).ready(function() {
 			// Load initial data
 			loadCategories();
 			loadBrands();
 			loadMaterials();
 			fetchProducts();
+
+			const query = document.getElementById("queryValue").value;
+			const search = document.getElementById("searchValue").value === 'true'; // Convert to boolean
+
+			if (search && query) {
+				console.log("Query:", query);
+				selectSuggestion(query); // Call your function with the query value
+			}
 
 			// Event listeners
 			$('#category-list').on('click', 'a', handleCategoryClick);
@@ -374,9 +387,6 @@
 						</div>
 						<div class="prd-bottom">
 							<a href="#" class="social-info add-to-cart" data-product-id="${product.id}"><span class="ti-shopping-cart"></span><p class="hover-text">Add to bag</p></a>
-							<a href="#" class="social-info"><span class="ti-shopping-cart"></span><p class="hover-text">Add to Cart</p></a>
-							<a href="#" class="social-info"><span class="lnr lnr-heart"></span><p class="hover-text">Wishlist</p></a>
-							<a href="#" class="social-info"><span class="lnr lnr-sync"></span><p class="hover-text">Compare</p></a>
 							<a href="/details/${product.id}" class="social-info"><span class="lnr lnr-move"></span><p class="hover-text">View more</p></a>
 						</div>
 					</div>
@@ -512,6 +522,7 @@
 
 
 	</script>
+
 
 </body>
 

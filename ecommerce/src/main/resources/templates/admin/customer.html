@@ -67,10 +67,10 @@
     <!-- Sidebar Section -->
     <div class="sidebar">
         <h2>Admin Panel</h2>
-        <a th:href="@{/api/admin/products}">Manage Products</a>
-        <a th:href="@{/api/admin/profile/{id}}">My Profile</a>
-        <a th:href="@{/api/admin/customers}">Customer Profiles</a>
-        <a th:href="@{/api/admin/add-promotion-form}">Create a Promotion</a>        
+        <a th:href="@{/admin/products}">Manage Products</a>
+        <a th:href="@{/admin/profile/{id}}">My Profile</a>
+        <a th:href="@{/admin/customers}">Customer Profiles</a>
+        <a th:href="@{/admin/add-promotion-form}">Create a Promotion</a>        
         <a th:href="@{/api/auth/login}">Logout</a>
     </div> 
     <!-- Main Content Section -->
@@ -121,7 +121,7 @@
                     </table>
 
                     <!-- Back button -->
-                    <a th:href="@{/api/admin/customers}" class="btn btn-primary">Back to Customers List</a>
+                    <a th:href="@{/admin/customers}" class="btn btn-primary">Back to Customers List</a>
 
 
                     <!-- Display error messages -->

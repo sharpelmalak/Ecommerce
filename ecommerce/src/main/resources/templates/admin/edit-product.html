@@ -126,7 +126,7 @@
         <h1>Update Product Details</h1>
     </header>
     <section th:if="${!productUpdated}">
-        <form th:action="@{/api/admin/product/{id}(id=${productDTO.id})}" method="post">
+        <form th:action="@{/admin/product/{id}(id=${productDTO.id})}" method="post">
             <input type="hidden" name="adminId" th:value="${adminId}" />
             
             <label for="name">Product Name:</label>
@@ -173,7 +173,7 @@
             <div class="button-container">
                 <button type="submit" class="btn btn-success">Update Product</button>
                 <button type="button" id="cancelBtn" 
-                        th:onclick="'window.location.href=\'' + @{/api/admin/products} + '\''">Cancel</button> 
+                        th:onclick="'window.location.href=\'' + @{/admin/products} + '\''">Cancel</button> 
             </div>
         </form>
     </section>

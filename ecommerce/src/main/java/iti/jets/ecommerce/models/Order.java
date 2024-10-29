@@ -31,7 +31,7 @@ public class Order implements java.io.Serializable {
     private Timestamp orderDate = Timestamp.from(Instant.now());
 
     @Column(name = "shipping_cost")
-    private int shippingCost = 50;
+    private Integer shippingCost = 50;
 
     @Column(name = "total_price", nullable = false, precision = 12)
     private double totalPrice;

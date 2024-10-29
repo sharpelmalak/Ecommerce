@@ -104,6 +104,13 @@ public class CustomerService {
         return CustomerMapper.toDto(customer);
     }
 
+    /* Get customer by ID */
+    public CustomerDTO getCustomerByUserName(String username) {
+        Customer customer = customerRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + username));
+        return CustomerMapper.toDto(customer);
+    }
+
     /* Get Customer Address */
     public CustomerAddressDTO getCustomerAddress(int customerId) {
         CustomerDTO customer = getCustomerById(customerId);
@@ -222,4 +229,6 @@ public class CustomerService {
         order.setStatus("confirmed");
         orderRepository.save(order);
     }
+
+
 }

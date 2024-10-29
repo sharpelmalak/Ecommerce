@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @SessionAttributes("productDTO")
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
@@ -99,7 +99,6 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("productUpdated", true);
         redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
         model.addAttribute("productDTO", updatedProduct);
-    
         return "redirect:/api/admin/product_update_success";
     }
     
