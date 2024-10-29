@@ -118,14 +118,15 @@ public class CustomerService {
     }
 
     // Edit Customer Address
-    public CustomerAddressDTO editCustomerAddress(int customerId, CustomerAddressDTO customerAddress){
-        CustomerDTO customer = getCustomerById(customerId);
+    public CustomerAddressDTO editCustomerAddress(CustomerAddressDTO customerAddress){
+        Customer authCustomer = customerRepository.findByEmail(customerAddress.getEmail()).orElse(null);
+        CustomerDTO customer = getCustomerById(authCustomer.getId());
         System.out.println("addrss is : "+customerAddress.getAddress());
         customer.setAddress(customerAddress.getAddress());
         customer.setCity(customerAddress.getCity());
         customer.setCountry(customerAddress.getCountry());
         customer.setPhone(customerAddress.getPhone());
-        updateCustomer(customerId, customer);
+        updateCustomer(authCustomer.getId(), customer);
         return customerAddress;
     }
 

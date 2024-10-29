@@ -45,9 +45,9 @@ public class CustomerController {
     }
 
     // Edit Customer Address
-    @PutMapping("/address/{id}")
-    public ResponseEntity<CustomerAddressDTO> editCustomerAddress(@PathVariable int id, @RequestBody CustomerAddressDTO customerAddress) {
-        return ResponseEntity.ok(customerService.editCustomerAddress(id,customerAddress));
+    @PutMapping("/address")
+    public ResponseEntity<CustomerAddressDTO> editCustomerAddress( @RequestBody CustomerAddressDTO customerAddress) {
+        return ResponseEntity.ok(customerService.editCustomerAddress(customerAddress));
     }
 
     // Update Profile
