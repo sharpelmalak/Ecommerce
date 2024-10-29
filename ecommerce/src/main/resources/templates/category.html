@@ -97,6 +97,25 @@
             /* Prevents the image from overflowing its container */
             height: auto;
         }
+		/* Base styles for product images */
+		.single-product img {
+			width: 100%;         /* Full width of the card */
+			height: 250px;       /* Default height for medium to large screens */
+			object-fit: cover;   /* Crop image to fill dimensions */
+		}
+
+		/* Adjust image height for smaller screens */
+		@media (max-width: 768px) {
+			.single-product img {
+				height: 200px;   /* Reduce height on tablets */
+			}
+		}
+
+		@media (max-width: 576px) {
+			.single-product img {
+				height: 150px;   /* Further reduce height on mobile devices */
+			}
+		}
 	</style>
 	<!-- jQuery CDN -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -430,7 +449,7 @@
 		});
 
 		function loadCategories() {
-			$.get('api/category/categories', function(data) {
+			$.get('/category/categories', function(data) {
 				const categoryList = $('#category-list').empty();
 				let itemsCount = 0;
 

@@ -166,6 +166,7 @@ public class ProductService {
     public List<ProductDTO> getProductsByName(String name) {
         List<Product> products = productRepository.findByNameContainingIgnoreCase(name);
         return products.stream()
+                .filter(product -> product.isDeleted()==false)
                 .map(ProductMapper::convertToDTO)
                 .collect(Collectors.toList());
     }

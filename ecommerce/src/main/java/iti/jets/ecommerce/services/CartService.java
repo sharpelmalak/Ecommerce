@@ -154,9 +154,15 @@ public class CartService {
         return cookie;
     }
 
-    public List<CartItemDTO> getCartItems(HttpSession session,Cookie[] cookies)
+    public List<CartItemDTO> getCartItems(HttpSession session,Cookie[] cookies,HttpServletResponse response)
     {
-        checkCart(session);
+        if(checkCart(session))
+        {
+            Cookie cookie = persistCartInCookie(session);
+            if (cookie != null) {
+                response.addCookie(cookie);
+            }
+        }
         List<CartItemDTO> cartItems = (List<CartItemDTO>) session.getAttribute("cart");
         if (cartItems == null) {
             cartItems = loadCartFromCookie(cookies,session);

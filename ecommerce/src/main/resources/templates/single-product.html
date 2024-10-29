@@ -218,20 +218,9 @@
 		<div class="container">
 			<div class="row s_product_inner">
 				<div class="col-lg-6">
-					<div class="s_Product_carousel">
 						<div class="single-prd-item">
-							<img class="img-fluid" th:src="@{/img/category/watch-1.png}" alt="${productDTO.name}"
-								width="50" height="50">
+							<img class="img-fluid" th:src="@{${productDTO.image}}" alt="not found">
 						</div>
-						<div class="single-prd-item">
-							<img class="img-fluid" th:src="@{${productDTO.image}}" alt="${productDTO.name}" width="50"
-								height="50">
-						</div>
-						<div class="single-prd-item">
-							<img class="img-fluid" th:src="@{${productDTO.image}}" alt="${productDTO.name}" width="50"
-								height="50">
-						</div>
-					</div>
 				</div>
 				<div class="col-lg-5 offset-lg-1">
 					<div class="s_product_text">
@@ -282,7 +271,7 @@
 						<div class="product_count">
 							<label for="sst">Quantity:</label>
 							<input type="number" name="qty" id="sst" value="1" title="Quantity:" class="input-text qty"
-								min="1">
+								min="1" disabled>
 							<button onclick="increaseQuantity()" class="increase items-count" type="button">
 								<i class="lnr lnr-chevron-up"></i>
 							</button>
@@ -291,6 +280,7 @@
 							</button>
 						</div>
 
+						<input id="max-quantity" hidden="hidden" th:value="${productDTO.quantity}">
 						<div class="card_area d-flex align-items-center">
 							<!-- <a class="primary-btn" href="#">Add to Cart</a>     -->
 
@@ -305,12 +295,7 @@
 		</div>
 		<!--================End Single Product Area =================-->
 
-
-		<!--================End Single Product Area =================-->
-
-		<!--================Product Description Area =================-->
-		<!--  -->
-		<!--================End Product Description Area =================-->
+	</div>
 
 
 		<!-- start footer Area -->
@@ -430,8 +415,10 @@
 		<script>
 			function increaseQuantity() {
 				var result = document.getElementById('sst');
+				var max_input = document.getElementById("max-quantity")
 				var qty = parseInt(result.value);
-				if (!isNaN(qty)) {
+				var max = parseInt(max_input.value);
+				if (!isNaN(qty) && qty<max) {
 					result.value = qty + 1;
 				}
 			}
@@ -561,6 +548,7 @@
 
 
 		</script>
+
 </body>
 
 </html>

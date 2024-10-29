@@ -29,6 +29,7 @@ public class CartController {
     public ResponseEntity<CartItemDTO> addToCart( @RequestParam int productId, @RequestParam int quantity,HttpServletRequest request,HttpServletResponse response) {
         try {
 
+
             CartItemDTO cartItem = cartService.addProductToCart(request.getSession(), request.getCookies(),productId, quantity);
             Cookie cookie = cartService.persistCartInCookie(request.getSession());
             if (cookie != null) {
@@ -52,8 +53,9 @@ public class CartController {
 
     // Get all items in the cart
     @GetMapping
-    public String  viewCart(HttpServletRequest request, Model model) {
-        List<CartItemDTO> cartItems = cartService.getCartItems(request.getSession(),request.getCookies());
+    public String  viewCart(HttpServletRequest request, Model model,HttpServletResponse response) {
+
+        List<CartItemDTO> cartItems = cartService.getCartItems(request.getSession(),request.getCookies(),response);
         double sum = 0.0;
         if(cartItems!=null && !cartItems.isEmpty())
         {
@@ -117,8 +119,8 @@ public class CartController {
 
     // Get all items in the cart
     @GetMapping("/checkout")
-    public ResponseEntity<List<CartItemDTO>>  cartCheckout(HttpServletRequest request, Model model) {
-        List<CartItemDTO> cartItems = cartService.getCartItems(request.getSession(),request.getCookies());
+    public ResponseEntity<List<CartItemDTO>>  cartCheckout(HttpServletRequest request,HttpServletResponse response, Model model) {
+        List<CartItemDTO> cartItems = cartService.getCartItems(request.getSession(),request.getCookies(),response);
         if(cartItems!=null && !cartItems.isEmpty())
         {
             return ResponseEntity.ok(cartItems);
