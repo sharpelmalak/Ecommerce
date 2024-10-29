@@ -17,6 +17,6 @@ public class CustomerDTO extends UserDTO{
     private String city;
     private String country;
     private String phone;
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
     private List<Integer> categoriesIds;
 }

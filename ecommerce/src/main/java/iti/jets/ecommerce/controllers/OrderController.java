@@ -2,11 +2,19 @@
 package iti.jets.ecommerce.controllers;
 
 
+import iti.jets.ecommerce.dto.CartItemDTO;
+import iti.jets.ecommerce.dto.CheckoutRequest;
+import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.dto.OrderDTO;
+import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
+import iti.jets.ecommerce.models.Customer;
+import iti.jets.ecommerce.repositories.CustomerRepository;
+import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -14,15 +22,21 @@ import java.util.List;
 public class OrderController {
 
     private OrderService orderService;
+    private CustomerRepository customerRepository;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService , CustomerRepository customerRepository) {
         this.orderService = orderService;
+        this.customerRepository = customerRepository;
     }
 
     // Create new Order
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
-        return ResponseEntity.ok(orderService.createOrder(orderDTO));
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody CheckoutRequest checkoutRequest, Principal principal) {
+        String username = principal.getName();
+        Customer customer = customerRepository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("Customer not found")
+        );
+        return ResponseEntity.ok(orderService.createOrder(checkoutRequest, customer));
     }
 
     // Get all orders for a specific user (Customer action)

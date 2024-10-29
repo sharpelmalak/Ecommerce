@@ -18,6 +18,12 @@ public class PaymentRequestDTO {
     private String paymentMethod;   // Mandatory
     private double amount;          // Mandatory
     private String currency;        // Mandatory
+    private double totalAmount;
+    // for paypal
+    String intent;
+    String description;
+    String cancelUrl;
+    String successUrl;
 
     // Mandatory for Stripe
     private String stripeToken;
