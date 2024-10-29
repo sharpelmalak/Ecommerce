@@ -33,7 +33,6 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository productRepository;
     private PaymentService paymentService;
 
-
     public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, ProductService productService , CustomerRepository customerRepository, ProductRepository productRepository , PaymentService paymentService) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
@@ -45,15 +44,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDTO createOrder(CheckoutRequest checkoutRequest) {
+    public OrderDTO createOrder(CheckoutRequest checkoutRequest, Customer customer) {
         // successful order is :
         // all cart items found
         // payment success or cash on delivery
 
-        // find the customer by customer id
-        Customer customer = customerRepository.findById(12) // edit
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
-
+        // get the authenticated customer
         // Create a new order
         Order order = new Order();
         order.setCustomer(customer);  // Associate the customer with the order
