@@ -25,15 +25,15 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-
     private OrderRepository orderRepository;
-    private ModelMapper     modelMapper;
+    private ModelMapper modelMapper;
     private ProductService productService;
     private CustomerRepository customerRepository;
     private ProductRepository productRepository;
     private PaymentService paymentService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, ProductService productService , CustomerRepository customerRepository, ProductRepository productRepository , PaymentService paymentService) {
+    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, ProductService productService,
+            CustomerRepository customerRepository, ProductRepository productRepository, PaymentService paymentService) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.productService = productService;
@@ -49,40 +49,58 @@ public class OrderServiceImpl implements OrderService {
         // all cart items found
         // payment success or cash on delivery
 
-        // get the authenticated customer
         // Create a new order
         Order order = new Order();
-        order.setCustomer(customer);  // Associate the customer with the order
+        order.setCustomer(customer); // Associate the customer with the order
         order.setShippingAddress(customer.getAddress());
         order.setPaymentMethod(checkoutRequest.getPaymentMethod());
+        // First save the Order to generate an ID
+        order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
+        order.setStatus("placed");
+        orderRepository.save(order); // Save order to ensure ID is generated
 
         // Calculate total price and add order items
         double totalPrice = 0;
         Set<OrderItem> orderItems = new HashSet<>();
+
+        // Now add order items with the generated order ID
         for (CartItemDTO item : checkoutRequest.getItems()) {
             Product product = productRepository.findById(item.getProduct().getId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-           if(product.getQuantity() >= item.getQuantity()) {
-               double itemTotal = product.getPrice() * item.getQuantity();
-               totalPrice += itemTotal;
-               // persist updated Product
-               product.setQuantity( product.getQuantity() - item.getQuantity());
-               productRepository.save(product);
-                // add to order items
-               OrderItem orderItem = new OrderItem();
-               orderItem.setProduct(product);
-               orderItem.setQuantity(item.getQuantity());
-               orderItem.setCurrentPrice(product.getPrice());
-               orderItems.add(orderItem);
-           }
-           else{
-               throw new ItemNotAvailableException("Product not available");
-           }
+            if (product.getQuantity() >= item.getQuantity()) {
+                double itemTotal = product.getPrice() * item.getQuantity();
+                totalPrice += itemTotal;
 
+                // Update product quantity and persist it
+                product.setQuantity(product.getQuantity() - item.getQuantity());
+                productRepository.save(product);
+
+                // Create and configure order item
+                OrderItem orderItem = new OrderItem();
+                orderItem.setId(new OrderItemId(order.getId(), product.getId())); // Set the composite ID
+                orderItem.setOrder(order); // Associate with the current order
+                orderItem.setProduct(product);
+                orderItem.setQuantity(item.getQuantity());
+                orderItem.setCurrentPrice(product.getPrice());
+                orderItems.add(orderItem);
+            } else {
+                throw new ItemNotAvailableException("Product not available");
+            }
         }
-        order.setTotalPrice(totalPrice);
+
+        // Associate the items with the order and save again
         order.setOrderItems(orderItems);
+        order.setTotalPrice(totalPrice);
+        orderRepository.save(order); // Save again to persist the order with items
+
+        // After setting up all order items, add a print statement to log them
+        System.out.println("Order Items:");
+        for (OrderItem item : orderItems) {
+            System.out.println("Product ID: " + item.getProduct().getId() +
+                    ", Quantity: " + item.getQuantity() +
+                    ", Current Price: " + item.getCurrentPrice());
+        }
 
         // send payment request
         // result of payment [success,failed]
@@ -96,14 +114,15 @@ public class OrderServiceImpl implements OrderService {
         paymentRequestDTO.setCustomerMobile(customer.getPhone());
         PaymentDTO paymentDTO = paymentService.processPayment(paymentRequestDTO);
 
-        // finally : after all steps ok -> save the order in db and notify customer order created
-        if(checkoutRequest.getPaymentMethod().equals("COD") || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
-            order.setOrderDate( new Timestamp(Instant.now().toEpochMilli()));
+        // finally : after all steps ok -> save the order in db and notify customer
+        // order created
+        if (checkoutRequest.getPaymentMethod().equals("COD") || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
+            order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
             order.setStatus("placed");
-            try{
+            order.setPaymentMethod(checkoutRequest.getPaymentMethod());
+            try {
                 orderRepository.save(order);
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
@@ -129,10 +148,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
-        List<OrderDTO> returnedOrders = orders.stream().map((element) -> modelMapper.map(element, OrderDTO.class)).collect(Collectors.toList());
+        List<OrderDTO> returnedOrders = orders.stream().map((element) -> modelMapper.map(element, OrderDTO.class))
+                .collect(Collectors.toList());
         return returnedOrders;
     }
-
 
     @Override
     public void updateOrderStatus(int orderId, String status) {

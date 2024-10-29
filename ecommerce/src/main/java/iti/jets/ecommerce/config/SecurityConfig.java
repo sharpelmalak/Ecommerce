@@ -87,8 +87,8 @@ public class SecurityConfig {
                                         "/customers/**",
                                         "/products/**",
                                         "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
-                                  "/category/**",
-                                "/home",
+                                        "/category/**",
+                                        "/home",
                                         "/cart",
                                         "/cart/check",
                                         "/cart/add",
@@ -96,7 +96,8 @@ public class SecurityConfig {
                                         "/cart/update",
                                         "/cart/clear",
                                         "/error",
-                                        "/details/**"
+                                        "/details/**",
+                                        "/**"
                                 ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/checkout/**").hasRole("CUSTOMER")
@@ -128,7 +129,4 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-    
-
 }

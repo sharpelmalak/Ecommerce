@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.dto.OrderDTO;
+import iti.jets.ecommerce.models.Order;
 import iti.jets.ecommerce.services.CategoryService;
 import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderServiceImpl;
@@ -53,8 +54,15 @@ public class UserController {
     public String getOrderHistory(@PathVariable int customerId, Model model) {
         List<OrderDTO> orders = orderServiceImpl.getOrdersByCustomer(customerId);
         CustomerDTO customerDTO = customerService.getCustomerById(customerId);
+
         model.addAttribute("customer", customerDTO);
         model.addAttribute("orders", orders);
+        
+        // for debugging 
+        for(OrderDTO orderDTO : orders){
+            System.out.println("Order ID: " + orderDTO.getOrderId() + ", Status: " + orderDTO.getOrderStatus());
+        }
+    
         return "userOrderHistory";
     }
 

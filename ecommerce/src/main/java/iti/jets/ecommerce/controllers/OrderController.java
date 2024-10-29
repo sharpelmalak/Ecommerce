@@ -1,7 +1,6 @@
 
 package iti.jets.ecommerce.controllers;
 
-
 import iti.jets.ecommerce.dto.CartItemDTO;
 import iti.jets.ecommerce.dto.CheckoutRequest;
 import iti.jets.ecommerce.dto.CustomerDTO;
@@ -24,7 +23,7 @@ public class OrderController {
     private OrderService orderService;
     private CustomerRepository customerRepository;
 
-    public OrderController(OrderService orderService , CustomerRepository customerRepository) {
+    public OrderController(OrderService orderService, CustomerRepository customerRepository) {
         this.orderService = orderService;
         this.customerRepository = customerRepository;
     }
@@ -34,8 +33,7 @@ public class OrderController {
     public ResponseEntity<OrderDTO> createOrder(@RequestBody CheckoutRequest checkoutRequest, Principal principal) {
         String username = principal.getName();
         Customer customer = customerRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("Customer not found")
-        );
+                () -> new ResourceNotFoundException("Customer not found"));
         return ResponseEntity.ok(orderService.createOrder(checkoutRequest, customer));
     }
 
@@ -58,14 +56,10 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-
     @PutMapping("/{orderId}/status")
     public ResponseEntity<Void> updateOrderStatus(@PathVariable Integer orderId, @RequestParam String status) {
         orderService.updateOrderStatus(orderId, status);
         return ResponseEntity.ok().build();
     }
-
-
-
 
 }
