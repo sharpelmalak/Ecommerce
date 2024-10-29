@@ -246,4 +246,18 @@ public class ProductService {
         return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
     }
 
+    public List<ProductDTO> getFirst8Products() {
+        List<Product> products = productRepository.findTop8ByOrderByIdAsc();
+        return products.stream()
+                .map(ProductMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> getLast8Products() {
+        List<Product> products = productRepository.findLast8Products();
+        return products.stream()
+                .map(ProductMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
 }

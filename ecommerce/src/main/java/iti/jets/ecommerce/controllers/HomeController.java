@@ -3,6 +3,7 @@ package iti.jets.ecommerce.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,13 @@ public class HomeController {
     private  ProductService productService; 
 
     @GetMapping("/home")
-    public String home() {
+    public String home(Model model)
+    {
+        List<ProductDTO> first8Products = productService.getFirst8Products();
+        List<ProductDTO> last8Products = productService.getLast8Products();
+
+        model.addAttribute("first8Products", first8Products);
+        model.addAttribute("last8Products", last8Products);
         return "index";
     }
     @GetMapping("/customer/home")
