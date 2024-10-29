@@ -100,7 +100,14 @@ public class OrderServiceImpl implements OrderService {
         if(checkoutRequest.getPaymentMethod().equals("COD") || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
             order.setOrderDate( new Timestamp(Instant.now().toEpochMilli()));
             order.setStatus("placed");
-            orderRepository.save(order);
+            try{
+                orderRepository.save(order);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+
         }
         return modelMapper.map(order, OrderDTO.class);
     }
