@@ -96,7 +96,8 @@ public class SecurityConfig {
                                         "/cart/update",
                                         "/cart/clear",
                                         "/error",
-                                "/details/**"
+                                        "/details/**",
+                                        "/**"
                                 ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/test").hasRole("CUSTOMER")
