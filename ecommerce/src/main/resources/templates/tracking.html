@@ -20,14 +20,18 @@
     <!--
             CSS
             ============================================= -->
-    <link rel="stylesheet" href="css/linearicons.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/themify-icons.css">
-    <link rel="stylesheet" href="css/nice-select.css">
-    <link rel="stylesheet" href="css/nouislider.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}">
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}">
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}">
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
 </head>
 
 <body>
@@ -121,17 +125,19 @@
     <section class="tracking_box_area section_gap">
         <div class="container">
             <div class="tracking_box_inner">
-                <p>To track your order please enter your Order ID in the box below and press the "Track" button. This
-                    was given to you on your receipt and in the confirmation email you should have received.</p>
-                <form class="row tracking_form" action="#" method="post" novalidate="novalidate">
+                <p>To track your order, please enter your Order ID and Billing Email in the fields below.</p>
+                <form id="trackingForm" class="row tracking_form">
                     <div class="col-md-12 form-group">
-                        <input type="text" class="form-control" id="order" name="order" placeholder="Order ID" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Order ID'">
+                        <input type="text" class="form-control" id="order" name="orderId" placeholder="Order ID" required>
                     </div>
                     <div class="col-md-12 form-group">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Billing Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Billing Email Address'">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Billing Email" required>
                     </div>
                     <div class="col-md-12 form-group">
-                        <button type="submit" value="submit" class="primary-btn">Track Order</button>
+                        <button type="submit" class="primary-btn">Track Order</button>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <p id="result" style="font-weight: bold;"></p>
                     </div>
                 </form>
             </div>
@@ -224,21 +230,67 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
 
+    <script th:src="@{js/vendor/jquery-2.2.4.min.js}"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js}" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script th:src="@{js/vendor/bootstrap.min.js}"></script>
+    <script th:src="@{js/jquery.ajaxchimp.min.js}"></script>
+    <script th:src="@{js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{js/jquery.sticky.js}"></script>
+    <script th:src="@{js/nouislider.min.js}"></script>
+    <script th:src="@{js/jquery.magnific-popup.min.js}"></script>
+    <script th:src="@{js/owl.carousel.min.js}"></script>
+    <!--gmaps Js-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+    <script th:src="@{js/gmaps.min.js}"></script>
+    <script th:src="@{js/main.js}"></script>
 
-    <script src="js/vendor/jquery-2.2.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-	 crossorigin="anonymous"></script>
-	<script src="js/vendor/bootstrap.min.js"></script>
-	<script src="js/jquery.ajaxchimp.min.js"></script>
-	<script src="js/jquery.nice-select.min.js"></script>
-	<script src="js/jquery.sticky.js"></script>
-    <script src="js/nouislider.min.js"></script>
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<!--gmaps Js-->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-	<script src="js/gmaps.min.js"></script>
-	<script src="js/main.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Intercept form submission
+            $('#trackingForm').on('submit', function (e) {
+                e.preventDefault();  // Prevent the form from submitting normally
+
+                // Retrieve form data
+                const orderId = $('#order').val();
+                const email = $('#email').val();
+
+                // Clear previous results
+                $('#result').text('');
+
+                // Create payload
+                const payload = {
+                    orderId: orderId,
+                    email: email
+                };
+                console.log(payload);
+
+                // AJAX request
+                $.ajax({
+                    url: '/orders/tracking',  // Replace with your backend endpoint
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(payload),
+                    success: function (data) {
+                        console.log(data);
+                        // Display success message or result
+                        $('#result').text(`Order status: ${data.orderStatus}`);
+                    },
+                    error: function () {
+                        // Handle error and display message
+                        $('#result').text('Failed to retrieve order. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+
 </body>
 
 </html>

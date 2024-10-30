@@ -1,15 +1,14 @@
 
 package iti.jets.ecommerce.controllers;
 
-import com.paypal.sdk.PaypalServerSDKClient;
-import iti.jets.ecommerce.dto.CartItemDTO;
+
 import iti.jets.ecommerce.dto.CheckoutRequest;
-import iti.jets.ecommerce.dto.CustomerDTO;
+
 import iti.jets.ecommerce.dto.OrderDTO;
+import iti.jets.ecommerce.dto.OrderTrackingRequest;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.repositories.CustomerRepository;
-import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +21,14 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final PaypalServerSDKClient client;
+
     private OrderService orderService;
     private CustomerRepository customerRepository;
 
     @Autowired
-    public OrderController(OrderService orderService, CustomerRepository customerRepository,PaypalServerSDKClient client) {
+    public OrderController(OrderService orderService, CustomerRepository customerRepository) {
         this.orderService = orderService;
         this.customerRepository = customerRepository;
-        this.client = client;
     }
 
     // Create new Order
@@ -65,6 +63,15 @@ public class OrderController {
     public ResponseEntity<Void> updateOrderStatus(@PathVariable Integer orderId, @RequestParam String status) {
         orderService.updateOrderStatus(orderId, status);
         return ResponseEntity.ok().build();
+    }
+
+
+    // track the order
+    @PostMapping ("/tracking")
+    public ResponseEntity<OrderDTO> trackOrder(@RequestBody OrderTrackingRequest request) {
+        System.out.println(Integer.parseInt(request.getOrderId()));
+        OrderDTO trackedOrder = orderService.trackOrder(Integer.parseInt(request.getOrderId()), request.getEmail());
+        return ResponseEntity.ok(trackedOrder);
     }
 
 }
