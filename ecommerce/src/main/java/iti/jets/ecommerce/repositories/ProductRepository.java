@@ -16,8 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // Find products by category
     List<Product> findByCategory_Name(String categoryName);
 
-    // find Active Products only
-    List<Product> findAllByIsDeletedFalse(); // Fetch products that are not deleted
 
     // Find products by brand
     List<Product> findByBrand(String brand);
@@ -34,6 +32,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT p FROM Product p where p.isDeleted=false")
     Page<Product> findAll(Pageable pageable);
 
+    @Query("SELECT p FROM Product p where p.isDeleted=false")
+    List<Product> findAll();
+
     // Function to select all unique brands
     @Query("SELECT DISTINCT p.brand FROM Product p WHERE p.brand IS NOT NULL AND p.isDeleted = false")
     List<String> findAllUniqueBrands();
@@ -43,26 +44,19 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<String> findAllUniqueMaterials();
 
 
-    Page<Product> findByDeletedIsFalseAndBrandInOrMaterialInOrPriceBetween(
+    Page<Product> findByIsDeletedFalseAndBrandInOrMaterialInOrPriceBetween(
             List<String> brands,
             List<String> materials,
             Float minPrice,
             Float maxPrice,
             Pageable pageable);
 
-    Page<Product> findByCategoryIdAndDeletedIsFalse(
+    Page<Product> findByCategoryIdAndIsDeletedFalse(
             Integer categoryId,
             Pageable pageable);
 
-    Page<Product> findByCategoryIdAndBrandInOrMaterialInOrPriceBetweenAndDeletedIsFalse(
-            Integer categoryId,
-            List<String> brands,
-            List<String> materials,
-            Float minPrice,
-            Float maxPrice,
-            Pageable pageable);
 
-    Page<Product> findByNameAndDeletedIsFalseContainingIgnoreCase(
+    Page<Product> findByNameContainingIgnoreCaseAndIsDeletedFalse(
            String name,
             Pageable pageable);
 
@@ -83,10 +77,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
     // Method to find the first 8 products
-    List<Product> findTop8ByOrderAndDeletedIsFalseByIdAsc();
+    List<Product> findTop8ByIsDeletedFalseOrderByIdAsc();
 
     // Custom query to find the last 8 products
-    @Query(value = "SELECT * FROM Product p ORDER BY p.id DESC LIMIT 8", nativeQuery = true)
-    List<Product> findLast8ProductsAndDeletedIsFalse();
+    @Query(value = "SELECT * FROM Product p WHERE p.is_deleted = false ORDER BY p.id DESC LIMIT 8", nativeQuery = true)
+    List<Product> findLast8ProductsNotDeleted();
 
 }
