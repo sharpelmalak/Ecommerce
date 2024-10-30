@@ -1045,7 +1045,7 @@
                 label: "paypal",
             },
             message: {
-                amount: 0,
+                amount: 100,
             },
 
             async createOrder() {
@@ -1085,6 +1085,8 @@
             },
 
             async onApprove(data, actions) {
+                makeOrder(true);
+                return ;
                 try {
                     const response = await fetch(`/api/orders/${data.orderID}/capture`, {
                         method: "POST",
@@ -1105,14 +1107,11 @@
                         // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
                         // recoverable state, per
                         // https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
-                        makeOrder(true);
                         return actions.restart();
                     } else if (errorDetail) {
-                        makeOrder(true);
                         // (2) Other non-recoverable errors -> Show a failure message
                         throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
                     } else if (!orderData.purchase_units) {
-                        makeOrder(true);
                         throw new Error(JSON.stringify(orderData));
                     } else {
                         // (3) Successful transaction -> Show confirmation or thank you message
@@ -1122,7 +1121,7 @@
                             orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
                         resultMessage(
                             `Transaction ${transaction.status}: ${transaction.id}<br>
-          <br>See console for all available details`
+<br>See console for all available details`
                         );
                         console.log(
                             "Capture result",
@@ -1131,10 +1130,11 @@
                         );
                     }
                 } catch (error) {
+                    makeOrder(true);
                     console.error(error);
-                    // resultMessage(
-                    //     `Sorry, your transaction could not be processed...<br><br>${error}`
-                    // );
+                    resultMessage(
+                        `Sorry, your transaction could not be processed...<br><br>${error}`
+                    );
                 }
             },
         })
