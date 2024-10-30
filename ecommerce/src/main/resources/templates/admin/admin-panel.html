@@ -11,6 +11,23 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
+        .pagination .page-item .page-link {
+            color: #007bff;
+            border-radius: 0.25rem;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .pagination .page-item .page-link:hover {
+            color: #0056b3;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+
         body {
             background-color: #f4f7f9;
         }
@@ -136,6 +153,32 @@
                             </tr>
                         </tbody>
                     </table>
+                    <nav th:if="${totalPages > 1}">
+                        <ul class="pagination justify-content-center">
+
+                            <!-- Previous Page Link (only visible if not on the first page) -->
+                            <li class="page-item" th:if="${page > 0}">
+                                <a class="page-link" th:href="@{/admin/products(page=${page - 1})}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            <!-- Page Numbers -->
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                th:classappend="${i == page} ? 'active'">
+                                <a class="page-link" th:href="@{/admin/products(page=${i})}" th:text="${i + 1}">1</a>
+                            </li>
+
+                            <!-- Next Page Link (only visible if not on the last page) -->
+                            <li class="page-item" th:if="${page < totalPages - 1}">
+                                <a class="page-link" th:href="@{/admin/products(page=${page + 1})}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+
                 </div>
             </div>
         </div>

@@ -1041,7 +1041,7 @@
             success: function(orderDTO) {
                 // Handle the returned OrderDTO
                 console.log('Order placed successfully:', orderDTO);
-
+                let orderId = orderDTO.orderId;
                 // After order is placed, send AJAX request to clear the cart
                 $.ajax({
                     url: '/cart/clear',  // Backend endpoint to clear the cart
@@ -1057,7 +1057,8 @@
                         alert('Failed to clear the cart, but your order was placed.');
                     }
                 });
-                let orderId = orderDTO.product.id
+
+                sessionStorage.setItem('orderId', orderId);
                 window.location.href = `/checkout/confirm?orderId=${orderId}`;  // Proceed to confirmation even if cart clearing fails
             },
             error: function(error) {
