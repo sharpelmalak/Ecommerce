@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -68,8 +69,8 @@ public class AdminController {
 
 
     @GetMapping("/product/addForm")
-    public String showAddProductForm(Model model) {
-        int adminId = 1; // Replace this with the dynamic admin ID logic as needed
+    public String showAddProductForm(Model model,Principal principal) {
+        int adminId = adminService.getAdminProfile(principal.getName()).getId();
         model.addAttribute("adminId", adminId);
         model.addAttribute("productDTO", new ProductDTO()); /*  Add an empty productDTO to the model */
         model.addAttribute("productAdded", false);
@@ -78,10 +79,10 @@ public class AdminController {
     }
 
     @GetMapping("/product/editForm")
-    public String showEditProductForm(@RequestParam int id, Model model) {
-        int adminId = 1; // Replace this with dynamic admin ID logic as needed
+    public String showEditProductForm(@RequestParam int id, Model model,Principal principal) {
+        
+        int adminId = adminService.getAdminProfile(principal.getName()).getId();
         model.addAttribute("adminId", adminId);
-    
         ProductDTO productDTO = productService.getProductById(id);
         model.addAttribute("productDTO", productDTO);
         model.addAttribute("productUpdated", false);
@@ -208,9 +209,9 @@ public class AdminController {
     /*                            Admin Profile Management                                          */
     /* ============================================================================================ */
     /* Get admin profile */
-    @GetMapping("/profile/{adminId}")
-    public String getAdminProfile(@PathVariable int adminId, Model model) {
-        AdminDTO adminDTO = adminService.getAdminProfile(adminId);
+    @GetMapping("/profile")
+    public String getAdminProfile(Model model, Principal principal) {        
+        AdminDTO adminDTO = adminService.getAdminProfile(principal.getName());
         model.addAttribute("admin", adminDTO);
         return "admin/admin-profile"; // Assuming this is the name of your Thymeleaf template
     }

@@ -2,122 +2,141 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" class="no-js">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waxen</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Waxen</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- intl-tel-input CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+	<!-- intl-tel-input CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
 
 
-    <!--
+	<!--
 		CSS
 		============================================= -->
-    <link rel="stylesheet" th:href="@{/css/linearicons.css}">
-    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
-    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
-    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
-    <link rel="stylesheet" th:href="@{/css/nice-select.css}">
-    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}">
-    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}">
-    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}">
-    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
+	<link rel="stylesheet" th:href="@{/css/linearicons.css}">
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+	<link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
+	<link rel="stylesheet" th:href="@{/css/nice-select.css}">
+	<link rel="stylesheet" th:href="@{/css/nouislider.min.css}">
+	<link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}">
+	<link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}">
+	<link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
 
 
- <style>
-	.navbar-brand img {
-            max-width: 60%;
-            /* Prevents the image from overflowing its container */
-            height: auto;
-        }
+	<style>
+		.navbar-brand img {
+			max-width: 60%;
+			/* Prevents the image from overflowing its container */
+			height: auto;
+		}
+
 		.navbar-brand {
-            max-width: 30%;
-            /* Prevents the image from overflowing its container */
-            height: auto;
-        }
-	/* Style for suggestions dropdown */
-	#suggestions {
-		display: none; /* Initially hidden */
-		position: absolute;
-		top: 100%; /* Aligns directly below the input box */
-		left: 0;
-		width: 100%; /* Matches input width */
-		background-color: #fff;
-		border: 1px solid #ddd;
-		border-top: none; /* Avoid double border with input */
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		z-index: 1000;
-		max-height: 200px; /* Limits height */
-		overflow-y: auto; /* Adds scroll if suggestions exceed max height */
-	}
-
-	#suggestions li {
-		padding: 10px;
-		cursor: pointer;
-		border-bottom: 1px solid #eee;
-	}
-
-	#suggestions li:last-child {
-		border-bottom: none; /* Removes border from last item */
-	}
-
-	#suggestions li:hover {
-		background-color: #f5f5f5;
-	}
-
-	/* Base styles for product images */
-	.single-product img {
-		width: 100%;         /* Full width of the card */
-		height: 250px;       /* Default height for medium to large screens */
-		object-fit: cover;   /* Crop image to fill dimensions */
-	}
-
-	/* Adjust image height for smaller screens */
-	@media (max-width: 768px) {
-		.single-product img {
-			height: 200px;   /* Reduce height on tablets */
+			max-width: 30%;
+			/* Prevents the image from overflowing its container */
+			height: auto;
 		}
-	}
 
-	@media (max-width: 576px) {
-		.single-product img {
-			height: 150px;   /* Further reduce height on mobile devices */
-		}
-	}
-
-	@media (max-width: 768px) {
-		.single-product img {
-			height: 200px;   /* Reduce height on tablets */
-		}
-	}
-
-	@media (max-width: 576px) {
-		.single-product img {
-			height: 150px;   /* Further reduce height on mobile devices */
-		}
-	}
-
-	.single-deal img {
+		/* Style for suggestions dropdown */
+		#suggestions {
+			display: none;
+			/* Initially hidden */
+			position: absolute;
+			top: 100%;
+			/* Aligns directly below the input box */
+			left: 0;
 			width: 100%;
-			height: 250px; /* Default height for larger screens */
+			/* Matches input width */
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-top: none;
+			/* Avoid double border with input */
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			z-index: 1000;
+			max-height: 200px;
+			/* Limits height */
+			overflow-y: auto;
+			/* Adds scroll if suggestions exceed max height */
+		}
+
+		#suggestions li {
+			padding: 10px;
+			cursor: pointer;
+			border-bottom: 1px solid #eee;
+		}
+
+		#suggestions li:last-child {
+			border-bottom: none;
+			/* Removes border from last item */
+		}
+
+		#suggestions li:hover {
+			background-color: #f5f5f5;
+		}
+
+		/* Base styles for product images */
+		.single-product img {
+			width: 100%;
+			/* Full width of the card */
+			height: 250px;
+			/* Default height for medium to large screens */
+			object-fit: cover;
+			/* Crop image to fill dimensions */
+		}
+
+		/* Adjust image height for smaller screens */
+		@media (max-width: 768px) {
+			.single-product img {
+				height: 200px;
+				/* Reduce height on tablets */
+			}
+		}
+
+		@media (max-width: 576px) {
+			.single-product img {
+				height: 150px;
+				/* Further reduce height on mobile devices */
+			}
+		}
+
+		@media (max-width: 768px) {
+			.single-product img {
+				height: 200px;
+				/* Reduce height on tablets */
+			}
+		}
+
+		@media (max-width: 576px) {
+			.single-product img {
+				height: 150px;
+				/* Further reduce height on mobile devices */
+			}
+		}
+
+		.single-deal img {
+			width: 100%;
+			height: 250px;
+			/* Default height for larger screens */
 			object-fit: cover;
 		}
 
 		@media (max-width: 768px) {
 			.single-deal img {
-				height: 200px; /* Adjusted height for tablets */
+				height: 200px;
+				/* Adjusted height for tablets */
 			}
 		}
 
 		@media (max-width: 576px) {
 			.single-deal img {
-				height: 150px; /* Adjusted height for mobile devices */
+				height: 150px;
+				/* Adjusted height for mobile devices */
 			}
 		}
 
@@ -133,60 +152,61 @@
 			color: #666;
 			margin-bottom: 1.5rem;
 		}
-
- </style>
+	</style>
 
 <body>
-	 <!-- Start Header Area -->
-	 <header class="header_area sticky-header">
-        <div class="main_menu">
-            <nav class="navbar navbar-expand-lg navbar-light main_box">
-                <div class="container">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <a class="navbar-brand logo_h" href="/home"><img src="/img/waxen.jpg" alt=""></a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                        <ul class="nav navbar-nav menu_nav ml-auto">
-                            <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
+	<!-- Start Header Area -->
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="/home"><img src="/img/waxen.jpg" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse"
+						data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+							<li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
 							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Account</a>
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+									aria-haspopup="true" aria-expanded="false">Account</a>
 								<ul class="dropdown-menu" id="dropdown-menu-auth">
 
 								</ul>
 							</li>
-                        </ul>
+						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="/cart" class="cart"><span class="ti-shopping-cart"></span></a></li>
+							<li class="nav-item"><a href="/cart" class="cart"><span class="ti-shopping-cart"></span></a>
+							</li>
 							<li class="nav-item">
 								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							</li>
 						</ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
-		 <div class="search_input" id="search_input_box">
-			 <div class="container">
-				 <form class="d-flex justify-content-between" onsubmit="">
-					 <input type="text" class="form-control" id="search_input" placeholder="Search Here" oninput="showSuggestions(this.value)">
-					 <button type="submit" class="btn"></button>
-					 <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
-				 </form>
-				 <!-- Suggestions List -->
-				 <ul id="suggestions"></ul>
-			 </div>
+					</div>
+				</div>
+			</nav>
+		</div>
+		<div class="search_input" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between" onsubmit="">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here"
+						oninput="showSuggestions(this.value)">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+				<!-- Suggestions List -->
+				<ul id="suggestions"></ul>
+			</div>
 
-		 </div>
-    </header>
+		</div>
+	</header>
 	<!-- End Header Area -->
 
 	<!-- start banner Area -->
@@ -199,7 +219,7 @@
 						<div class="row single-slide align-items-center d-flex">
 							<div class="col-lg-5 col-md-6">
 								<div class="banner-content">
-									<h1>ROLEX New <br>Collection!</h1>
+									<h1>WAXEN New <br>Collection!</h1>
 									<p></p>
 									<!-- <div class="add-bag d-flex align-items-center">
 										<a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
@@ -217,7 +237,7 @@
 						<div class="row single-slide">
 							<div class="col-lg-5">
 								<div class="banner-content">
-									<h1>ROLEX New <br>Collection!</h1>
+									<h1>WAXEN New <br>Collection!</h1>
 									<p></p>
 									<!-- <div class="add-bag d-flex align-items-center">
 										<a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
@@ -287,177 +307,138 @@
 	</section>
 	<!-- end features Area -->
 
-<!-- Start category Area -->
-<section class="category-area section_gap">
-	<div class="container">
-		<!-- Category Header Title -->
-		<div class="row justify-content-center mb-4">
-			<div class="col-lg-8 text-center">
-				<h2 class="section-title">Browse Our Categories</h2>
-				<p class="section-subtitle">Discover a variety of watches that suit your style and needs.</p>
-			</div>
-		</div>
-		<div class="row justify-content-center">
-			<div class="col-lg-4 col-md-6">
-				<div class="single-deal">
-					<div class="overlay"></div>
-					<a href="/cart" class="img-pop-up">
-						<img class="img-fluid w-100" src="img/watch/category/analog.jpg" alt="Analog">
-						<div class="deal-details">
-							<h6 class="deal-title">Analog Watches</h6>
-						</div>
-					</a>
-				</div>
-			</div>
-			
-			<div class="col-lg-4 col-md-6">
-				<div class="single-deal">
-					<div class="overlay"></div>
-					<a href="/cart" class="img-pop-up">
-						<img class="img-fluid w-100" src="/img/watch/leather.jpg" alt="Premium">
-						<div class="deal-details">
-							<h6 class="deal-title">Premium Watches</h6>
-						</div>
-					</a>
-				</div>
-			</div>
-			
-			<div class="col-lg-4 col-md-6">
-				<div class="single-deal">
-					<div class="overlay"></div>
-					<a href="/cart" class="img-pop-up">
-						<img class="img-fluid w-100" src="/img/watch/category/smart.jpg" alt="Smart">
-						<div class="deal-details">
-							<h6 class="deal-title">Smart Watches</h6>
-						</div>
-					</a>
+	<!-- Start category Area -->
+	<section class="category-area section_gap">
+		<div class="container">
+			<!-- Category Header Title -->
+			<div class="row justify-content-center mb-4">
+				<div class="col-lg-8 text-center">
+					<h2 class="section-title">Browse Our Categories</h2>
+					<p class="section-subtitle">Discover a variety of watches that suit your style and needs.</p>
 				</div>
 			</div>
 
-			<div class="col-lg-4 col-md-6">
-				<div class="single-deal">
-					<div class="overlay"></div>
-					<a href="/cart" class="img-pop-up">
-						<img class="img-fluid w-100" src="/img/watch/women.jpg" alt="Women">
-						<div class="deal-details">
-							<h6 class="deal-title">Women Watches</h6>
-						</div>
-					</a>
-				</div>
-			</div>
-			
-			<div class="col-lg-4 col-md-6">
-				<div class="single-deal">
-					<div class="overlay"></div>
-					<a href="/cart" class="img-pop-up">
-						<img class="img-fluid w-100" src="/img/watch/image13.jpg" alt="Class">
-						<div class="deal-details">
-							<h6 class="deal-title">Class Watches</h6>
-						</div>
-					</a>
-				</div>
-			</div>
-			
-			<div class="col-lg-4 col-md-6">
-				<div class="single-deal">
-					<div class="overlay"></div>
-					<a href="/cart" class="img-pop-up">
-						<img class="img-fluid w-100" src="/img/watch/57.jpg" alt="Classic">
-						<div class="deal-details">
-							<h6 class="deal-title">Classic Watches</h6>
-						</div>
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- End category Area -->
-
-
-
-	<!-- End category Area -->
-
-	<!-- start product Area -->
-	<section class="owl-carousel active-product-area section_gap">
-		<!-- single product slide -->
-		<div class="single-product-slider">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-lg-6 text-center">
-						<div class="section-title">
-							<h1>Latest Products</h1>
-							<p></p>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div th:each="product : ${last8Products}" class="col-lg-3 col-md-6">
-						<div class="single-product">
-							<img th:src="${product.image}" class="img-fluid" alt="Product Image">
-							<div class="product-details">
-								<h6 th:text="${product.name}">Product Name</h6>
-								<div class="price">
-									<h6 th:text="${product.price}">$150.00</h6>
-									<h6 class="l-through" th:text="${product.price+(product.price*0.2)}">$210.00</h6>
-								</div>
-								<div class="prd-bottom">
-									<a href="#" class="social-info add-to-cart" th:data-product-id="${product.id}">
-										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
-									</a>
-									<a th:href="@{/details/{id}(id=${product.id})}" class="social-info">
-										<span class="lnr lnr-move"></span>
-										<p class="hover-text">view more</p>
-									</a>
-								</div>
+			<div class="row justify-content-center">
+				<div class="col-lg-4 col-md-6">
+					<div class="single-deal">
+						<div class="overlay"></div>
+						<a href="/shop">
+							<img class="img-fluid w-100" src="img/watch/category/analog.jpg" alt="Analog">
+							<div class="deal-details">
+								<h6 class="deal-title">Analog Watches</h6>
 							</div>
-						</div>
+						</a>
 					</div>
 				</div>
 
-			</div>
-		</div>
-		
-		<!-- single product slide -->
-		<div class="single-product-slider">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-lg-6 text-center">
-						<div class="section-title">
-							<h1>Coming Products</h1>
-							<p></p>
-						</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="single-deal">
+						<div class="overlay"></div>
+						<a href="/shop">
+							<img class="img-fluid w-100" src="/img/watch/leather.jpg" alt="Premium">
+							<div class="deal-details">
+								<h6 class="deal-title">Premium Watches</h6>
+							</div>
+						</a>
 					</div>
 				</div>
-				<div class="row">
-					<div th:each="product : ${first8Products}" class="col-lg-3 col-md-6">
-						<div class="single-product">
-							<img th:src="${product.image}" class="img-fluid" alt="Product Image">
-							<div class="product-details">
-								<h6 th:text="${product.name}">Product Name</h6>
-								<div class="price">
-									<h6 th:text="${product.price}">$150.00</h6>
-									<h6 class="l-through" th:text="${product.price+(product.price*0.2)}">$210.00</h6>
-								</div>
-								<div class="prd-bottom">
-									<a href="#" class="social-info add-to-cart" th:data-product-id="${product.id}">
-										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
-									</a>
-									<a th:href="@{/details/{id}(id=${product.id})}" class="social-info">
-										<span class="lnr lnr-move"></span>
-										<p class="hover-text">view more</p>
-									</a>
-								</div>
+
+				<div class="col-lg-4 col-md-6">
+					<div class="single-deal">
+						<div class="overlay"></div>
+						<a href="/cart">
+							<img class="img-fluid w-100" src="/img/watch/category/smart.jpg" alt="Smart">
+							<div class="deal-details">
+								<h6 class="deal-title">Smart Watches</h6>
 							</div>
-						</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-lg-4 col-md-6">
+					<div class="single-deal">
+						<div class="overlay"></div>
+						<a href="/shop">
+							<img class="img-fluid w-100" src="/img/watch/women.jpg" alt="Women">
+							<div class="deal-details">
+								<h6 class="deal-title">Women Watches</h6>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-lg-4 col-md-6">
+					<div class="single-deal">
+						<div class="overlay"></div>
+						<a href="/shop">
+							<img class="img-fluid w-100" src="/img/watch/image13.jpg" alt="Class">
+							<div class="deal-details">
+								<h6 class="deal-title">Class Watches</h6>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-lg-4 col-md-6">
+					<div class="single-deal">
+						<div class="overlay"></div>
+						<a href="/shop">
+							<img class="img-fluid w-100" src="/img/watch/57.jpg" alt="Classic">
+							<div class="deal-details">
+								<h6 class="deal-title">Classic Watches</h6>
+							</div>
+						</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+	<!-- End category Area -->
+
+
+
+	<!-- start product Area
+					<section class="owl-carousel active-product-area section_gap"> -->
+	<!-- single product slide for Latest Products -->
+	<div class="single-product-slider">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6 text-center">
+					<div class="section-title">
+						<h1>Latest Products</h1>
+						<p></p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div th:each="product : ${last8Products}" class="col-lg-3 col-md-6">
+					<div class="single-product">
+						<img th:src="${product.image}" class="img-fluid" alt="Product Image">
+						<div class="product-details">
+							<h6 th:text="${product.name}">Product Name</h6>
+							<div class="price">
+								<h6 th:text="${product.price}">$150.00</h6>
+								<h6 class="l-through" th:text="${product.price+(product.price*0.2)}">$210.00</h6>
+							</div>
+							<div class="prd-bottom">
+								<a href="#" class="social-info add-to-cart" th:data-product-id="${product.id}">
+									<span class="ti-bag"></span>
+									<p class="hover-text">add to bag</p>
+								</a>
+								<a th:href="@{/details/{id}(id=${product.id})}" class="social-info">
+									<span class="lnr lnr-move"></span>
+									<p class="hover-text">view more</p>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- </section> -->
 	<!-- end product Area -->
+
 	<!-- start footer Area -->
 	<footer class="footer-area section_gap">
 		<div class="container">
@@ -466,7 +447,8 @@
 					<div class="single-footer-widget">
 						<h6>About Us</h6>
 						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+							ut labore dolore
 							magna aliqua.
 						</p>
 					</div>
@@ -477,18 +459,22 @@
 						<p>Stay update with our latest</p>
 						<div class="" id="mc_embed_signup">
 
-							<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-							 method="get" class="form-inline">
+							<form target="_blank" novalidate="true"
+								action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+								method="get" class="form-inline">
 
 								<div class="d-flex flex-row">
 
-									<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
-									 required="" type="email">
+									<input class="form-control" name="EMAIL" placeholder="Enter Email"
+										onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+										required="" type="email">
 
 
-									<button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+									<button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
+											aria-hidden="true"></i></button>
 									<div style="position: absolute; left: -5000px;">
-										<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
+										<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
+											type="text">
 									</div>
 
 									<!-- <div class="col-lg-4 col-md-4">
@@ -529,10 +515,14 @@
 				</div>
 			</div>
 			<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-				<p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-</p>
+				<p class="footer-text m-0">
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					Copyright &copy;
+					<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is
+					made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+						target="_blank">Colorlib</a>
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+				</p>
 			</div>
 		</div>
 	</footer>
@@ -540,11 +530,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
 	<script src="js/vendor/jquery-2.2.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-	 crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+		crossorigin="anonymous"></script>
 
 
-	 
+
 	<script src="js/vendor/bootstrap.min.js"></script>
 	<script src="js/jquery.ajaxchimp.min.js"></script>
 	<script src="js/jquery.nice-select.min.js"></script>
@@ -558,104 +549,104 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
 
-<script>
-	$(document).ready(function() {
-		checkAuthStatus();
-		$('#search_input').on('keypress', function (e) {
-			if (e.key === 'Enter') {
-				e.preventDefault(); // Prevents the form submission if search is inside a form
-				selectSuggestion($('#search_input').val())
-			}
-		});
-		$(document).on('click', '.add-to-cart', function (e) {
-			e.preventDefault(); // Prevent default link behavior
-
-			// Get the product ID from the data attribute
-			const productId = $(this).data('product-id');
-			const quantity = 1; // Default quantity to 1
-
-			// AJAX GET request to add the product to the cart
-			$.ajax({
-				url: '/cart/add', // The endpoint for adding to the cart
-				type: 'GET',
-				data: {
-					productId: productId,
-					quantity: quantity
-				},
-				success: function (response) {
-					// Success: handle the response (e.g., update cart UI, show notification)
-					alert('Product added to cart successfully!');
-					// Optionally update the cart count or other UI elements
-				},
-				error: function (xhr, status, error) {
-					// Error: handle the error (e.g., show error message)
-					console.log(status)
-					console.log(error)
-					alert('Failed to add product to cart. Please try again.');
+	<script>
+		$(document).ready(function () {
+			checkAuthStatus();
+			$('#search_input').on('keypress', function (e) {
+				if (e.key === 'Enter') {
+					e.preventDefault(); // Prevents the form submission if search is inside a form
+					selectSuggestion($('#search_input').val())
 				}
 			});
-		});
-	});
+			$(document).on('click', '.add-to-cart', function (e) {
+				e.preventDefault(); // Prevent default link behavior
 
-	function checkAuthStatus() {
-		$.ajax({
-			url: '/auth/status',
-			type: 'GET',
-			success: function(response) {
-				if (response.authenticated) {
-					// User is authenticated
-					$('#dropdown-menu-auth').html(`
+				// Get the product ID from the data attribute
+				const productId = $(this).data('product-id');
+				const quantity = 1; // Default quantity to 1
+
+				// AJAX GET request to add the product to the cart
+				$.ajax({
+					url: '/cart/add', // The endpoint for adding to the cart
+					type: 'GET',
+					data: {
+						productId: productId,
+						quantity: quantity
+					},
+					success: function (response) {
+						// Success: handle the response (e.g., update cart UI, show notification)
+						alert('Product added to cart successfully!');
+						// Optionally update the cart count or other UI elements
+					},
+					error: function (xhr, status, error) {
+						// Error: handle the error (e.g., show error message)
+						console.log(status)
+						console.log(error)
+						alert('Failed to add product to cart. Please try again.');
+					}
+				});
+			});
+		});
+
+		function checkAuthStatus() {
+			$.ajax({
+				url: '/auth/status',
+				type: 'GET',
+				success: function (response) {
+					if (response.authenticated) {
+						// User is authenticated
+						$('#dropdown-menu-auth').html(`
                     <li class="nav-item"><a class="nav-link" href="/user/account">My-Account</a></li>
                     <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
                 `);
-				} else {
-					// User is not authenticated
-					$('#dropdown-menu-auth').html(`
+					} else {
+						// User is not authenticated
+						$('#dropdown-menu-auth').html(`
                     <li class="nav-item"><a class="nav-link" href="/auth/login">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="/auth/registeration">Register</a></li>
                 `);
+					}
+				},
+				error: function (error) {
+					console.error('Error checking authentication status:', error);
 				}
-			},
-			error: function(error) {
-				console.error('Error checking authentication status:', error);
+			});
+		}
+		// Function to fetch and display suggestions as user types
+		function showSuggestions(query) {
+			const suggestionList = $('#suggestions').empty();
+			if (query.length < 2) {
+				$('#suggestions').hide();
+				return;
 			}
-		});
-	}
-	// Function to fetch and display suggestions as user types
-	function showSuggestions(query) {
-		const suggestionList = $('#suggestions').empty();
-		if (query.length < 2) {
+
+			$.ajax({
+				url: '/products/search',  // Endpoint for suggestions
+				type: 'GET',
+				data: { name: query },
+				success: function (suggestions) {
+					console.log(suggestions)
+					if (suggestions.length === 0) {
+						suggestionList.hide();
+						return;
+					}
+					suggestions.forEach(suggestion => {
+						suggestionList.append(`<li onclick="selectSuggestion('${suggestion.name}')">${suggestion.name}</li>`);
+					});
+					suggestionList.show();
+				}
+			});
+		}
+		// Function to set suggestion in search input
+		function selectSuggestion(suggestion) {
+			console.log(suggestion)
+			$('#search_input').val(suggestion);
 			$('#suggestions').hide();
-			return;
+			window.location.href = '/shop?param=' + suggestion
+			// performSearch()
 		}
 
-		$.ajax({
-			url: '/products/search',  // Endpoint for suggestions
-			type: 'GET',
-			data: { name: query },
-			success: function(suggestions) {
-				console.log(suggestions)
-				if (suggestions.length === 0) {
-					suggestionList.hide();
-					return;
-				}
-				suggestions.forEach(suggestion => {
-					suggestionList.append(`<li onclick="selectSuggestion('${suggestion.name}')">${suggestion.name}</li>`);
-				});
-				suggestionList.show();
-			}
-		});
-	}
-	// Function to set suggestion in search input
-	function selectSuggestion(suggestion) {
-		console.log(suggestion)
-		$('#search_input').val(suggestion);
-		$('#suggestions').hide();
-		window.location.href = '/shop?param='+suggestion
-		// performSearch()
-	}
-
-</script>
+	</script>
 </body>
 
 </html>

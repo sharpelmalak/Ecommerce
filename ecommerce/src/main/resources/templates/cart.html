@@ -124,6 +124,10 @@
                 height: 50px;
             }
         }
+
+        .waxen7{
+            padding-top: 250px;
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -187,7 +191,7 @@
 	<!-- End Header Area -->
 
     <!-- Start Banner Area -->
-    <section class="banner-area organic-breadcrumb">
+    <!-- <section class="banner-area organic-breadcrumb">
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
                 <div class="col-first">
@@ -199,10 +203,10 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- End Banner Area -->
 
-    <section class="cart_area">
+    <section class="cart_area waxen7" >
         <div class="container">
             <div class="cart_inner">
                 <div class="table-responsive">
@@ -274,7 +278,7 @@
                             <td>
                                 <div class="checkout_btn_inner d-flex align-items-center">
                                     <a class="gray_btn" href="/shop">Continue Shopping</a>
-                                    <a class="primary-btn" href="/checkout">Proceed to checkout</a>
+                                    <a class="primary-btn" href="#" onclick="proceedCheckout()">Proceed to checkout</a>
                                 </div>
                             </td>
                         </tr>
@@ -525,6 +529,17 @@
             if (totalElement) {
                 totalElement.textContent = totalAmount
             }
+        }
+        function proceedCheckout()
+        {
+
+            // Example usage:
+            const totalAmount = calculateTotal();
+            if (totalAmount > 0) {
+                window.location.href = '/checkout'
+            }
+            else alert("your cart is empty")
+
         }
         function calculateTotal() {
             let total = 0;

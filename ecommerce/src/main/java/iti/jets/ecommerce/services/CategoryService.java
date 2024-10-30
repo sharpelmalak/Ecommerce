@@ -21,7 +21,7 @@ public class CategoryService {
 
     // Get all products
     public List<CategoryDTO> getAllCategories() {
-        List<Category> categories = CategoryRepository.findAll();
+        List<Category> categories = CategoryRepository.findAllByDeletedIsFalse();
 
         /*  Convert List<Product> to List<ProductDTO> */
         List<CategoryDTO> categoryDTOS = categories.stream()

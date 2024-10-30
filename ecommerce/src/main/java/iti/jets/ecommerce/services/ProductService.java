@@ -184,31 +184,29 @@ public class ProductService {
     public Page<ProductDTO> getProducts(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice, Pageable pageable) {
         // If no filters are provided, fetch a default set of products
         if ((brands == null || brands.isEmpty()) && (materials == null || materials.isEmpty()) && minPrice == null && maxPrice == null) {
-            System.out.println("default called");
             if(categoryId == null)
             {
                 return getDefaultProducts(pageable);
             }
-            Page<Product> productPage = productRepository.findByCategoryId(categoryId,pageable); // You can change this to your preferred default query
+            Page<Product> productPage = productRepository.findByCategoryIdAndDeletedIsFalse(categoryId,pageable); // You can change this to your preferred default query
 
             List<ProductDTO> productDTOs = productPage.getContent().stream()
-                    .filter(product -> product.isDeleted()==false)
+//                    .filter(product -> product.isDeleted()==false)
                     .map(product -> ProductMapper.convertToDTO(product))
                     .collect(Collectors.toList());
 
             return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
         } else {
 
-            System.out.println("filterd called");
             return getFilteredProducts(categoryId, brands, materials, minPrice, maxPrice, pageable);
         }
     }
 
     public Page<ProductDTO> getProducts (String name, Pageable pageable) {
         // If no filters are provided, fetch a default set of products
-            Page<Product> productPage = productRepository.findByNameContainingIgnoreCase(name,pageable); // You can change this to your preferred default query
+            Page<Product> productPage = productRepository.findByNameAndDeletedIsFalseContainingIgnoreCase(name,pageable); // You can change this to your preferred default query
             List<ProductDTO> productDTOs = productPage.getContent().stream()
-                    .filter(product -> product.isDeleted()==false)
+                   // .filter(product -> product.isDeleted()==false)
                     .map(product -> ProductMapper.convertToDTO(product))
                     .collect(Collectors.toList());
             return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
@@ -219,7 +217,6 @@ public class ProductService {
         Page<Product> productPage = productRepository.findAll(pageable); // You can change this to your preferred default query
 
         List<ProductDTO> productDTOs = productPage.getContent().stream()
-                .filter(product -> product.isDeleted()==false)
                 .map(product -> ProductMapper.convertToDTO(product))
                 .collect(Collectors.toList());
 
@@ -233,12 +230,12 @@ public class ProductService {
             if(minPrice==null)minPrice=0.0F;
             if(maxPrice==null)maxPrice=Float.MAX_VALUE;
         }
-        productPage = productRepository.findByBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
+        productPage = productRepository.findByDeletedIsFalseAndBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
         productDTOs = productPage.getContent().stream()
                     .filter(product ->{
-                        if(categoryId == null)
-                        return product.isDeleted()==false;
-                        else return product.isDeleted()==false&& product.getCategory().getId()==categoryId;
+                        if(categoryId != null)
+                            return product.getCategory().getId()==categoryId;
+                        else return product.isDeleted()==false;
                     })
                     .map(product -> ProductMapper.convertToDTO(product))
                     .collect(Collectors.toList());
@@ -248,14 +245,14 @@ public class ProductService {
     }
 
     public List<ProductDTO> getFirst8Products() {
-        List<Product> products = productRepository.findTop8ByOrderByIdAsc();
+        List<Product> products = productRepository.findTop8ByOrderAndDeletedIsFalseByIdAsc();
         return products.stream()
                 .map(ProductMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     public List<ProductDTO> getLast8Products() {
-        List<Product> products = productRepository.findLast8Products();
+        List<Product> products = productRepository.findLast8ProductsAndDeletedIsFalse();
         return products.stream()
                 .map(ProductMapper::convertToDTO)
                 .collect(Collectors.toList());
