@@ -117,7 +117,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             System.out.println("Blocked access to: " + request.getRequestURI());
                             System.out.println("Reason: " + authException.getMessage());
-                            response.sendRedirect("/auth/login");
+                            response.sendRedirect("/error");
                         })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
