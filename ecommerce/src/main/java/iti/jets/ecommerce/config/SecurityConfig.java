@@ -81,6 +81,7 @@ public class SecurityConfig {
                                         "/category/**",
                                         "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
                                         "/home",
+                                        "/",
                                         "/error",
                                         "/details/**"
                                 ).permitAll()
@@ -92,7 +93,6 @@ public class SecurityConfig {
                                 "/payment/**",
                                 "/orders/**",
                                 "/cards/**",
-                                "/",
                                 "/customers/**"
                                 ).hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
