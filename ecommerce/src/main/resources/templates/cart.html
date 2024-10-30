@@ -278,7 +278,7 @@
                             <td>
                                 <div class="checkout_btn_inner d-flex align-items-center">
                                     <a class="gray_btn" href="/shop">Continue Shopping</a>
-                                    <a class="primary-btn" href="/checkout">Proceed to checkout</a>
+                                    <a class="primary-btn" href="#" onclick="proceedCheckout()">Proceed to checkout</a>
                                 </div>
                             </td>
                         </tr>
@@ -529,6 +529,17 @@
             if (totalElement) {
                 totalElement.textContent = totalAmount
             }
+        }
+        function proceedCheckout()
+        {
+
+            // Example usage:
+            const totalAmount = calculateTotal();
+            if (totalAmount > 0) {
+                window.location.href = '/checkout'
+            }
+            else alert("your cart is empty")
+
         }
         function calculateTotal() {
             let total = 0;
