@@ -51,6 +51,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             Float maxPrice,
             Pageable pageable);
 
+        Page<Product> findByIsDeletedFalseAndCategoryIdAndBrandInOrMaterialInOrPriceBetween(
+                Integer categoryId,    
+            List<String> brands,
+                List<String> materials,
+                Float minPrice,
+                Float maxPrice,
+                Pageable pageable);
+
     Page<Product> findByCategoryIdAndIsDeletedFalse(
             Integer categoryId,
             Pageable pageable);
@@ -62,9 +70,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p WHERE " +
             "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
-            "(:brands IS NULL OR p.brand IN :brands) AND " +
-            "(:materials IS NULL OR p.material IN :materials) AND " +
-            "(p.price BETWEEN :minPrice AND :maxPrice) AND" +
+            "((:brands IS NULL OR p.brand IN :brands) OR " +
+            "(:materials IS NULL OR p.material IN :materials) OR " +
+            "(p.price BETWEEN :minPrice AND :maxPrice)) AND" +
             "(p.isDeleted = false)")
     Page<Product> findByFilters(
             @Param("categoryId") Integer categoryId,
