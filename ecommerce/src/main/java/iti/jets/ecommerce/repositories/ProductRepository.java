@@ -43,18 +43,18 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<String> findAllUniqueMaterials();
 
 
-    Page<Product> findByBrandInOrMaterialInOrPriceBetween(
+    Page<Product> findByDeletedIsFalseAndBrandInOrMaterialInOrPriceBetween(
             List<String> brands,
             List<String> materials,
             Float minPrice,
             Float maxPrice,
             Pageable pageable);
 
-    Page<Product> findByCategoryId(
+    Page<Product> findByCategoryIdAndDeletedIsFalse(
             Integer categoryId,
             Pageable pageable);
 
-    Page<Product> findByCategoryIdAndBrandInOrMaterialInOrPriceBetween(
+    Page<Product> findByCategoryIdAndBrandInOrMaterialInOrPriceBetweenAndDeletedIsFalse(
             Integer categoryId,
             List<String> brands,
             List<String> materials,
@@ -62,7 +62,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             Float maxPrice,
             Pageable pageable);
 
-    Page<Product> findByNameContainingIgnoreCase(
+    Page<Product> findByNameAndDeletedIsFalseContainingIgnoreCase(
            String name,
             Pageable pageable);
 
@@ -70,7 +70,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
             "(:brands IS NULL OR p.brand IN :brands) AND " +
             "(:materials IS NULL OR p.material IN :materials) AND " +
-            "(p.price BETWEEN :minPrice AND :maxPrice)")
+            "(p.price BETWEEN :minPrice AND :maxPrice) AND" +
+            "(p.isDeleted = false)")
     Page<Product> findByFilters(
             @Param("categoryId") Integer categoryId,
             @Param("brands") List<String> brands,
@@ -82,10 +83,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
     // Method to find the first 8 products
-    List<Product> findTop8ByOrderByIdAsc();
+    List<Product> findTop8ByOrderAndDeletedIsFalseByIdAsc();
 
     // Custom query to find the last 8 products
     @Query(value = "SELECT * FROM Product p ORDER BY p.id DESC LIMIT 8", nativeQuery = true)
-    List<Product> findLast8Products();
+    List<Product> findLast8ProductsAndDeletedIsFalse();
 
 }
