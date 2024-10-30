@@ -31,6 +31,7 @@ This project is a fully-functional e-commerce application developed using Spring
 ### Database Design
 
 The following diagram represents the Entity-Relationship Diagram (ERD) for the application's database.
+![Entity-Relationship Diagram](https://github.com/sharpelmalak/Ecommerce/blob/dev/Docs/erd.png)
 
 ### Project Architecture
 
