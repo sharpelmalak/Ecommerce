@@ -1,5 +1,8 @@
 package iti.jets.ecommerce.config;
 
+import iti.jets.ecommerce.config.filters.JwtFilter;
+import iti.jets.ecommerce.config.handlers.CustomAuthenticationSuccessHandler;
+import iti.jets.ecommerce.config.handlers.CustomLogoutHandler;
 import iti.jets.ecommerce.services.CustomOAuth2UserService;
 import iti.jets.ecommerce.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,22 +11,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -79,23 +74,28 @@ public class SecurityConfig {
                                         "/swagger-ui.html",
                                         "/swagger-resources/**",
                                         "/webjars/**",
-                                        "/auth/login",
-                                        "/auth/register",
-                                        "/auth/check-username",
-                                        "/g/**",
+                                        "/auth/**",
                                         "/shop/**",
-                                        "/customers/**",
                                         "/products/**",
-                                        "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
-                                        "/category/**",
-                                        "/home",
                                         "/cart/**",
+                                        "/category/**",
+                                        "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
+                                        "/home",
+                                        "/",
                                         "/error",
                                         "/details/**",
-                                        "/auth/registeration"
+                                        "/"
                                 ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/checkout/**").hasRole("CUSTOMER")
+                        .requestMatchers(
+                                "/checkout/**",
+                                "/user/**",
+                                "/promotions/**",
+                                "/payment/**",
+                                "/orders/**",
+                                "/cards/**",
+                                "/customers/**"
+                                ).hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form-> form
@@ -118,7 +118,9 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             System.out.println("Blocked access to: " + request.getRequestURI());
                             System.out.println("Reason: " + authException.getMessage());
+                            if( request.getRequestURI().equals("/checkout"))
                             response.sendRedirect("/auth/login");
+                            else response.sendRedirect("/error");
                         })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

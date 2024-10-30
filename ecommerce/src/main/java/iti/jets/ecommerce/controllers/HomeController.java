@@ -1,5 +1,6 @@
 package iti.jets.ecommerce.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import iti.jets.ecommerce.dto.ProductDTO;
 import iti.jets.ecommerce.services.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -22,9 +26,16 @@ public class HomeController {
     @Autowired
     private  ProductService productService; 
 
-    @GetMapping("/home")
-    public String home(Model model)
+    @GetMapping(value = {"/home","/"})
+    public String home(Model model, HttpServletRequest request,HttpServletResponse response) throws IOException
     {
+        String redirectUrl = (String) request.getSession().getAttribute("redirectAfterLogin");
+        if (redirectUrl != null) {
+                // Remove the URL from the session to prevent future redirects
+                request.getSession().removeAttribute("redirectAfterLogin");
+                // Redirect to the original requested URL
+                response.sendRedirect(redirectUrl);
+        }
         List<ProductDTO> first8Products = productService.getFirst8Products();
         List<ProductDTO> last8Products = productService.getLast8Products();
 
@@ -32,16 +43,5 @@ public class HomeController {
         model.addAttribute("last8Products", last8Products);
         return "index";
     }
-    @GetMapping("/customer/home")
-    public String customerHome() {
-        return "index";
-    }
-
-    @GetMapping("/admin/home")
-    public String adminHome(Model model) {
-        List<ProductDTO> productList = productService.getAllProducts();
-        model.addAttribute("productList", productList);
-        return "admin/admin-panel";
-    }    
 }
 

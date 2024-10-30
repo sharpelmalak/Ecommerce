@@ -230,17 +230,16 @@ public class ProductService {
             if(minPrice==null)minPrice=0.0F;
             if(maxPrice==null)maxPrice=Float.MAX_VALUE;
         }
-        productPage = productRepository.findByIsDeletedFalseAndBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
+
+        if(categoryId == null){
+            productPage = productRepository.findByIsDeletedFalseAndBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
+        }
+        else{
+            productPage = productRepository.findByIsDeletedFalseAndCategoryIdAndBrandInOrMaterialInOrPriceBetween(categoryId,brands, materials, minPrice, maxPrice, pageable);
+        }
         productDTOs = productPage.getContent().stream()
-                    .filter(product ->{
-                        if(categoryId != null)
-                            return product.getCategory().getId()==categoryId;
-                        else return product.isDeleted()==false;
-                    })
                     .map(product -> ProductMapper.convertToDTO(product))
                     .collect(Collectors.toList());
-
-        System.out.println("list " + productDTOs.size());
         return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
     }
 

@@ -1,10 +1,13 @@
 package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.CardDTO;
+import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.services.CardService;
+import iti.jets.ecommerce.services.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -12,8 +15,10 @@ import java.util.List;
 public class CardController {
 
     private CardService cardService;
+    private CustomerService customerService;
 
-    public CardController(CardService cardService) {
+    public CardController(CardService cardService, CustomerService customerService) {
+        this.customerService = customerService;
         this.cardService = cardService;
     }
 
@@ -22,8 +27,10 @@ public class CardController {
         return  ResponseEntity.ok(cardService.getAllCustomerCards(customerId));
     }
 
-    @PostMapping("/{customerId}")
-    public ResponseEntity<Void> createCard(@PathVariable int customerId, @RequestBody CardDTO cardDTO){
+    @PostMapping
+    public ResponseEntity<Void> createCard( @RequestBody CardDTO cardDTO , Principal principal){
+        CustomerDTO customerDTO = customerService.getCustomerByUserName(principal.getName());
+        cardDTO.setCustomerId(customerDTO.getId());
         cardService.save(cardDTO);
         return  ResponseEntity.ok().build();
     }
