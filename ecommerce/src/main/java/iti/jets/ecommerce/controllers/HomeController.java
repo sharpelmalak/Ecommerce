@@ -43,6 +43,5 @@ public class HomeController {
         model.addAttribute("last8Products", last8Products);
         return "index";
     }
-   
 }
 
