@@ -53,6 +53,13 @@ public class AdminService {
         return AdminMapper.convertToDTO(admin);
     }
 
+    /* Get admin profile by ID */
+    public AdminDTO getAdminProfile(String username) {
+        Admin admin = adminRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with ID: " + username));
+        return AdminMapper.convertToDTO(admin);
+    }
+
     /* Get all admins */
     public List<AdminDTO> getAllAdmins() {
         List<Admin> admins = adminRepository.findAll();
