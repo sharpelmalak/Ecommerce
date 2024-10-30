@@ -26,7 +26,7 @@ public class HomeController {
     @Autowired
     private  ProductService productService; 
 
-    @GetMapping("/home")
+    @GetMapping(value = {"/home","/"})
     public String home(Model model, HttpServletRequest request,HttpServletResponse response) throws IOException
     {
         String redirectUrl = (String) request.getSession().getAttribute("redirectAfterLogin");
