@@ -153,6 +153,10 @@
         <div class="container">
             <div class="tracking_box_inner">
                 <p>To track your order, please enter your Order ID and Billing Email in the fields below.</p>
+                <span>Your Recent Order ID is : </span> <span id="order-id"></span>
+                <br>
+                <span>If you want to rack another order please got to orders page to get the order ID</span>
+                <br><br>
                 <form id="trackingForm" class="row tracking_form">
                     <div class="col-md-12 form-group">
                         <input type="text" class="form-control" id="order" name="orderId" placeholder="Order ID" required>
@@ -274,6 +278,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+   <script>
+       const orderId = sessionStorage.getItem('orderId');
+       console.log("Order ID:", orderId);
+       document.getElementById("order-id").innerText = orderId;
+       document.getElementById("order").value = orderId;
+
+   </script>
     <script>
         $(document).ready(function () {
             // Intercept form submission
