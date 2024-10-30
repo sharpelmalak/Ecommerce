@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
 
         // finally : after all steps ok -> save the order in db and notify customer
         // order created
-        if (checkoutRequest.getPaymentMethod().equals("COD") || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
+        if (checkoutRequest.getPaymentMethod().equals("COD")  || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
             order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
             order.setStatus("placed");
             order.setPaymentMethod(checkoutRequest.getPaymentMethod());

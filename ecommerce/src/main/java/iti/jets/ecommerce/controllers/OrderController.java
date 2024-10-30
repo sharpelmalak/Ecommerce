@@ -1,6 +1,7 @@
 
 package iti.jets.ecommerce.controllers;
 
+import com.paypal.sdk.PaypalServerSDKClient;
 import iti.jets.ecommerce.dto.CartItemDTO;
 import iti.jets.ecommerce.dto.CheckoutRequest;
 import iti.jets.ecommerce.dto.CustomerDTO;
@@ -10,6 +11,7 @@ import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.repositories.CustomerRepository;
 import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +22,15 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
+    private final PaypalServerSDKClient client;
     private OrderService orderService;
     private CustomerRepository customerRepository;
 
-    public OrderController(OrderService orderService, CustomerRepository customerRepository) {
+    @Autowired
+    public OrderController(OrderService orderService, CustomerRepository customerRepository,PaypalServerSDKClient client) {
         this.orderService = orderService;
         this.customerRepository = customerRepository;
+        this.client = client;
     }
 
     // Create new Order

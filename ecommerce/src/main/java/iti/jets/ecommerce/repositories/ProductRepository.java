@@ -35,11 +35,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findAll(Pageable pageable);
 
     // Function to select all unique brands
-    @Query("SELECT DISTINCT p.brand FROM Product p WHERE p.brand IS NOT NULL")
+    @Query("SELECT DISTINCT p.brand FROM Product p WHERE p.brand IS NOT NULL AND p.isDeleted = false")
     List<String> findAllUniqueBrands();
 
     // Function to select all unique materials
-    @Query("SELECT DISTINCT p.material FROM Product p WHERE p.material IS NOT NULL")
+    @Query("SELECT DISTINCT p.material FROM Product p WHERE p.material IS NOT NULL AND p.isDeleted = false")
     List<String> findAllUniqueMaterials();
 
 
