@@ -9,7 +9,11 @@
 
     <!-- intl-tel-input CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
-
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://www.paypalobjects.com/webstatic/en_US/developer/docs/css/cardfields.css"
+    />
 
     <!--
 		CSS
@@ -265,6 +269,8 @@
                         <label for="card">Credit/Debit Card</label><br>
 
 
+                        <div id="paypal-button-container" class="paypal-button-container"></div>
+                        <p id="result-message"></p>
 
                         <!-- Saved Cards Section (Initially hidden) -->
                         <div id="saved-cards-section" style="display: none;">
@@ -454,12 +460,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 
 
+<script src="https://www.paypal.com/sdk/js?client-id=AStk-Dz8UoZmzyyzrI-Jtfyw97DQ5ZFgrRVUxKRwfUfusgBE-7vj4LSjaTF6JPwlU6rI-_zmzJITMTZW&buyer-country=US&currency=USD&components=buttons"></script>
 
 
 <script th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
         integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
         crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 <!-- End footer Area -->
 <script th:src="@{/js/vendor/bootstrap.min.js}"></script>
@@ -473,6 +482,7 @@
 
 <script>
 
+    var country;
     // =======================================================
     // Function to load the user's saved address using AJAX
     //========================================================
@@ -599,6 +609,7 @@
     // save this as global | don't repeat api calls
     let itemsTotalPrice = 0;
     let globalCartItems = "";
+    let checkoutData;
     //let customerId = 12;
     //let country = "USA" // get from customer id
     let orderId;
@@ -967,54 +978,174 @@
     //==================================================================================================
     // place order handling
     //==================================================================================================
+    function makeOrder(paypal)
+    {
+        let payMethod;
+        if(paypal) payMethod = "Paypal"
+        else payMethod=$('input[name="payment"]:checked').val()
+        // Prepare checkout data
+        checkoutData = {
+            shippingAddress: $('#shippingAddress').val(),
+            items: globalCartItems,  // Your cart items
+            paymentMethod: payMethod,
+            totalPrice: itemsTotalPrice
+        };
+
+        // AJAX call to send the checkout request to the backend
+        $.ajax({
+            url: '/orders',  // Backend endpoint to place the order
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(checkoutData),
+            success: function(orderDTO) {
+                // Handle the returned OrderDTO
+                console.log('Order placed successfully:', orderDTO);
+
+                // After order is placed, send AJAX request to clear the cart
+                $.ajax({
+                    url: '/cart/clear',  // Backend endpoint to clear the cart
+                    method: 'DELETE',  // Assuming it's a POST request to clear the cart
+                    success: function() {
+                        console.log('Cart cleared successfully.');
+
+                        // Redirect to confirmation page after cart is cleared
+                        window.location.href = '/checkout/confirm';
+                    },
+                    error: function(error) {
+                        console.error('Error clearing the cart:', error);
+                        alert('Failed to clear the cart, but your order was placed.');
+                    }
+                });
+                let orderId = orderDTO.product.id
+                window.location.href = `/checkout/confirm?orderId=${orderId}`;  // Proceed to confirmation even if cart clearing fails
+            },
+            error: function(error) {
+                console.error('Error during checkout:', error);
+                alert('Failed to place the order. Please try again.');
+            }
+        });
+    }
+
     $(document).ready(function() {
         // When the "Place Order" button is clicked
         $('#place-order-btn').click(function(event) {
             event.preventDefault();
-
-            // Prepare checkout data
-            const checkoutData = {
-                shippingAddress: $('#shippingAddress').val(),
-                items: globalCartItems,  // Your cart items
-                paymentMethod: $('input[name="payment"]:checked').val(),
-                totalPrice: itemsTotalPrice
-            };
-
-            // AJAX call to send the checkout request to the backend
-            $.ajax({
-                url: '/orders',  // Backend endpoint to place the order
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(checkoutData),
-                success: function(orderDTO) {
-                    // Handle the returned OrderDTO
-                    console.log('Order placed successfully:', orderDTO);
-
-                    // After order is placed, send AJAX request to clear the cart
-                    $.ajax({
-                        url: '/cart/clear',  // Backend endpoint to clear the cart
-                        method: 'DELETE',  // Assuming it's a POST request to clear the cart
-                        success: function() {
-                            console.log('Cart cleared successfully.');
-
-                            // Redirect to confirmation page after cart is cleared
-                            window.location.href = '/checkout/confirm';
-                        },
-                        error: function(error) {
-                            console.error('Error clearing the cart:', error);
-                            alert('Failed to clear the cart, but your order was placed.');
-                        }
-                    });
-                    let orderId = orderDTO.product.id
-                    window.location.href = `/checkout/confirm?orderId=${orderId}`;  // Proceed to confirmation even if cart clearing fails
-                },
-                error: function(error) {
-                    console.error('Error during checkout:', error);
-                    alert('Failed to place the order. Please try again.');
-                }
-            });
+            makeOrder(false);
         });
     });
+
+
+
+    window.paypal
+        .Buttons({
+            style: {
+                shape: "rect",
+                layout: "vertical",
+                color: "gold",
+                label: "paypal",
+            },
+            message: {
+                amount: 0,
+            },
+
+            async createOrder() {
+                try {
+                    const response = await fetch("/api/orders", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        // use the "body" param to optionally pass additional order information
+                        // like product ids and quantities
+                        body: JSON.stringify({
+                            cart: [
+                                {
+                                    id: "YOUR_PRODUCT_ID",
+                                    quantity: "YOUR_PRODUCT_QUANTITY",
+                                },
+                            ],
+                        }),
+                    });
+
+                    const orderData = await response.json();
+
+                    if (orderData.id) {
+                        return orderData.id;
+                    }
+                    const errorDetail = orderData?.details?.[0];
+                    const errorMessage = errorDetail
+                        ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+                        : JSON.stringify(orderData);
+
+                    throw new Error(errorMessage);
+                } catch (error) {
+                    console.error(error);
+                    resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+                }
+            },
+
+            async onApprove(data, actions) {
+                try {
+                    const response = await fetch(`/api/orders/${data.orderID}/capture`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    const orderData = await response.json();
+                    // Three cases to handle:
+                    //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+                    //   (2) Other non-recoverable errors -> Show a failure message
+                    //   (3) Successful transaction -> Show confirmation or thank you message
+
+                    const errorDetail = orderData?.details?.[0];
+
+                    if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
+                        // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+                        // recoverable state, per
+                        // https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
+                        makeOrder(true);
+                        return actions.restart();
+                    } else if (errorDetail) {
+                        makeOrder(true);
+                        // (2) Other non-recoverable errors -> Show a failure message
+                        throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
+                    } else if (!orderData.purchase_units) {
+                        makeOrder(true);
+                        throw new Error(JSON.stringify(orderData));
+                    } else {
+                        // (3) Successful transaction -> Show confirmation or thank you message
+                        // Or go to another URL:  actions.redirect('thank_you.html');
+                        const transaction =
+                            orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
+                            orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
+                        resultMessage(
+                            `Transaction ${transaction.status}: ${transaction.id}<br>
+          <br>See console for all available details`
+                        );
+                        console.log(
+                            "Capture result",
+                            orderData,
+                            JSON.stringify(orderData, null, 2)
+                        );
+                    }
+                } catch (error) {
+                    console.error(error);
+                    // resultMessage(
+                    //     `Sorry, your transaction could not be processed...<br><br>${error}`
+                    // );
+                }
+            },
+        })
+        .render("#paypal-button-container");
+
+    // Example function to show a result to the user. Your site's UI library can be used instead.
+    function resultMessage(message) {
+        const container = document.querySelector("#result-message");
+        container.innerHTML = message;
+    }
+
 
     $(document).ready(function () {
         checkAuthStatus();
@@ -1087,8 +1218,6 @@
         window.location.href = '/shop?param=' + suggestion
         // performSearch()
     }
-
-
 
 </script>
 </body>

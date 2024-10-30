@@ -391,14 +391,6 @@
 			loadMaterials();
 			fetchProducts();
 
-			const query = document.getElementById("queryValue").value;
-			const search = document.getElementById("searchValue").value === 'true'; // Convert to boolean
-
-			if (search && query) {
-				console.log("Query:", query);
-				selectSuggestion(query); // Call your function with the query value
-			}
-
 			// Event listeners
 			$('#category-list').on('click', 'a', handleCategoryClick);
 			$('#pagination-controls').on('click', 'a', handlePaginationClick);
@@ -431,6 +423,14 @@
 					}
 				});
 			});
+
+			const query = document.getElementById("queryValue").value;
+			const search = document.getElementById("searchValue").value === 'true'; // Convert to boolean
+
+			if (search && query) {
+				console.log("Query:", query);
+				selectSuggestion(query); // Call your function with the query value
+			}
 		});
 
 		function loadCategories() {

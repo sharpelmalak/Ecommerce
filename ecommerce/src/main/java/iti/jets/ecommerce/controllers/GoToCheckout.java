@@ -16,4 +16,9 @@ public class GoToCheckout {
     public String confirm() {
         return "confirmation";
     }
+
+    @GetMapping("/track")
+    public String trackOrder() {
+        return "tracking";
+    }
 }

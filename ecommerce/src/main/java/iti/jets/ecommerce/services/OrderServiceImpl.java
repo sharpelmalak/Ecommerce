@@ -3,6 +3,7 @@ package iti.jets.ecommerce.services;
 import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.exceptions.ItemNotAvailableException;
 import iti.jets.ecommerce.exceptions.ProductNotFoundException;
+import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 import iti.jets.ecommerce.models.*;
 import iti.jets.ecommerce.repositories.CustomerRepository;
 import iti.jets.ecommerce.repositories.OrderRepository;
@@ -116,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
 
         // finally : after all steps ok -> save the order in db and notify customer
         // order created
-        if (checkoutRequest.getPaymentMethod().equals("COD") || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
+        if (checkoutRequest.getPaymentMethod().equals("COD")  || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
             order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
             order.setStatus("placed");
             order.setPaymentMethod(checkoutRequest.getPaymentMethod());
@@ -158,5 +159,16 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
         orderRepository.save(order);
+    }
+
+    @Override
+    public OrderDTO trackOrder(int orderId, String email){
+        Customer customer = customerRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Customer not found"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        if(order.getCustomer().getId() == customer.getId()){
+            return modelMapper.map(order, OrderDTO.class);
+        }
+        return null;
+
     }
 }
