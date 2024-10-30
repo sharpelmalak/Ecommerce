@@ -91,8 +91,9 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Associate the items with the order and save again
+        order.setShippingCost(checkoutRequest.getShippingCost());
         order.setOrderItems(orderItems);
-        order.setTotalPrice(totalPrice);
+        order.setTotalPrice(checkoutRequest.getTotalPrice());
         orderRepository.save(order); // Save again to persist the order with items
 
         // After setting up all order items, add a print statement to log them

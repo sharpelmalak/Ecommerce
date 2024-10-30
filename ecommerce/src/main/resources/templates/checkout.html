@@ -640,6 +640,7 @@
     //==============================
     // save this as global | don't repeat api calls
     let itemsTotalPrice = 0;
+    let initialShippingCost = 50;
     let globalCartItems = "";
     let checkoutData;
     //let customerId = 12;
@@ -716,7 +717,7 @@
     //====================================
 
     // Function to populate the order summary
-    function populateOrderSummary(cartItems, shippingCost = 50) {
+    function populateOrderSummary(cartItems, shippingCost = initialShippingCost) {
         // Clear any existing content
         $('#order-items').empty();
         $('#subtotal').empty();
@@ -758,10 +759,11 @@
     `;
 
         // Step 2: Calculate total and populate subtotal, shipping, and total
-        let total = subtotal + shippingCost;
+        itemsTotalPrice = subtotal ;
+        let totalToShow = itemsTotalPrice + shippingCost;
         let subTotalHTML = `<li><a>Subtotal <span>$${subtotal.toFixed(2)}</span></a></li>`;
         let shippingCostHTML = `<li><a>Shipping <span id="shipping-value">$${shippingCost.toFixed(2)}</span></a></li>`;
-        let totalPriceHTML = `<li><a>Total <span id="total-price-value">$${total.toFixed(2)}</span></a></li>`;
+        let totalPriceHTML = `<li><a>Total <span id="total-price-value">$${totalToShow.toFixed(2)}</span></a></li>`;
 
         // Append the generated HTML to the respective sections
         $('#order-items').append(orderItemsHTML);
@@ -953,6 +955,7 @@
         loadSavedCards();
     };
 
+    let finalShippingCost = 0;
 
     // ==============================
     // Handle Promotion code
@@ -968,7 +971,8 @@
             return;
         }
 
-        console.log("total = " + itemsTotalPrice)
+        console.log("items total price = " + itemsTotalPrice);
+
         // Fetch and validate the coupon
         fetch(`/promotions/validate?promotionName=${encodeURIComponent(couponCode)}&country=${encodeURIComponent(country)}`)
             .then(response => response.json())
@@ -977,20 +981,20 @@
                     displayMessage("Congratulations! Promotion applied.", "success");
 
                     // Handle shipping cost
-                    const shippingCost = data.freeShipping ? 0 : 50;
+                    let shippingCost = data.freeShipping ? 0 : 50;
+                    finalShippingCost = shippingCost;
                     document.getElementById("shipping-value").textContent = shippingCost.toFixed(2);
-                    // Handle total discount and total price
-                    const discount = (itemsTotalPrice * data.discountPercentage) / 100;
-                    const finalTotal = itemsTotalPrice - discount;
-                    //totalPriceElement.textContent = finalTotal.toFixed(2); // Ensure proper decimal forma
-
-
-                    const totalPriceElement = itemsTotalPrice - data.discountPercentage;
-                    let totalPrice = totalPriceElement.toFixed(2);
-                    document.getElementById("total-price-value").textContent = totalPrice;
-
-
-
+                    console.log(shippingCost)
+                    // Calculate discount based on total price including shipping
+                    let totalBeforeDiscount = itemsTotalPrice + shippingCost ;
+                    console.log(totalBeforeDiscount)
+                    const discount = (totalBeforeDiscount * data.discountPercentage) / 100; // Calculate discount based on total
+                    const finalTotal = totalBeforeDiscount - discount; // Final total after discount
+                    itemsTotalPrice = finalTotal;
+                    console.log("items final total "+ itemsTotalPrice)
+                    // Update the total price in the UI
+                    document.getElementById("total-price-value").textContent = finalTotal.toFixed(2); // Ensure proper decimal format
+                    document.getElementById("shipping-value").textContent = shippingCost.toFixed(2);
                 } else {
                     displayMessage("Invalid promotion code.", "error");
                 }
@@ -1000,6 +1004,7 @@
                 console.error("Error:", error);
             });
     });
+
 
     function displayMessage(message, type) {
         const messageDiv = document.getElementById("message");
@@ -1020,7 +1025,8 @@
             shippingAddress: $('#shippingAddress').val(),
             items: globalCartItems,  // Your cart items
             paymentMethod: payMethod,
-            totalPrice: itemsTotalPrice
+            totalPrice: itemsTotalPrice,
+            shippingCost:finalShippingCost
         };
 
         // AJAX call to send the checkout request to the backend

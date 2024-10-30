@@ -17,6 +17,7 @@ public class CheckoutRequest {
     private List<CartItemDTO> items;
     private String paymentMethod;
     private double totalPrice;
+    private int shippingCost;
 
 
 }
