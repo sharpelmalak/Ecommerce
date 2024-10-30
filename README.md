@@ -194,6 +194,7 @@ Ecommerce/
 
 ```
 </details>
+
 ## Setup and Installation
 
 ### Prerequisites
