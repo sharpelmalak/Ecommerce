@@ -4,6 +4,8 @@ import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.services.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -134,11 +136,14 @@ public class AdminController {
     */
 
     @GetMapping("/products")
-    public String getAllProducts(Model model) {
-        List<ProductDTO> productDTOs = productService.getAllActiveProducts(); // Use the updated method
+    public String getAllProducts(@RequestParam(defaultValue = "0" )int page,Model model) {
+        int pageSize = 10;
+        Page<ProductDTO> productDTOs = productService.getDefaultProducts(PageRequest.of(page, pageSize)); // Use the updated method
         List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
-        model.addAttribute("productList", productDTOs);
+        model.addAttribute("productList", productDTOs.getContent());
         model.addAttribute("categoryList", categoryDTOs);
+        model.addAttribute("totalPages", productDTOs.getTotalPages());
+        model.addAttribute("page", page); // Add the current page number to the model
         return "admin/admin-panel";
     }
 

@@ -212,7 +212,7 @@ public class ProductService {
             return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
     }
 
-    private Page<ProductDTO> getDefaultProducts(Pageable pageable) {
+    public Page<ProductDTO> getDefaultProducts(Pageable pageable) {
         // Fetch the first page of products (adjust the size as needed)
         Page<Product> productPage = productRepository.findAll(pageable); // You can change this to your preferred default query
 
