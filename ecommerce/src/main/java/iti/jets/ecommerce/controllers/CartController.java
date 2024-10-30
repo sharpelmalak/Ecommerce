@@ -117,6 +117,17 @@ public class CartController {
     }
 
 
+    // Clear all items from the cart
+    @GetMapping("/checkEmpty")
+    public ResponseEntity<Boolean> checkCartEmpty(HttpServletRequest request) {
+        boolean isChanged = cartService.checkCartEmpty(request.getSession());
+        if (isChanged) {
+            return ResponseEntity.ok(Boolean.TRUE);
+        }
+        return ResponseEntity.ok(Boolean.FALSE);
+    }
+
+
     // Get all items in the cart
     @GetMapping("/checkout")
     public ResponseEntity<List<CartItemDTO>>  cartCheckout(HttpServletRequest request,HttpServletResponse response, Model model) {

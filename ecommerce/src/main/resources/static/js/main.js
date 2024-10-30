@@ -565,3 +565,30 @@ $(document).ready(function(){
  });
 
 
+// Function to check the cart items via AJAX
+function checkCartItems() {
+    $.ajax({
+        url: '/cart/checkEmpty',
+        type: 'GET',
+        success: function(response) {
+            const cartIcon = document.querySelector('.cart');
+            console.log(response)
+            if (response) {
+                cartIcon.classList.add('has-items');
+            } else {
+                cartIcon.classList.remove('has-items');
+            }
+
+        }
+    });
+
+}
+
+// Initialize on page load and set periodic update
+document.addEventListener('DOMContentLoaded', () => {
+    checkCartItems();
+    setInterval(checkCartItems, 3000); // Check every 60 seconds
+});
+
+
+

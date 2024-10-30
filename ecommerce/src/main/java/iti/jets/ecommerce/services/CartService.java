@@ -78,6 +78,17 @@ public class CartService {
         return result;
     }
 
+    public boolean checkCartEmpty(HttpSession session) {
+        boolean result = false;
+        List<CartItemDTO> cart = (List<CartItemDTO>) session.getAttribute("cart");
+        if (cart != null && !cart.isEmpty()) {
+
+           result= true;
+        }
+
+        return result;
+    }
+
     // Method to add a product to the cart
     public CartItemDTO addProductToCart(HttpSession session,Cookie[]cookies, int productId, int quantity) throws CartException {
         ProductDTO productDTO = productService.getProductById(productId);
@@ -183,7 +194,7 @@ public class CartService {
 
         List<CartItemDTO> cartItems = (List<CartItemDTO>) session.getAttribute("cart");
 
-        if (cartItems != null && !cartItems.isEmpty()) {
+        if (cartItems != null) {
             // Convert cartItems to a JSON string
             String cartJson = convertCartToJson(cartItems);
             String base64Cart = Base64.getEncoder().encodeToString(cartJson.getBytes(StandardCharsets.UTF_8)); // Encode to Base64

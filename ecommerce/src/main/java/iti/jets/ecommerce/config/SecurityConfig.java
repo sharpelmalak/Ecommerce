@@ -89,12 +89,7 @@ public class SecurityConfig {
                                         "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
                                         "/category/**",
                                         "/home",
-                                        "/cart",
-                                        "/cart/check",
-                                        "/cart/add",
-                                        "/cart/remove/*",
-                                        "/cart/update",
-                                        "/cart/clear",
+                                        "/cart/**",
                                         "/error",
                                         "/details/**",
                                         "/auth/registeration"
