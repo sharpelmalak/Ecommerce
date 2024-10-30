@@ -1,12 +1,11 @@
 package iti.jets.ecommerce.controllers;
 
-import iti.jets.ecommerce.config.CustomAuthenticationSuccessHandler;
+import iti.jets.ecommerce.config.handlers.CustomAuthenticationSuccessHandler;
 import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.dto.LoginDTO;
 import iti.jets.ecommerce.services.CategoryService;
 import iti.jets.ecommerce.services.CustomerService;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.GrantedAuthority;
