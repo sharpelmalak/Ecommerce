@@ -1,15 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Error</title>
-</head>
-<body>
-<h1>An Error Occurred</h1>
-<p th:text="'Status: ' + ${status}"></p>
-<p th:text="'Error: ' + ${error}"></p>
-<p th:text="'Message: ' + ${message}"></p>
-<p th:text="'Path: ' + ${path}"></p>
-
-<a href="/home">Return to Home Page</a>
-</body>
+  <head>
+    <link rel="shortcut icon" th:href="@{/img/icon.png}" />
+    <title>Waxen</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        color: #333;
+        text-align: center;
+        padding: 50px;
+      }
+      h1 {
+        font-size: 2.5em;
+        color: #e74c3c;
+      }
+      p {
+        font-size: 1.2em;
+      }
+      a {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      a:hover {
+        background-color: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Oops! Something Went Wrong</h1>
+    <p>
+      We're sorry, but the page you're looking for either doesn't exist or you
+      do not have the necessary permissions to access it.
+    </p>
+    <a href="/home">Return to Home Page</a>
+  </body>
 </html>

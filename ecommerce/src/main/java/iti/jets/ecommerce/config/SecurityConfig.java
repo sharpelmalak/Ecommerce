@@ -81,6 +81,7 @@ public class SecurityConfig {
                                         "/category/**",
                                         "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
                                         "/home",
+                                        "/",
                                         "/error",
                                         "/details/**",
                                         "/"
@@ -93,7 +94,6 @@ public class SecurityConfig {
                                 "/payment/**",
                                 "/orders/**",
                                 "/cards/**",
-                                "/",
                                 "/customers/**"
                                 ).hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
@@ -118,7 +118,9 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             System.out.println("Blocked access to: " + request.getRequestURI());
                             System.out.println("Reason: " + authException.getMessage());
+                            if( request.getRequestURI().equals("/checkout"))
                             response.sendRedirect("/auth/login");
+                            else response.sendRedirect("/error");
                         })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
