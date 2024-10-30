@@ -5790,4 +5790,26 @@ label {
   .footer-text i {
     color: #ffba00; }
 
+.cart {
+  text-decoration: none;
+  font-size: 24px;
+  color: black;
+  position: relative;
+}
+
+/* Style for the notification badge */
+.cart.has-items::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+
+
+
 /*# sourceMappingURL=main.css.map */
