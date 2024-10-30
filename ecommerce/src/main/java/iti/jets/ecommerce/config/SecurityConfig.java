@@ -92,6 +92,7 @@ public class SecurityConfig {
                                 "/payment/**",
                                 "/orders/**",
                                 "/cards/**",
+                                "/",
                                 "/customers/**"
                                 ).hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
