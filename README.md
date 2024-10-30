@@ -23,9 +23,30 @@ This project is a fully-functional e-commerce application developed using Spring
 - **User Authentication**: Secure login process with password encryption to protect user credentials.
 - **Role-Based Access Control**: Different user roles (e.g., admin, customer) with specific permissions to restrict access to sensitive operations.
 - **Session Management**: Secure handling of user sessions, including timeout and invalidation of sessions after logout.
-- **CSRF Protection**: Cross-Site Request Forgery protection to ensure that requests are coming from authenticated users.
 - **Password Recovery**: Secure password reset functionality for users to recover access to their accounts.
 - **Input Validation and Sanitization**: Prevents common vulnerabilities like SQL injection and XSS (Cross-Site Scripting) through proper validation and sanitization of user inputs.
+
+## Design
+
+### Database Design
+
+The following diagram represents the Entity-Relationship Diagram (ERD) for the application's database.
+
+### Project Architecture
+
+The project follows a well-structured architecture pattern:
+
+- **Model-View-Controller (MVC)**: The application separates concerns using the MVC pattern, where:
+    - **Model**: Represents the data and business logic (Entities, Services).
+    - **View**: The frontend that displays data to the user (HTML, CSS, JavaScript).
+    - **Controller**: Manages user requests and responses (Spring Controllers).
+
+- **Client-Server Architecture**: The application uses a client-server architecture, where:
+    - The **client** (frontend) interacts with the **server** (backend) to fetch and manipulate data.
+    - The **server** (backend) processes requests, communicates with the database, and returns responses.
+
+- **REST API**: The application exposes RESTful endpoints to facilitate communication between the client and server. These endpoints follow standard HTTP methods (GET, POST, PUT, DELETE) for CRUD operations.
+
 
 ## Technologies Used
 
@@ -390,9 +411,6 @@ Ecommerce/
    - **Card Payment**: Real-time card validation is implemented. Customers can either choose saved cards or input new card information during checkout.
    - **Cash on Delivery (COD)**: A simple payment option where the customer pays upon receiving the product.
 
-4. **Database Schema**
-   - User, Customer, Admin, Product, Order, OrderItem, Payment, and Card entities are designed with proper relationships (e.g., one-to-many, many-to-one).
-   - Orders are linked to both customers and products, ensuring easy traceability of orders in the system.
 
 ## Future Enhancements
 
