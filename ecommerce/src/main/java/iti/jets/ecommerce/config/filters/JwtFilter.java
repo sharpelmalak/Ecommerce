@@ -1,8 +1,9 @@
-package iti.jets.ecommerce.config;
+package iti.jets.ecommerce.config.filters;
 
 
 
 
+import iti.jets.ecommerce.config.handlers.CustomAuthenticationSuccessHandler;
 import iti.jets.ecommerce.services.CustomUserDetailsService;
 import iti.jets.ecommerce.services.JWTService;
 import jakarta.servlet.FilterChain;

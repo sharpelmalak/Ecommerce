@@ -1,8 +1,6 @@
-package iti.jets.ecommerce.config;
+package iti.jets.ecommerce.config.handlers;
 
 import iti.jets.ecommerce.dto.CartItemDTO;
-import iti.jets.ecommerce.models.Admin;
-import iti.jets.ecommerce.models.Customer;
 import iti.jets.ecommerce.services.CartService;
 import iti.jets.ecommerce.services.JWTService;
 import jakarta.servlet.ServletException;
@@ -18,10 +16,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
