@@ -41,86 +41,159 @@ This project is a fully-functional e-commerce application developed using Spring
 
 ## Project Structure
 
+<details>
+<summary>Project Structure</summary>
+
 ```plaintext
 Ecommerce/
-│                                                         // Maven Project Object Model file
+│
+├── pom.xml                                                   // Maven Project Object Model file
 ├── src/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── iti/
 │   │   │       └── jets/
 │   │   │           └── ecommerce/
-│   │   │               ├── config/
-│   │   │               │   ├── WebSecurityConfig.java               // Spring Security Configuration
-│   │   │               │   ├── SwaggerConfig.java                   // Swagger API Documentation Configuration
-│   │   │               │   ├── AsyncConfig.java                     // Configuration for async operations (AJAX)
-│   │   │               │   └── AppConfig.java                       // General application configurations (Beans, etc.)
-│   │   │               ├── controllers/
-│   │   │               │   ├── AdminController.java                 // Admin operations
-│   │   │               │   ├── UserController.java                  // User operations (login, register, etc.)
-│   │   │               │   ├── CustomerController.java              // REST controller for Customer operations
-│   │   │               │   ├── ProductController.java               // REST controller for Product operations
-│   │   │               │   ├── OrderController.java                 // REST controller for Order operations
-│   │   │               │   └── PaymentController.java               // REST controller for Payment operations
-│   │   │               ├── dto/
-│   │   │               │   ├── CustomerDTO.java                     // Data Transfer Object for Customer
-│   │   │               │   ├── ProductDTO.java                      // Data Transfer Object for Product
-│   │   │               │   ├── OrderDTO.java                        // Data Transfer Object for Order
-│   │   │               │   ├── OrderItemDTO.java                    // Data Transfer Object for OrderItem
-│   │   │               │   └── PaymentDTO.java                      // Data Transfer Object for Payment
-│   │   │               ├── exceptions/
-│   │   │               │   ├── ResourceNotFoundException.java        // Custom exception when resource is not found
-│   │   │               │   └── GlobalExceptionHandler.java           // Global exception handler for centralized error handling
-│   │   │               ├── mappers/
-│   │   │               │   ├── CustomerMapper.java                  // Mapper for Customer entity to DTO
-│   │   │               │   ├── ProductMapper.java                   // Mapper for Product entity to DTO
-│   │   │               │   ├── OrderMapper.java                     // Mapper for Order entity to DTO
-│   │   │               │   └── PaymentMapper.java                   // Mapper for Payment entity to DTO
-│   │   │               ├── models/
-│   │   │               │   ├── Admin.java                           // Admin entity
-│   │   │               │   ├── User.java                            // User entity
-│   │   │               │   ├── Customer.java                        // Entity for Customer
-│   │   │               │   ├── Product.java                         // Entity for Product
-│   │   │               │   ├── Order.java                           // Entity for Order
-│   │   │               │   ├── OrderItem.java                       // Entity for OrderItem
-│   │   │               │   ├── OrderItemId.java                     // Embedded ID for OrderItem composite key
-│   │   │               │   ├── CartItem.java                        // Entity for Cart Item
-│   │   │               │   ├── CartItemId.java                      // Embedded ID for CartItem composite key
-│   │   │               │   ├── Category.java                        // Entity for Product Category
-│   │   │               │   ├── Payment.java                         // Entity for Payment details
-│   │   │               │   └── PaymentMethod.java                   // Enum for payment methods (Credit Card, COD, etc.)
-│   │   │               ├── repositories/
-│   │   │               │   ├── AdminRepository.java                 // Admin data access
-│   │   │               │   ├── UserRepository.java                  // User data access
-│   │   │               │   ├── CustomerRepository.java              // Repository for Customer
-│   │   │               │   ├── ProductRepository.java               // Repository for Product
-│   │   │               │   ├── OrderRepository.java                 // Repository for Order
-│   │   │               │   ├── CartItemRepository.java              // Repository for CartItem
-│   │   │               │   ├── PaymentRepository.java               // Repository for Payment
-│   │   │               │   └── CategoryRepository.java              // Repository for Category
-│   │   │               ├── services/
-│   │   │               │   ├── AdminService.java                    // Business logic for admin operations
-│   │   │               │   ├── UserService.java                     // Business logic for user operations
-│   │   │               │   ├── CustomerService.java                 // Service for Customer operations
-│   │   │               │   ├── ProductService.java                  // Service for Product operations
-│   │   │               │   ├── OrderService.java                    // Service for Order operations
-│   │   │               │   ├── CartService.java                     // Service for Cart operations
-│   │   │               │   └── PaymentService.java                  // Service for Payment operations
-│   │   │               └── EcommerceApplication.java                 // Spring Boot Main Application
-│   │   └── resources/
-│   │       ├── static/                                               // Static assets (CSS, JS, images, etc.)
-│   │       ├── templates/                                            // Thymeleaf or other templates for front-end
-│   │       ├── messages.properties                                   // For internationalization (i18n)
-│   │       └── application.properties                                // Spring Boot application configuration properties
-├── test/
-│   ├── java/
-│   │   └── iti/
-│   │       └── jets/
-│   │           └── ecommerce/
-│   │               └── EcommerceApplicationTests.java                // Unit tests for the application
-└── pom.xml
-```
+│   │   │               ├── EcommerceApplication.java          // Main Spring Boot Application
+│   │   │               │
+│   │   │               ├── config/                            // Configuration classes
+│   │   │               │   ├── CustomAuthenticationSuccessHandler.java
+│   │   │               │   ├── CustomLogoutHandler.java
+│   │   │               │   ├── JwtFilter.java
+│   │   │               │   ├── ModelMapperConfig.java
+│   │   │               │   ├── PayPalConfig.java
+│   │   │               │   ├── SecurityConfig.java
+│   │   │               │   └── SwaggerConfig.java
+│   │   │               │
+│   │   │               ├── controllers/                       // Controller classes
+│   │   │               │   ├── AdminController.java
+│   │   │               │   ├── AuthController.java
+│   │   │               │   ├── CardController.java
+│   │   │               │   ├── CartController.java
+│   │   │               │   ├── CategoryController.java
+│   │   │               │   ├── CheckoutController.java
+│   │   │               │   ├── CustomerController.java
+│   │   │               │   ├── CustomErrorController.java
+│   │   │               │   ├── GoToCheckout.java
+│   │   │               │   ├── HomeController.java
+│   │   │               │   ├── OrderController.java
+│   │   │               │   ├── PaymentController.java
+│   │   │               │   ├── ProductController.java
+│   │   │               │   ├── ProductDetailsController.java
+│   │   │               │   ├── PromotionController.java
+│   │   │               │   ├── ShopController.java
+│   │   │               │   └── UserController.java
+│   │   │               │
+│   │   │               ├── dto/                                // Data Transfer Objects (DTOs)
+│   │   │               │   ├── AdminDTO.java
+│   │   │               │   ├── AuthDTO.java
+│   │   │               │   ├── CardDTO.java
+│   │   │               │   ├── CartItemDTO.java
+│   │   │               │   ├── CategoryDTO.java
+│   │   │               │   ├── CheckoutRequest.java
+│   │   │               │   ├── CustomerAddressDTO.java
+│   │   │               │   ├── CustomerDTO.java
+│   │   │               │   ├── CustomerDTOAdmin.java
+│   │   │               │   ├── CustomerRegistrationDTO.java
+│   │   │               │   ├── LoginDTO.java
+│   │   │               │   ├── OrderDTO.java
+│   │   │               │   ├── OrderItemDTO.java
+│   │   │               │   ├── OrderTrackingRequest.java
+│   │   │               │   ├── PasswordChangeDTO.java
+│   │   │               │   ├── PaymentDTO.java
+│   │   │               │   ├── PaymentRequestDTO.java
+│   │   │               │   ├── ProductDTO.java
+│   │   │               │   ├── PromotionDTO.java
+│   │   │               │   ├── RegisterDTO.java
+│   │   │               │   └── UserDTO.java
+│   │   │               │
+│   │   │               ├── exceptions/                        // Custom Exception classes
+│   │   │               │   ├── CardExpirationDateException.java
+│   │   │               │   ├── CartException.java
+│   │   │               │   ├── GlobalExceptionHandler.java
+│   │   │               │   ├── InvalidCardNumberException.java
+│   │   │               │   ├── InvalidCvvException.java
+│   │   │               │   ├── InvalidEmailException.java
+│   │   │               │   ├── InvalidPromotionException.java
+│   │   │               │   ├── ItemNotAvailableException.java
+│   │   │               │   ├── ProductNotFoundException.java
+│   │   │               │   └── UnsupportedPaymentMethodException.java
+│   │   │               │
+│   │   │               ├── mappers/                            // Mapper classes
+│   │   │               │   ├── AdminMapper.java
+│   │   │               │   ├── CartItemMapper.java
+│   │   │               │   ├── CustomerMapper.java
+│   │   │               │   ├── OrderMapper.java
+│   │   │               │   ├── ProductMapper.java
+│   │   │               │   └── PromotionMapper.java
+│   │   │               │
+│   │   │               ├── models/                             // Entity models
+│   │   │               │   ├── Admin.java
+│   │   │               │   ├── Card.java
+│   │   │               │   ├── CartItem.java
+│   │   │               │   ├── CartItemId.java
+│   │   │               │   ├── Category.java
+│   │   │               │   ├── Customer.java
+│   │   │               │   ├── Order.java
+│   │   │               │   ├── OrderItem.java
+│   │   │               │   ├── OrderItemId.java
+│   │   │               │   ├── Payment.java
+│   │   │               │   ├── Product.java
+│   │   │               │   ├── Promotion.java
+│   │   │               │   └── User.java
+│   │   │               │
+│   │   │               ├── repositories/                       // Repository interfaces
+│   │   │               │   ├── AdminRepository.java
+│   │   │               │   ├── CardRepository.java
+│   │   │               │   ├── CartItemRepository.java
+│   │   │               │   ├── CategoryRepository.java
+│   │   │               │   ├── CustomerRepository.java
+│   │   │               │   ├── CustomUserDetails.java
+│   │   │               │   ├── OrderItemRepository.java
+│   │   │               │   ├── OrderRepository.java
+│   │   │               │   ├── PaymentRepository.java
+│   │   │               │   ├── ProductRepository.java
+│   │   │               │   ├── PromotionRepository.java
+│   │   │               │   └── UserRepository.java
+│   │   │               │
+│   │   │               ├── services/                           // Service classes
+│   │   │               │   ├── AdminService.java
+│   │   │               │   ├── AuthService.java
+│   │   │               │   ├── CardService.java
+│   │   │               │   ├── CartService.java
+│   │   │               │   ├── CategoryService.java
+│   │   │               │   ├── CustomerService.java
+│   │   │               │   ├── CustomOAuth2UserService.java
+│   │   │               │   ├── CustomUserDetailsService.java
+│   │   │               │   ├── JWTService.java
+│   │   │               │   ├── OrderService.java
+│   │   │               │   ├── OrderServiceImpl.java
+│   │   │               │   ├── ProductService.java
+│   │   │               │   └── PromotionService.java
+│   │   │               │
+│   │   │               ├── services/payment/                   // Payment Service classes and strategies
+│   │   │               │   ├── CardPaymentStrategy.java
+│   │   │               │   ├── CODPaymentStrategy.java
+│   │   │               │   ├── FawryPaymentStrategy.java
+│   │   │               │   ├── PaymentService.java
+│   │   │               │   ├── PaymentServiceImpl.java
+│   │   │               │   ├── PaymentStrategy.java
+│   │   │               │   ├── PaypalPaymentStrategy.java
+│   │   │               │   └── StripePaymentStrategy.java
+│   │   │               │
+│   │   │               └── utils/                              // Utility classes
+│   │   │                   └── ValidationUtils.java
+│   │   │
+│   │   ├── resources/
+│   │   │   ├── static/                                           // Static assets (CSS, JS, etc.)
+│   │   │   ├── templates/                                        // Thymeleaf templates
+│   │   │   └── application.properties                            // Application configuration
+│   │
+│   └── test/                                                    // Test cases
+│       └── ...
 
+```
+</details>
 ## Setup and Installation
 
 ### Prerequisites
