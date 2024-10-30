@@ -570,6 +570,81 @@
             }
         });
 
+
+        $(document).ready(function () {
+            checkAuthStatus();
+            $('#search_input').on('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevents the form submission if search is inside a form
+                    selectSuggestion($('#search_input').val())
+                }
+            });
+        });
+
+        function checkAuthStatus() {
+            $.ajax({
+                url: '/auth/status',
+                type: 'GET',
+                success: function (response) {
+                    if (response.authenticated) {
+                        // User is authenticated
+                        $('#dropdown-menu-auth').html(`
+                        <li class="nav-item"><a class="nav-link" href="/user/account">My-Account</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    `);
+                    } else {
+                        // User is not authenticated
+                        $('#dropdown-menu-auth').html(`
+                        <li class="nav-item"><a class="nav-link" href="/auth/login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/auth/registeration">Register</a></li>
+                    `);
+                    }
+                },
+                error: function (error) {
+                    console.error('Error checking authentication status:', error);
+                }
+            });
+        }
+
+
+        // Function to fetch and display suggestions as user types
+        function showSuggestions(query) {
+            const suggestionList = $('#suggestions').empty();
+            if (query.length < 2) {
+                $('#suggestions').hide();
+                return;
+            }
+
+            $.ajax({
+                url: '/products/search',  // Endpoint for suggestions
+                type: 'GET',
+                data: { name: query },
+                success: function (suggestions) {
+                    console.log(suggestions)
+                    if (suggestions.length === 0) {
+                        suggestionList.hide();
+                        return;
+                    }
+                    suggestions.forEach(suggestion => {
+                        suggestionList.append(`<li onclick="selectSuggestion('${suggestion.name}')">${suggestion.name}</li>`);
+                    });
+                    suggestionList.show();
+                }
+            });
+        }
+
+
+        // Function to set suggestion in search input
+        function selectSuggestion(suggestion) {
+            console.log(suggestion)
+            $('#search_input').val(suggestion);
+            $('#suggestions').hide();
+            window.location.href = '/shop?param=' + suggestion
+            // performSearch()
+        }
+
+
+
     </script>
 </body>
 

@@ -114,6 +114,50 @@
 		#suggestions li:hover {
 			background-color: #f5f5f5;
 		}
+		.waxen{
+			padding-top: 190px;
+		}
+		.waxen2{
+			padding-top: 30px;
+		}
+
+		.social-login {
+			display: inline-block;
+			margin: 10px;
+		}
+
+		.social-btn {
+			padding: 10px 20px;
+			font-size: 16px;
+			font-weight: bold;
+			color: white;
+			border: none;
+			border-radius: 25px;
+			cursor: pointer;
+			transition: background-color 0.3s ease, transform 0.2s ease;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+		}
+
+		/* Google Button Styles */
+		.google-btn {
+			/* background-color: #f48c42;  */
+			background-color: #969288
+		}
+
+		.google-btn:hover {
+			background-color: #edd03b; /* Darker Blue */
+			transform: translateY(-2px);
+		}
+
+		/* Facebook Button Styles */
+		.facebook-btn {
+			background-color: #4267B2; /* Facebook Blue */
+		}
+
+		.facebook-btn:hover {
+			background-color: #365899; /* Darker Blue */
+			transform: translateY(-2px);
+		}
 	</style>
 
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -177,7 +221,7 @@
 
 
 	<!--================Login Box Area =================-->
-	<section class="login_box_area section_gap">
+	<section class="login_box_area section_gap waxen">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6">
@@ -193,7 +237,8 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="login_form_inner">
-						<h3>Log in to enter</h3>
+						<h3 style="font-weight: bold;">Log in to enter</h3>
+
 						<form class="row login_form" id="contactForm" method="post" action="/auth/login">
 
 							<div class="col-md-12 form-group">
@@ -210,29 +255,41 @@
 									placeholder="Password" onfocus="this.placeholder = ''"
 									onblur="this.placeholder = 'Password'" required>
 							</div>
-							<div class="col-md-12 form-group">
+							<!-- <div class="col-md-12 form-group">
 								<div class="creat_account">
 									<input type="checkbox" id="keepLoggedIn" name="keepLoggedIn">
 									<label for="keepLoggedIn">Keep me logged in</label>
 								</div>
-							</div>
+							</div> -->
 
-							<div class="col-md-12 form-group">
+							<div class="col-md-12 form-group  waxen2">
 								<button type="submit" class="primary-btn">Log In</button>
-								<a href="#">Forgot Password?</a>
+								<!-- <a href="#">Forgot Password?</a> -->
 							</div>
 
 						</form>
-						<div class="col-md-12 form-group">
+						<!-- <div class="col-md-12 form-group"> -->
 							<!-- Google Login Button -->
-							<a th:href="@{/oauth2/authorization/google}" class="social-login">
+							<!-- <a th:href="@{/oauth2/authorization/google}" class="social-login">
 								<button type="button" class="btn social-btn">Login with Google</button>
 							</a>
 							<a th:href="@{/oauth2/authorization/facebook}" class="social-login">
 								<button type="button" class="btn social-btn">Login with Facebook</button>
-							</a>
+							</a> -->
 
+						<!-- </div> -->
+
+
+						<div class="col-md-12 form-group">
+							<!-- Google Login Button -->
+							<a th:href="@{/oauth2/authorization/google}" class="social-login">
+								<button type="button" class="btn social-btn google-btn">Login with Google</button>
+							</a>
+							<a th:href="@{/oauth2/authorization/facebook}" class="social-login">
+								<button type="button" class="btn social-btn facebook-btn">Login with Facebook</button>
+							</a>
 						</div>
+						
 
 					</div>
 				</div>
