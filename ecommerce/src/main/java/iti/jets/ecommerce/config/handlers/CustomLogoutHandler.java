@@ -1,4 +1,4 @@
-package iti.jets.ecommerce.config;
+package iti.jets.ecommerce.config.handlers;
 
 import iti.jets.ecommerce.dto.CartItemDTO;
 import iti.jets.ecommerce.services.CartService;
