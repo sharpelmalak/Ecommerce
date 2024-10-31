@@ -13,4 +13,6 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     // Find active promotions based on country and current date
     List<Promotion> findByCountryAndStartDateBeforeAndEndDateAfter(String country, LocalDate today, LocalDate today2);
     Optional<Promotion> findByName(String name);
+    List<Promotion> findAllByStartDateBeforeAndEndDateAfter(LocalDate startDate, LocalDate endDate);
+
 }

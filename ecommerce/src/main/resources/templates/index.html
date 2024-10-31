@@ -172,6 +172,15 @@
 }
 
 
+.promotion-value {
+        color: #28a745; /* Green text color */
+        font-weight: bold;
+        background-color: #e9f7ef; /* Light green background */
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: .8rem;
+    }
+
 	</style>
 
 <body>
@@ -275,57 +284,39 @@
 	</section>
 	<!-- End banner Area -->
 
-	<!-- start features Area -->
-	<section class="features-area section_gap">
-		<div class="container">
-			<div class="row features-inner">
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-features">
-						<div class="f-icon">
-							<img src="img/features/f-icon1.png" alt="">
-						</div>
-						<h6>Free Delivery</h6>
-						<p>Free Shipping on all order</p>
-					</div>
+<!-- start features Area -->
+<section class="features-area section_gap">
+    <div class="container">
+        <div class="row features-inner">
+            <!-- Promotion Dropdown and Values -->
+            <div class="col-lg-12">
+                <div class="promotion-section text-center">
+                    <h2>Available Promotions</h2>
+                    <form action="#" method="post" style="margin-top: 20px;">
+                        <label for="countrySelect">Select Country  to see your promotion:</label>
+                        <select id="countrySelect" name="country" class="form-select" onchange="updatePromotionValue()">
+                            <option value="">-- Choose Country --</option>
+                            <!-- Loop through promotions to populate dropdown -->
+                            <th:block th:each="promo : ${promotions}">
+                                <option th:value="${promo.country}" th:data-value="${promo.name}" th:text="${promo.country}"></option>
+                            </th:block>
+                        </select>
+                    </form>
+                  <!-- Promotion Details with Green Highlight -->
+				<div class="promotion-details" style="margin-top: 60px;">
+					<p><strong>Promotion Value:</strong> 
+						<span id="promotionValue" class="promotion-value"></span>
+					</p>
 				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-features">
-						<div class="f-icon">
-							<img src="img/features/f-icon2.png" alt="">
-						</div>
-						<h6>Return Policy</h6>
-						<p>Free Shipping on all order</p>
-					</div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-features">
-						<div class="f-icon">
-							<img src="img/features/f-icon3.png" alt="">
-						</div>
-						<h6>24/7 Support</h6>
-						<p>Free Shipping on all order</p>
-					</div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-features">
-						<div class="f-icon">
-							<img src="img/features/f-icon4.png" alt="">
-						</div>
-						<h6>Secure Payment</h6>
-						<p>Free Shipping on all order</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- end features Area -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 	<!-- Start category Area -->
-	<section class="category-area section_gap">
+	<section class="category-area">
 		<div class="container">
 			<!-- Category Header Title -->
 			<div class="row justify-content-center mb-4">
@@ -419,7 +410,7 @@
 	<!-- single product slide for Latest Products -->
 	<div class="single-product-slider">
 		<div class="container">
-			<div class="row justify-content-center">
+			<div class="row justify-content-center" style="margin-bottom: 20px;background-color: #f5f5f5; padding: 20px; border-radius: 10px;">
 				<div class="col-lg-6 text-center">
 					<div class="section-title">
 						<h1>Latest Products With Flash Sales, Hurry Up!</h1>
@@ -427,6 +418,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="row">
 				<div th:each="product : ${last8Products}" class="col-lg-3 col-md-6">
 					<div class="single-product">
@@ -663,6 +655,17 @@
 			window.location.href = '/shop?param=' + suggestion
 			// performSearch()
 		}
+		function updatePromotionValue() {
+        // Get the selected option in the dropdown
+        const countrySelect = document.getElementById("countrySelect");
+        const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+
+        // Retrieve the promotion value from data attribute
+        const promotionValue = selectedOption.getAttribute("data-value") || "Select a country to see promotion";
+
+        // Update the promotion value display
+        document.getElementById("promotionValue").textContent = promotionValue;
+    }
 
 	</script>
 </body>

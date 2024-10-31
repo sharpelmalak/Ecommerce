@@ -42,6 +42,11 @@ public class PromotionService {
         return promotionRepository.findByCountryAndStartDateBeforeAndEndDateAfter(country, today, today);
     }
 
+    public List<Promotion> getActivePromotions() {
+        LocalDate today = LocalDate.now();
+        return promotionRepository.findAll();
+    }
+
     public PromotionDTO getPromotionByName(String promotionName) {
         Promotion promotion = promotionRepository.findByName(promotionName).orElseThrow(() -> new InvalidPromotionException("Invalid Promotion"));
         return modelMapper.map(promotion, PromotionDTO.class);
