@@ -487,6 +487,7 @@
 
         $("#category-list a").removeClass("active");
         categoryLink.addClass("active");
+        if(selectedCategory!=categoryLink.data("id"))currentPage=0;
         selectedCategory =
           categoryLink.data("id") === "null" ? null : categoryLink.data("id");
 
