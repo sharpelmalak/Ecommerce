@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- intl-tel-input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
 
     <!-- ============================================= -->
@@ -137,6 +138,105 @@
     font-size: 1.1rem;
 }
 
+    /* mile stone style*/
+        /* Timeline container */
+        .timeline {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            max-width: 800px;
+            margin: 50px auto;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Continuous progress bar background */
+        .progress-bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(to right, #d3e2f1, #e6ecf5);
+            transform: translateY(-50%);
+            z-index: -1;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Filled portion of the progress bar */
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5b9bd5, #3b73a6); /* Blue gradient */
+            width: 0; /* Set dynamically */
+            transition: width 0.6s ease;
+        }
+
+        /* Milestone container */
+        .milestone {
+            text-align: center;
+            position: relative;
+            width: 120px; /* Consider making this responsive */
+        }
+
+        /* Circular indicator for each milestone */
+        .milestone-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #d3e2f1;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 22px;
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.4s, transform 0.3s ease;
+        }
+
+        /* Active milestone style */
+        .milestone.active .milestone-circle {
+            background-color: #5b9bd5;
+            transform: scale(1.1);
+        }
+
+        /* Milestone icon */
+        .milestone i {
+            font-size: 20px;
+        }
+
+        /* Milestone label */
+        .milestone-label {
+            margin-top: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Tooltip for status label */
+        .tooltip {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #5b9bd5;
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .milestone.active .tooltip {
+            opacity: 1;
+        }
+
 
     </style>
 
@@ -214,28 +314,62 @@
     <!--================Tracking Box Area =================-->
     <section class="tracking_box_area section_gap  waxen8">
         <div class="container">
-            <div class="tracking_box_inner">
+
+
+            <div class="timeline">
+                <!-- Continuous progress bar -->
+                <div class="progress-bar">
+                    <div class="progress-bar-fill"></div>
+                </div>
+
+                <!-- Milestones -->
+                <div class="milestone active">
+                    <div class="milestone-circle"><i class="fas fa-box"></i></div>
+                    <div class="milestone-label">Placed</div>
+                    <div class="tooltip">Order Placed</div>
+                </div>
+                <div class="milestone active">
+                    <div class="milestone-circle"><i class="fas fa-shipping-fast"></i></div>
+                    <div class="milestone-label">Shipped</div>
+                    <div class="tooltip">Order Shipped</div>
+                </div>
+                <div class="milestone">
+                    <div class="milestone-circle"><i class="fas fa-truck"></i></div>
+                    <div class="milestone-label">Out for Delivery</div>
+                    <div class="tooltip">Out for Delivery</div>
+                </div>
+                <div class="milestone">
+                    <div class="milestone-circle"><i class="fas fa-check-circle"></i></div>
+                    <div class="milestone-label">Delivered</div>
+                    <div class="tooltip">Order Delivered</div>
+                </div>
+            </div>
+
+
+            <div class="tracking_box_inner d-flex flex-column align-items-center text-center p-4 border rounded bg-light">
                 <p class="tracking-info">To track your order, please enter your Order ID and Billing Email in the fields below.</p>
-                <span class="recent-order-info">Your Recent Order ID is:</span> <span id="order-id">#123456</span>
+                <span class="recent-order-info">Your Recent Order ID is: <span id="order-id">#123456</span> </span>
                 <br>
                 <span class="other-order-info">If you want to track another order, please go to the orders page to get the order ID.</span>
-                <br><br>
-                <form id="trackingForm" class="row tracking_form">
-                    <div class="col-md-12 form-group">
+                <br>
+                <form id="trackingForm" class="row tracking_form w-100">
+                    <div class="col-12 form-group mb-3">
                         <input type="text" class="form-control" id="order" name="orderId" placeholder="Order ID" required>
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-12 form-group mb-3">
                         <input type="email" class="form-control" id="email" name="email" placeholder="Billing Email" required>
                     </div>
-                    <div class="col-md-12 form-group">
-                        <button type="submit" class="primary-btn">Track Order</button>
+                    <div class="col-12 form-group mb-3">
+                        <button type="submit" class="btn btn-primary">Track Order</button>
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-12 form-group">
                         <p id="result" style="font-weight: bold;"></p>
                     </div>
                 </form>
             </div>
-            
+
+
+
 
         </div>
     </section>
@@ -362,8 +496,50 @@
         document.getElementById("order-id").innerText = orderId;
         document.getElementById("order").value = orderId;
 
+        // Milestone elements
+        const milestones = document.querySelectorAll('.milestone');
+        const progressBarFill = document.querySelector('.progress-bar-fill');
+        // Add 'active' class only to milestones up to the current status
+        const statuses = ['placed', 'shipped', 'out_for_delivery', 'delivered'];
+        statuses.forEach((status, index) => {
+            milestones[index].classList.remove('active');
+        });
     </script>
     <script>
+
+
+        function updateOrderStatus(status){
+
+            // Current order status: 'placed', 'shipped', 'out_for_delivery', 'delivered'
+            const orderStatus = status;
+
+            // Milestone elements
+            const milestones = document.querySelectorAll('.milestone');
+            const progressBarFill = document.querySelector('.progress-bar-fill');
+
+            // Map statuses to milestone completion levels
+            const statusMap = {
+                'placed': 25,
+                'shipped': 50,
+                'out_for_delivery': 75,
+                'delivered': 100
+            };
+
+            // Set progress fill width based on order status
+            progressBarFill.style.width = statusMap[orderStatus] + '%';
+
+            // Add 'active' class only to milestones up to the current status
+            const statuses = ['placed', 'shipped', 'out_for_delivery', 'delivered'];
+            statuses.forEach((status, index) => {
+                if (statuses.indexOf(orderStatus) >= index) {
+                    milestones[index].classList.add('active');
+                } else {
+                    milestones[index].classList.remove('active');
+                }
+            });
+
+        }
+
         $(document).ready(function () {
             // Intercept form submission
             $('#trackingForm').on('submit', function (e) {
@@ -393,6 +569,7 @@
                         console.log(data);
                         // Display success message or result
                         $('#result').text(`Order status: ${data.orderStatus}`);
+                        updateOrderStatus(data.orderStatus);
                     },
                     error: function () {
                         // Handle error and display message
