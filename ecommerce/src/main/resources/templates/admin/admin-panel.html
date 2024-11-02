@@ -80,6 +80,8 @@
 </head>
 
 <body>
+<div id="action-message" class="action-message" style="display: none;"></div>
+
     <!--  Sidebar Section  -->
     <div class="sidebar">
         <h2>Admin Panel</h2>
@@ -248,16 +250,16 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        alert('Product deleted successfully!');
+                        showActionMessage('Product deleted successfully!','success');
                         // Optionally reload the page or update the UI
                         location.reload(); // Reloads the page
                     } else {
-                        alert('Failed to delete the product.');
+                        showActionMessage('Failed to delete the product.','error');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred while deleting the product.');
+                    showActionMessage('An error occurred while deleting the product.','error')
                 });
         }
     }

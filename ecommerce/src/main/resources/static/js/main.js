@@ -590,5 +590,31 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(checkCartItems, 3000); // Check every 60 seconds
 });
 
+// Action message handling
+function showActionMessage(text, type) {
+    const messageDiv = document.getElementById('action-message');
+    messageDiv.textContent = text; // Set the message text
+
+    // Remove any existing types
+    messageDiv.classList.remove('success', 'error');
+
+    // Add the class based on the type
+    if (type === 'success') {
+        messageDiv.classList.add('success');
+    } else if (type === 'error') {
+        messageDiv.classList.add('error');
+    }
+
+    messageDiv.style.display = 'block'; // Make the message visible
+    messageDiv.style.opacity = '1'; // Ensure it's fully opaque
+
+    setTimeout(() => {
+        messageDiv.style.opacity = '0'; // Start fading out
+        setTimeout(() => {
+            messageDiv.style.display = 'none'; // Hide the message after fade out
+        }, 500); // Match this with the CSS transition duration
+    }, 2000); // Message visible for 2 seconds
+}
+
 
 

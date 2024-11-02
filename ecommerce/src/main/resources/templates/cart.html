@@ -243,6 +243,8 @@
     <!-- End Header Area -->
 
     <!-- End Header Area -->
+    <div id="action-message" class="action-message" style="display: none;"></div>
+
     <section class="cart_area waxen7">
       <div class="container">
         <div class="cart_inner">
@@ -470,12 +472,12 @@
             } else {
               response.quantity = response.product.quantity;
               updateCartItemUI(productId, response);
-              alert("Exceed Stock");
+              showActionMessage('Exceed Stock','error')
             }
             updateCartSummary();
           },
           error: function () {
-            alert("Failed to update quantity");
+            showActionMessage('Failed to update quantity','error')
           },
         });
       }
@@ -509,7 +511,7 @@
             updateCartSummary(); // Update the cart summary if needed
           },
           error: function () {
-            alert("Failed to remove item from cart");
+            showActionMessage('Failed to remove item from cart','error')
           },
         });
       }
@@ -545,12 +547,12 @@
             if (response) {
               updateTotal();
             } else {
-              alert("STOCK UPDATES");
+              showActionMessage('STOCK UPDATES','error')
               window.location.href = "/cart";
             }
           },
           error: function () {
-            alert("STOCK UPDATES");
+            showActionMessage('STOCK UPDATES','error')
           },
         });
       }
@@ -569,7 +571,7 @@
         const totalAmount = calculateTotal();
         if (totalAmount > 0) {
           window.location.href = "/checkout";
-        } else alert("your cart is empty");
+        } else showActionMessage('your cart is empty','error')
       }
       function calculateTotal() {
         let total = 0;
