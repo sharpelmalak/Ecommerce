@@ -54,19 +54,15 @@
         <a th:href="@{/admin/profile}">My Profile</a>
         <a th:href="@{/admin/customers}">Customer Profiles</a>
         <a th:href="@{/admin/orders}">Orders</a>
-        <a th:href="@{/admin/add-promotion-form}">Create a Promotion</a>        
+        <a th:href="@{/admin/add-promotion-form}">Create a Promotion</a>
         <a th:href="@{/logout}">Logout</a>
     </div> 
 
     <div class="main-content">
         <div class="container-fluid">
             <div class="card p-4">
-                <h1 class="text-center" th:text="'Order History for ' + ${customer.username}"></h1>
 
-                <!-- No orders message -->
-                <div th:if="${#lists.isEmpty(orders)}" class="alert alert-info text-center">
-                    <p>No orders found for this user.</p>
-                </div>
+
 
                 <!-- Orders Table -->
                 <div th:if="${!#lists.isEmpty(orders)}">
@@ -78,6 +74,7 @@
                                 <th>Date Created</th>
                                 <th>Order Items</th>
                                 <th>Order Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,6 +96,13 @@
                                 <td th:classappend="status-delivered" th:if="${order.orderStatus == 'Delivered'}" th:text="${order.orderStatus}"></td>
                                 <td th:classappend="status-canceled" th:if="${order.orderStatus == 'Canceled'}" th:text="${order.orderStatus}"></td>
                                 <td th:classappend="status-placed" th:if="${order.orderStatus == 'placed'}" th:text="${order.orderStatus}"></td>
+                                <td>
+                                    <form th:action="@{/admin/}" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" th:value="${order.orderId}">
+                                        <button type="submit" class="btn btn-warning">Update Status</button>
+                                    </form>
+
+                                </td>
                             </tr>
                         </tbody>
                     </table>

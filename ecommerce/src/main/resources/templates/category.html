@@ -222,6 +222,8 @@
       </div>
     </header>
     <!-- End Header Area -->
+    <div id="action-message" class="action-message" style="display: none;"></div>
+
     <div class="container waxen">
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-5">
@@ -431,14 +433,14 @@
             },
             success: function (response) {
               // Success: handle the response (e.g., update cart UI, show notification)
-              alert("Product added to cart successfully!");
+              showActionMessage('Product added to cart successfully!','success')
               // Optionally update the cart count or other UI elements
             },
             error: function (xhr, status, error) {
               // Error: handle the error (e.g., show error message)
               console.log(status);
               console.log(error);
-              alert("Failed to add product to cart. Please try again.");
+              showActionMessage('Failed to add product to cart. Please try again.','error')
             },
           });
         });
@@ -674,7 +676,7 @@
             $("#suggestions").hide();
           },
           error: function (err) {
-            alert("error");
+            showActionMessage('error','error')
           },
         });
 

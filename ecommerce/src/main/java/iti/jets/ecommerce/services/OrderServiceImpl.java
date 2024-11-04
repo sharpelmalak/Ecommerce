@@ -157,6 +157,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrderStatus(int orderId, String status) {
+        // placed ,  shipped ,  out_for_delivery , delivered
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
         orderRepository.save(order);

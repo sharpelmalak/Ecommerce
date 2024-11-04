@@ -244,6 +244,7 @@
     </header>
     <!-- End Header Area -->
 	<!-- --================Single Product Area =================-->
+      <div id="action-message" class="action-message" style="display: none;"></div>
 	<div class="product_image_area waxen4" >
 		<div class="container">
 			<div class="row s_product_inner">
@@ -487,14 +488,14 @@
 						},
 						success: function (response) {
 							// Success: handle the response (e.g., update cart UI, show notification)
-							alert('Product added to cart successfully!');
+                            showActionMessage('Product added to cart successfully!','success')
 							console.log("Product added with ID: " + productId + " and quantity: " + quantity);
 						},
 						error: function (xhr, status, error) {
 							// Error: handle the error (e.g., show error message)
 							console.log("Error Status: " + status);
 							console.log("Error Message: " + error);
-							alert('Failed to add product to cart. Please try again.');
+                            showActionMessage('Failed to add product to cart. Please try again.','error');
 						}
 					});
 				});

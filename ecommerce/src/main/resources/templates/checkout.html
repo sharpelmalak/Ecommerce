@@ -258,6 +258,8 @@
 
 <!--================Checkout Area =================-->
 <!-- =================Checkout Area =================-->
+<div id="action-message" class="action-message" style="display: none;"></div>
+
 <section class="checkout_area section_gap  waxen5">
     <div class="container">
         <div class="billing_details">
@@ -621,11 +623,11 @@
                             contentType: 'application/json',
                             data: JSON.stringify(addressData),
                             success: function (response) {
-                                alert('Address saved successfully!');
+                                showActionMessage('Address saved successfully!','success');
                                 loadSavedAddress(); // Reload address to reflect changes
                             },
                             error: function (xhr, status, error) {
-                                alert('Failed to save address. Please try again.');
+                                showActionMessage('Failed to save address. Please try again.','error')
                                 console.log('Error saving address:', status, error);  // Log detailed error
                             }
                         });
@@ -942,7 +944,7 @@
             contentType: 'application/json',
             data: JSON.stringify(newCardDetails),
             success: function () {
-                alert('Card saved successfully!');
+                showActionMessage('Card saved successfully!','success')
                 loadSavedCards();  // Reload saved cards after saving the new card
             },
             error: function () {
@@ -1055,7 +1057,6 @@
                     },
                     error: function(error) {
                         console.error('Error clearing the cart:', error);
-                        alert('Failed to clear the cart, but your order was placed.');
                     }
                 });
 
@@ -1064,7 +1065,7 @@
             },
             error: function(error) {
                 console.error('Error during checkout:', error);
-                alert('Failed to place the order.Please Choose a Payment Method.');
+                showActionMessage('Failed to place the order.Please Choose a Payment Method.','error')
             }
         });
     }
@@ -1261,6 +1262,9 @@
         window.location.href = '/shop?param=' + suggestion
         // performSearch()
     }
+
+
+
 
 </script>
 </body>

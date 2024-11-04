@@ -184,6 +184,7 @@
 	</style>
 
 <body>
+
 	<!-- Start Header Area -->
 	<header class="header_area sticky-header">
 		<div class="main_menu">
@@ -583,14 +584,14 @@
 					},
 					success: function (response) {
 						// Success: handle the response (e.g., update cart UI, show notification)
-						alert('Product added to cart successfully!');
+						showActionMessage('Product added to cart successfully!','success');
 						// Optionally update the cart count or other UI elements
 					},
 					error: function (xhr, status, error) {
 						// Error: handle the error (e.g., show error message)
 						console.log(status)
 						console.log(error)
-						alert('Failed to add product to cart. Please try again.');
+						showSuggestions('Failed to add product to cart. Please try again.','error')
 					}
 				});
 			});
