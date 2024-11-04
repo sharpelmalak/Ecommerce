@@ -5833,7 +5833,7 @@ label {
 .action-message {
   position: fixed;
   top: 20px; /* Position it slightly below the top */
-  left: 50%; /* Center horizontally */
+  left: 40%; /* Center horizontally */
   transform: translateX(-50%); /* Center the message */
   padding: 15px 30px; /* Increased padding for more height */
   color: white; /* White text */
