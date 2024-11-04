@@ -153,43 +153,101 @@
 			color: #666;
 			margin-bottom: 1.5rem;
 		}
+
 		.single-footer-widget p {
-    text-align: justify;
-}
+			text-align: justify;
+		}
 
 
-.welcome-heading {
-    font-size: 2.5rem; /* Adjusts the font size */
-    font-weight: bold; /* Makes the font bold */
-    text-align: center; /* Centers the text */
-    color: #333; /* Sets the text color */
-    line-height: 1.5; /* Increases the line height for better readability */
-    margin: 20px 0; /* Adds top and bottom margin */
-    text-transform: uppercase; /* Transforms text to uppercase */
-    letter-spacing: 1px; /* Increases the space between letters */
-    font-family: 'Arial', sans-serif; /* Sets the font family */
-	padding-top: 100px;
-}
+		.welcome-heading {
+			font-size: 2.5rem;
+			/* Adjusts the font size */
+			font-weight: bold;
+			/* Makes the font bold */
+			text-align: center;
+			/* Centers the text */
+			color: #333;
+			/* Sets the text color */
+			line-height: 1.5;
+			/* Increases the line height for better readability */
+			margin: 20px 0;
+			/* Adds top and bottom margin */
+			text-transform: uppercase;
+			/* Transforms text to uppercase */
+			letter-spacing: 1px;
+			/* Increases the space between letters */
+			font-family: 'Arial', sans-serif;
+			/* Sets the font family */
+			padding-top: 100px;
+		}
+
+		.promotion-card {
+			background: #f9f9f9;
+			border: 1px solid #e2e2e2;
+			border-radius: 8px;
+			box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+			padding: 30px;
+			max-width: 1200px;
+			/* Set a fixed width for the promotion card if needed */
+			max-height: 1200px;
+			/* Set a fixed width for the promotion card if needed */
+			margin: 0 auto;
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.promotion-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.2);
+		}
+
+		.promotion-card h2 {
+			color: #2a9d8f;
+			font-weight: 700;
+			font-size: 28px;
+			margin-bottom: 20px;
+		}
+
+		.promotion-label {
+			font-weight: bold;
+			color: #333;
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		/* Adjust the form-select dropdown to match the card width */
+		.form-select {
+			width: 100%;
+			max-width: none;
+			/* Override max-width to match the parent container */
+			font-size: 16px;
+			padding: 8px;
+		}
+
+		.promotion-details p {
+			color: #264653;
+			font-weight: bold;
+			font-size: 18px;
+			margin-top: 10px;
+		}
+
+		.promotion-value {
+			color: #e76f51;
+		}
 
 
-.promotion-value {
-        color: #28a745; /* Green text color */
-        font-weight: bold;
-        background-color: #e9f7ef; /* Light green background */
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: .8rem;
-    }
 
-	.notification-message {
-		font-size: 1.00rem; /* Increases font size */
-		font-weight: bold;  /* Makes text bold */
-		padding: 10px 20px; /* Adds padding for better readability */
-	}
-
+		.notification-message {
+			font-size: 1.00rem;
+			/* Increases font size */
+			font-weight: bold;
+			/* Makes text bold */
+			padding: 10px 20px;
+			/* Adds padding for better readability */
+		}
 	</style>
 
 <body>
+
 	<!-- Start Header Area -->
 	<header class="header_area sticky-header">
 		<div class="main_menu">
@@ -197,9 +255,9 @@
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
 					<a class="navbar-brand logo_h" href="/home"><img src="/img/waxen.jpg" alt=""></a>
-					  <!-- Notification Message (after logo) -->
-						<!-- Notification Message (after logo) -->
-						<div id="notification" class="alert d-none text-center mx-auto font-weight-bold notification-message" role="alert"></div>
+					<div id="notification"
+						class="alert d-none text-center mx-auto font-weight-bold notification-message" role="alert">
+					</div>
 					<button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
@@ -293,35 +351,34 @@
 	</section>
 	<!-- End banner Area -->
 
-<!-- start features Area -->
-<section class="features-area section_gap">
-    <div class="container">
-        <div class="row features-inner">
-            <!-- Promotion Dropdown and Values -->
-            <div class="col-lg-12">
-                <div class="promotion-section text-center">
-                    <h2>Available Promotions</h2>
-                    <form action="#" method="post" style="margin-top: 20px;">
-                        <label for="countrySelect">Select Country  to see your promotion:</label>
-                        <select id="countrySelect" name="country" class="form-select" onchange="updatePromotionValue()">
-                            <option value="">-- Choose Country --</option>
-                            <!-- Loop through promotions to populate dropdown -->
-                            <th:block th:each="promo : ${promotions}">
-                                <option th:value="${promo.country}" th:data-value="${promo.name}" th:text="${promo.country}"></option>
-                            </th:block>
-                        </select>
-                    </form>
-                  <!-- Promotion Details with Green Highlight -->
-				<div class="promotion-details" style="margin-top: 60px;">
-					<p><strong>Promotion Value:</strong> 
+	<!-- start features Area -->
+	<section class="features-area section_gap">
+		<div class="container">
+			<!-- Promotion Dropdown and Values -->
+			<div class="promotion-section text-center promotion-card">
+				<h2>Available Promotions</h2>
+				<form action="#" method="post" style="margin-top: 20px;">
+					<div class="form-group">
+						<label for="countrySelect" class="promotion-label">Select Country to see your promotion:</label>
+						<select id="countrySelect" name="country" class="form-select" onchange="updatePromotionValue()">
+							<option value="">-- Choose Country --</option>
+							<!-- Loop through promotions to populate dropdown -->
+							<th:block th:each="promo : ${promotions}">
+								<option th:value="${promo.country}" th:data-value="${promo.name}"
+									th:text="${promo.country}"></option>
+							</th:block>
+						</select>
+					</div>
+				</form>
+				<!-- Promotion Details with Green Highlight -->
+				<div class="promotion-details" style="margin-top: 80px;">
+					<p><strong>Promotion Value:</strong>
 						<span id="promotionValue" class="promotion-value"></span>
 					</p>
 				</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+			</div>
+
+	</section>
 
 
 	<!-- Start category Area -->
@@ -417,7 +474,8 @@
 	<!-- single product slide for Latest Products -->
 	<div class="single-product-slider">
 		<div class="container">
-			<div class="row justify-content-center" style="margin-bottom: 20px;background-color: #f5f5f5; padding: 20px; border-radius: 10px;">
+			<div class="row justify-content-center"
+				style="margin-bottom: 20px;background-color: #f5f5f5; padding: 20px; border-radius: 10px;">
 				<div class="col-lg-6 text-center">
 					<div class="section-title">
 						<h1>Latest Products With Flash Sales, Hurry Up!</h1>
@@ -425,7 +483,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="row">
 				<div th:each="product : ${last8Products}" class="col-lg-3 col-md-6">
 					<div class="single-product">
@@ -463,13 +521,18 @@
 					<div class="single-footer-widget" style="text-align: justify;">
 						<h6>About Us</h6>
 						<p>
-							Welcome to Waxen, where luxury and style meet in every timepiece. We offer a curated selection of world-renowned brands like G-Shock, CASIO, Fossil, ALBA, CITIZEN, TOMMY HILFIGER, NAVIFORCE, and TIMEX.
-							From SPORTY watches for adventurers to CLASSIC and CASUAL designs for everyday elegance, our diverse collections suit every style. Discover SMART technology, PREMIUM craftsmanship, and timeless Analog watches, each embodying quality and individuality.	
-							At Waxen, we’re passionate about excellence—explore our collections and find a watch that’s uniquely yours.
+							Welcome to Waxen, where luxury and style meet in every timepiece. We offer a curated
+							selection of world-renowned brands like G-Shock, CASIO, Fossil, ALBA, CITIZEN, TOMMY
+							HILFIGER, NAVIFORCE, and TIMEX.
+							From SPORTY watches for adventurers to CLASSIC and CASUAL designs for everyday elegance, our
+							diverse collections suit every style. Discover SMART technology, PREMIUM craftsmanship, and
+							timeless Analog watches, each embodying quality and individuality.
+							At Waxen, we’re passionate about excellence—explore our collections and find a watch that’s
+							uniquely yours.
 						</p>
 					</div>
 				</div>
-				
+
 				<div class="col-lg-4  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
 						<h6>Newsletter</h6>
@@ -592,14 +655,14 @@
 					},
 					success: function (response) {
 						// Success: handle the response (e.g., update cart UI, show notification)
-						showActionMessage('Product added to cart successfully!','success');
+						showActionMessage('Product added to cart successfully!', 'success');
 						// Optionally update the cart count or other UI elements
 					},
 					error: function (xhr, status, error) {
 						// Error: handle the error (e.g., show error message)
 						console.log(status)
 						console.log(error)
-						showSuggestions('Failed to add product to cart. Please try again.','error')
+						showSuggestions('Failed to add product to cart. Please try again.', 'error')
 					}
 				});
 			});
@@ -663,27 +726,27 @@
 			// performSearch()
 		}
 		function updatePromotionValue() {
-        // Get the selected option in the dropdown
-        const countrySelect = document.getElementById("countrySelect");
-        const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+			// Get the selected option in the dropdown
+			const countrySelect = document.getElementById("countrySelect");
+			const selectedOption = countrySelect.options[countrySelect.selectedIndex];
 
-        // Retrieve the promotion value from data attribute
-        const promotionValue = selectedOption.getAttribute("data-value") || "Select a country to see promotion";
+			// Retrieve the promotion value from data attribute
+			const promotionValue = selectedOption.getAttribute("data-value") || "Select a country to see promotion";
 
-        // Update the promotion value display
-        document.getElementById("promotionValue").textContent = promotionValue;
-    }
+			// Update the promotion value display
+			document.getElementById("promotionValue").textContent = promotionValue;
+		}
 
-	// Function to show action message
-	function showActionMessage(message, type) {
-		const notification = $('#notification');
-		notification.removeClass('d-none alert-success alert-danger'); // Reset classes
-		notification.addClass(type === 'success' ? 'alert-success' : 'alert-danger'); // Add success or error class
-		notification.text(message); // Set message text
+		// Function to show action message
+		function showActionMessage(message, type) {
+			const notification = $('#notification');
+			notification.removeClass('d-none alert-success alert-danger'); // Reset classes
+			notification.addClass(type === 'success' ? 'alert-success' : 'alert-danger'); // Add success or error class
+			notification.text(message); // Set message text
 
-		// Show the message, then fade out after 3 seconds
-		notification.fadeIn().delay(3000).fadeOut();
-	}
+			// Show the message, then fade out after 3 seconds
+			notification.fadeIn().delay(3000).fadeOut();
+		}
 
 	</script>
 </body>
