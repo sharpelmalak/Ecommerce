@@ -185,9 +185,8 @@
         }
 
         .single-footer-widget p {
-                    text-align: justify;
-                }
-
+            text-align: justify;
+        }
     </style>
 </head>
 
@@ -245,7 +244,16 @@
     <!-- End Header Area -->
 
 
+    <!-- Success Message Alert -->
+    <div class="container" style="max-width: 80%; margin: 0 auto;">
+        <div th:if="${successMessage}" id="success-alert" class="alert alert-success text-center" role="alert"
+            style="font-size: 1.25rem; font-weight: bold;">
+            <span th:text="${successMessage}"></span>
+        </div>
+    </div>
+
     <div class="container profile-container">
+
         <!-- Avatar Section -->
         <div class="profile-avatar card h-100">
             <div class="card-body">
@@ -271,7 +279,7 @@
                     </form>
                 </div>
                 <div class="mt-3 text-center">
-                <button type="submit" class="btn btn-primary" id="tracking">Track Your Order</button>
+                    <button type="submit" class="btn btn-primary" id="tracking">Track Your Order</button>
                 </div>
             </div>
         </div>
@@ -386,8 +394,8 @@
                                 <label><b>Select Your Interests</b></label>
                                 <div class="d-flex flex-wrap">
                                     <div th:each="category : ${categories}" class="interest-bubble">
-                                        <input type="checkbox" th:id="${'category' + category.id}" th:name="categoriesIds"
-                                            th:value="${category.id}"
+                                        <input type="checkbox" th:id="${'category' + category.id}"
+                                            th:name="categoriesIds" th:value="${category.id}"
                                             th:checked="${CustomerDTO.categoriesIds.contains(category.id)}" />
                                         <label th:for="${'category' + category.id}" th:text="${category.name}"></label>
                                     </div>
@@ -411,15 +419,20 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-footer-widget" style="text-align: justify;">
-						<h6>About Us</h6>
-						<p>
-							Welcome to Waxen, where luxury and style meet in every timepiece. We offer a curated selection of world-renowned brands like G-Shock, CASIO, Fossil, ALBA, CITIZEN, TOMMY HILFIGER, NAVIFORCE, and TIMEX.
-							From SPORTY watches for adventurers to CLASSIC and CASUAL designs for everyday elegance, our diverse collections suit every style. Discover SMART technology, PREMIUM craftsmanship, and timeless Analog watches, each embodying quality and individuality.	
-							At Waxen, we’re passionate about excellence—explore our collections and find a watch that’s uniquely yours.
-						</p>
-					</div>
-				</div>
+                    <div class="single-footer-widget" style="text-align: justify;">
+                        <h6>About Us</h6>
+                        <p>
+                            Welcome to Waxen, where luxury and style meet in every timepiece. We offer a curated
+                            selection of world-renowned brands like G-Shock, CASIO, Fossil, ALBA, CITIZEN, TOMMY
+                            HILFIGER, NAVIFORCE, and TIMEX.
+                            From SPORTY watches for adventurers to CLASSIC and CASUAL designs for everyday elegance, our
+                            diverse collections suit every style. Discover SMART technology, PREMIUM craftsmanship, and
+                            timeless Analog watches, each embodying quality and individuality.
+                            At Waxen, we’re passionate about excellence—explore our collections and find a watch that’s
+                            uniquely yours.
+                        </p>
+                    </div>
+                </div>
                 <div class="col-lg-4  col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <h6>Newsletter</h6>
@@ -522,8 +535,9 @@
 
     <script>
         // order tracking redirection
-        document.getElementById('tracking').addEventListener('click', function() {
-        window.location.href = '/checkout/track';});
+        document.getElementById('tracking').addEventListener('click', function () {
+            window.location.href = '/checkout/track';
+        });
         //=================
         const phoneInputField = document.querySelector("#phone");
         const phoneInput = window.intlTelInput(phoneInputField, {
@@ -647,6 +661,19 @@
             window.location.href = '/shop?param=' + suggestion
             // performSearch()
         }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const alertBox = document.getElementById('success-alert');
+            if (alertBox) {
+                setTimeout(() => {
+                    alertBox.style.transition = "opacity 1s ease";
+                    alertBox.style.opacity = 0;
+
+                    // Remove alert from DOM after fade-out for better performance
+                    setTimeout(() => alertBox.style.display = 'none', 1000);
+                }, 3000); // 3-second delay before starting fade-out
+            }
+        });
 
     </script>
 

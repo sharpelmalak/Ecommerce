@@ -359,9 +359,20 @@
                     <div class="col-12 form-group mb-3">
                         <input type="email" class="form-control" id="email" name="email" placeholder="Billing Email" required>
                     </div>
-                    <div class="col-12 form-group mb-3">
+                    
+                    <!-- <div class="col-12 form-group mb-3">
                         <button type="submit" class="btn btn-primary">Track Order</button>
+                    </div> -->
+
+                    <div class="col-12 form-group mb-3 d-flex justify-content-between">
+                        <!-- Track Order Button -->
+                        <button type="submit" class="btn btn-primary">Track Order</button>
+                        <!-- Back to Profile Button -->
+                        <a href="/user/account" class="btn btn-secondary">Back to Profile</a>
                     </div>
+
+
+
                     <div class="col-12 form-group">
                         <p id="result" style="font-weight: bold;"></p>
                     </div>
@@ -509,7 +520,6 @@
 
 
         function updateOrderStatus(status){
-
             // Current order status: 'placed', 'shipped', 'out_for_delivery', 'delivered'
             const orderStatus = status;
 

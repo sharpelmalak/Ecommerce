@@ -22,6 +22,8 @@ import iti.jets.ecommerce.services.CustomerService;
 import iti.jets.ecommerce.services.OrderServiceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 
 
@@ -68,11 +70,12 @@ public class UserController {
     }
 
     @PostMapping("/account/update")
-    public String updateCustomer(@ModelAttribute CustomerDTO customerDto) {
+    public String updateCustomer(@ModelAttribute CustomerDTO customerDto, RedirectAttributes redirectAttributes) {
         int customerId = customerDto.getId();
         customerService.updateCustomer(customerId, customerDto);
         // Redirect to the GET method to reload the updated data
+        // Add success message to redirect attributes
+        redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
         return "redirect:/user/account";
     }
-    
 }

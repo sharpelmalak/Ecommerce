@@ -181,10 +181,15 @@
         font-size: .8rem;
     }
 
+	.notification-message {
+		font-size: 1.00rem; /* Increases font size */
+		font-weight: bold;  /* Makes text bold */
+		padding: 10px 20px; /* Adds padding for better readability */
+	}
+
 	</style>
 
 <body>
-
 	<!-- Start Header Area -->
 	<header class="header_area sticky-header">
 		<div class="main_menu">
@@ -192,6 +197,9 @@
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
 					<a class="navbar-brand logo_h" href="/home"><img src="/img/waxen.jpg" alt=""></a>
+					  <!-- Notification Message (after logo) -->
+						<!-- Notification Message (after logo) -->
+						<div id="notification" class="alert d-none text-center mx-auto font-weight-bold notification-message" role="alert"></div>
 					<button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
@@ -665,6 +673,17 @@
         // Update the promotion value display
         document.getElementById("promotionValue").textContent = promotionValue;
     }
+
+	// Function to show action message
+	function showActionMessage(message, type) {
+		const notification = $('#notification');
+		notification.removeClass('d-none alert-success alert-danger'); // Reset classes
+		notification.addClass(type === 'success' ? 'alert-success' : 'alert-danger'); // Add success or error class
+		notification.text(message); // Set message text
+
+		// Show the message, then fade out after 3 seconds
+		notification.fadeIn().delay(3000).fadeOut();
+	}
 
 	</script>
 </body>
