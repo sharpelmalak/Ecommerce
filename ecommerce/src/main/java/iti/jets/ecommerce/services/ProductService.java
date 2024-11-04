@@ -3,6 +3,10 @@ package iti.jets.ecommerce.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -191,7 +195,6 @@ public class ProductService {
             Page<Product> productPage = productRepository.findByCategoryIdAndIsDeletedFalse(categoryId,pageable); // You can change this to your preferred default query
 
             List<ProductDTO> productDTOs = productPage.getContent().stream()
-//                    .filter(product -> product.isDeleted()==false)
                     .map(product -> ProductMapper.convertToDTO(product))
                     .collect(Collectors.toList());
 
@@ -224,20 +227,16 @@ public class ProductService {
     }
 
     public Page<ProductDTO> getFilteredProducts(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice, Pageable pageable) {
-        Page<Product> productPage;
-        List<ProductDTO> productDTOs;
-        if(minPrice != null || maxPrice != null){
-            if(minPrice==null)minPrice=0.0F;
-            if(maxPrice==null)maxPrice=Float.MAX_VALUE;
-        }
+        // Set default minPrice and maxPrice if they are null
+        if (minPrice == null) minPrice = 0.0F;
+        if (maxPrice == null) maxPrice = Float.MAX_VALUE;
 
-        if(categoryId == null){
-            productPage = productRepository.findByIsDeletedFalseAndBrandInOrMaterialInOrPriceBetween(brands, materials, minPrice, maxPrice, pageable);
-        }
-        else{
-            productPage = productRepository.findByIsDeletedFalseAndCategoryIdAndBrandInOrMaterialInOrPriceBetween(categoryId,brands, materials, minPrice, maxPrice, pageable);
-        }
-        productDTOs = productPage.getContent().stream()
+        // Build the specification with the filter criteria
+        Specification<Product> spec = buildProductSpecification(categoryId, brands, materials, minPrice, maxPrice);
+
+        // Fetch filtered products
+        Page<Product> productPage = productRepository.findAll(spec, pageable);
+        List<ProductDTO> productDTOs = productPage.getContent().stream()
                     .map(product -> ProductMapper.convertToDTO(product))
                     .collect(Collectors.toList());
         return new PageImpl<>(productDTOs, pageable, productPage.getTotalElements());
@@ -255,6 +254,32 @@ public class ProductService {
         return products.stream()
                 .map(ProductMapper::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    private Specification<Product> buildProductSpecification(Integer categoryId, List<String> brands, List<String> materials, Float minPrice, Float maxPrice) {
+        return (Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
+            Predicate predicate = cb.isFalse(root.get("isDeleted"));
+
+            // Filter by category if present
+            if (categoryId != null) {
+                predicate = cb.and(predicate, cb.equal(root.get("category").get("id"), categoryId));
+            }
+
+            // Filter by brands if present
+            if (brands != null && !brands.isEmpty()) {
+                predicate = cb.and(predicate, root.get("brand").in(brands));
+            }
+
+            // Filter by materials if present
+            if (materials != null && !materials.isEmpty()) {
+                predicate = cb.and(predicate, root.get("material").in(materials));
+            }
+
+            // Filter by price range
+            predicate = cb.and(predicate, cb.between(root.get("price"), minPrice, maxPrice));
+
+            return predicate;
+        };
     }
 
 }

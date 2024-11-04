@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -26,12 +27,15 @@ public class CartController {
 
     // Add a product to the cart
     @GetMapping("/add")
-    public ResponseEntity<CartItemDTO> addToCart( @RequestParam int productId, @RequestParam int quantity,HttpServletRequest request,HttpServletResponse response) {
+    public ResponseEntity<CartItemDTO> addToCart(@RequestParam int productId, @RequestParam int quantity, HttpServletRequest request, HttpServletResponse response, Principal principal) {
         try {
 
 
             CartItemDTO cartItem = cartService.addProductToCart(request.getSession(), request.getCookies(),productId, quantity);
             Cookie cookie = cartService.persistCartInCookie(request.getSession());
+            if(principal != null) {
+                cartService.saveCart((List<CartItemDTO>)request.getSession().getAttribute("cart"),principal.getName());
+            }
             if (cookie != null) {
                 System.out.println("Cookie persisted");
                 try {
@@ -69,11 +73,14 @@ public class CartController {
     }
 
     @GetMapping("/update")
-    public ResponseEntity<CartItemDTO> updateCart(@RequestParam int productId, @RequestParam int quantity, HttpSession session,HttpServletResponse response) {
+    public ResponseEntity<CartItemDTO> updateCart(@RequestParam int productId, @RequestParam int quantity, HttpSession session,HttpServletResponse response,Principal principal) {
         try {
 
             CartItemDTO updatedItem = cartService.updateProductQuantityInCart(session, productId, quantity);
             Cookie cookie = cartService.persistCartInCookie(session);
+            if(principal != null) {
+                cartService.saveCart((List<CartItemDTO>)session.getAttribute("cart"),principal.getName());
+            }
             if (cookie != null) {
                response.addCookie(cookie);
             }
@@ -85,10 +92,13 @@ public class CartController {
 
     // Remove a product from the cart
     @GetMapping("/remove/{productId}")
-    public ResponseEntity<Void> removeFromCart(@PathVariable int productId,HttpServletRequest request,HttpServletResponse response) {
+    public ResponseEntity<Void> removeFromCart(@PathVariable int productId,HttpServletRequest request,HttpServletResponse response,Principal principal) {
         try {
             cartService.removeProductFromCart(request.getSession(), productId);
             Cookie cookie = cartService.persistCartInCookie(request.getSession());
+            if(principal != null) {
+                cartService.saveCart((List<CartItemDTO>)request.getSession().getAttribute("cart"),principal.getName());
+            }
             if (cookie != null) {
                 response.addCookie(cookie);
             }
@@ -100,7 +110,10 @@ public class CartController {
 
     // Clear all items from the cart
     @DeleteMapping("/clear")
-    public ResponseEntity<Void> clearCart(HttpServletRequest request,HttpServletResponse response) {
+    public ResponseEntity<Void> clearCart(HttpServletRequest request,HttpServletResponse response,Principal principal) {
+        if(principal != null) {
+            cartService.resetCart(principal.getName());
+        }
         Cookie cookie = cartService.clearCart(request.getSession());
         response.addCookie(cookie);
         return ResponseEntity.ok().build();

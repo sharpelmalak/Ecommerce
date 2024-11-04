@@ -4,6 +4,7 @@ import iti.jets.ecommerce.models.Category;
 import iti.jets.ecommerce.models.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -44,14 +45,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<String> findAllUniqueMaterials();
 
 
-    Page<Product> findByIsDeletedFalseAndBrandInOrMaterialInOrPriceBetween(
+    Page<Product> findByIsDeletedFalseAndBrandInAndMaterialInAndPriceBetween(
             List<String> brands,
             List<String> materials,
             Float minPrice,
             Float maxPrice,
             Pageable pageable);
 
-        Page<Product> findByIsDeletedFalseAndCategoryIdAndBrandInOrMaterialInOrPriceBetween(
+        Page<Product> findByIsDeletedFalseAndCategoryIdAndBrandInAndMaterialInAndPriceBetween(
                 Integer categoryId,    
             List<String> brands,
                 List<String> materials,
@@ -91,4 +92,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query(value = "SELECT * FROM Product p WHERE p.is_deleted = false ORDER BY p.id DESC LIMIT 8", nativeQuery = true)
     List<Product> findLast8ProductsNotDeleted();
 
+    Page<Product> findAll(Specification<Product> spec, Pageable pageable);
 }

@@ -414,7 +414,10 @@
         $(document).on(
           "change",
           'input[name="brands"], input[name="materials"], #min-price, #max-price',
-          fetchFilteredProducts
+               function (){
+            currentPage = 0;
+            fetchFilteredProducts()
+                }
         );
         $(document).on("click", ".add-to-cart", function (e) {
           e.preventDefault(); // Prevent default link behavior
@@ -573,7 +576,6 @@
       function handlePaginationClick(event) {
         event.preventDefault();
         currentPage = $(this).data("page");
-        console.log(currentPage);
         fetchFilteredProducts();
       }
 
@@ -588,8 +590,6 @@
           page: currentPage,
           size: 8,
         };
-
-        console.log("filterd" + JSON.stringify(data));
         $.get("/products/filter", data, function (response) {
           totalPages = response.totalPages;
           displayProducts(response.content);

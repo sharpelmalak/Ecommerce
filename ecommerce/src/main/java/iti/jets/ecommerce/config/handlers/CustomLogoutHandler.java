@@ -31,19 +31,19 @@ public class CustomLogoutHandler implements LogoutHandler {
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
 
-        System.out.println("CustomLogoutHandler CALLED");
-        String token = null;
-        String username = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    token = cookie.getValue(); // Get the token from the cookie
-                    username = jwtService.getUsernameFromJwtToken(token);
-                    break;
-                }
-            }
-        }
+//        System.out.println("CustomLogoutHandler CALLED");
+//        String token = null;
+//        String username = null;
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if ("token".equals(cookie.getName())) {
+//                    token = cookie.getValue(); // Get the token from the cookie
+//                    username = jwtService.getUsernameFromJwtToken(token);
+//                    break;
+//                }
+//            }
+//        }
 
         Cookie cookie = new Cookie("token", null);
         cookie.setPath("/"); // Set the path to match the cookie path
@@ -51,9 +51,9 @@ public class CustomLogoutHandler implements LogoutHandler {
         cookie.setMaxAge(0); // Set cookie age to 0 to delete it
         response.addCookie(cookie);
 
-        if (username != null && ("ROLE_CUSTOMER").equals(jwtService.getRoleFromJwtToken(token))) {
-            handleCustomerCart(request,username);
-        }
+//        if (username != null && ("ROLE_CUSTOMER").equals(jwtService.getRoleFromJwtToken(token))) {
+//            handleCustomerCart(request,username);
+//        }
 
 
     }
