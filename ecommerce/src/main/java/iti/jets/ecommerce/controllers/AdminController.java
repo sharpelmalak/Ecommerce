@@ -93,7 +93,6 @@ public class AdminController {
         return "admin/edit-product";
     }
     
-
     @PostMapping("/product/{id}")
     public String updateProduct(@PathVariable int id, @ModelAttribute ProductDTO productDTO, Model model, RedirectAttributes redirectAttributes) {
         // Call the service to update the product
@@ -204,7 +203,6 @@ public class AdminController {
         model.addAttribute("customer", customerDTO);
         model.addAttribute("orders", orders);
         return "admin/orderHistory";
-        // return ResponseEntity.ok(orders);
     }
 
     /*  Get Order History for all customers */
@@ -217,11 +215,14 @@ public class AdminController {
     
 
 
-    @PostMapping("/update-order-status")
-    public ResponseEntity<Void> updateOrderStatus(@RequestBody int orderId, String status){
+
+    @GetMapping("/{orderId}/status")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable Integer orderId, @RequestParam String status) {
+        System.out.println("orderStatusValue : " + status);
         orderServiceImpl.updateOrderStatus(orderId, status);
         return ResponseEntity.ok().build();
     }
+
 
     /* ============================================================================================ */
     /*                            Admin Profile Management                                          */

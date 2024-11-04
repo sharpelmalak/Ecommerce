@@ -1,9 +1,7 @@
 
 package iti.jets.ecommerce.controllers;
 
-
 import iti.jets.ecommerce.dto.CheckoutRequest;
-
 import iti.jets.ecommerce.dto.OrderDTO;
 import iti.jets.ecommerce.dto.OrderTrackingRequest;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
@@ -13,9 +11,9 @@ import iti.jets.ecommerce.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/orders")
@@ -65,7 +63,7 @@ public class OrderController {
         return ResponseEntity.ok().build();
     }
 
-
+    
     // track the order
     @PostMapping ("/tracking")
     public ResponseEntity<OrderDTO> trackOrder(@RequestBody OrderTrackingRequest request) {
