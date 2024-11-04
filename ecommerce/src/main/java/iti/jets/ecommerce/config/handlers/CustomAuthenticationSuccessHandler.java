@@ -76,7 +76,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             List<CartItemDTO> mergedCart = cartService.mergeCarts(cartItemDTOList,clientCart);
             session.setAttribute("cart", mergedCart);
             Cookie cookie = cartService.persistCartInCookie(session);
-            cartService.resetCart(username);
+            //cartService.resetCart(username);
+            cartService.saveCart(mergedCart,username);
             response.addCookie(cookie);
         }
     }

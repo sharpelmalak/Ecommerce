@@ -233,14 +233,14 @@ public class CartService {
     }
 
 
-
+    @Transactional
     public  void saveCart(List<CartItemDTO> cart,String username)
     {
         if (cart != null && !cart.isEmpty()) {
             Customer customer = customerRepository.findByUsername(username).get();
             List<CartItem> cartItems = CartItemMapper.toEntity(cart,customer,productRepository);
-            System.out.println("inn"+cartItems);
             try{
+                resetCart(username);
                 cartItemRepository.saveAll(cartItems);
             }catch(Exception e)
             {
