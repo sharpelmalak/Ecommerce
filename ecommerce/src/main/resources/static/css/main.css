@@ -5810,6 +5810,50 @@ label {
 }
 
 
+/* Action message style */
+@keyframes slideDown {
+  0% {
+    transform: translateY(-20px); /* Start slightly above */
+    opacity: 0; /* Start invisible */
+  }
+  100% {
+    transform: translateY(0); /* End in original position */
+    opacity: 1; /* End visible */
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1; /* Start fully visible */
+  }
+  100% {
+    opacity: 0; /* End invisible */
+  }
+}
+.action-message {
+  position: fixed;
+  top: 20px; /* Position it slightly below the top */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Center the message */
+  padding: 15px 30px; /* Increased padding for more height */
+  color: white; /* White text */
+  border-radius: 5px;
+  z-index: 1000; /* Ensure it appears on top */
+  transition: opacity 0.5s; /* Fade out transition */
+  text-align: center; /* Center the text inside the message */
+  font-size: 18px; /* Increase font size */
+  line-height: 1.5; /* Increase line height for better readability */
+  animation: slideDown 0.5s forwards; /* Slide down and fade in */
+}
+
+.action-message.success {
+  background-color: #4CAF50; /* Green background */
+}
+
+.action-message.error {
+  background-color: #f44336; /* Red background */
+}
+
 
 
 /*# sourceMappingURL=main.css.map */

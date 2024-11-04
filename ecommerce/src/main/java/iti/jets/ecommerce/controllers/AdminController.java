@@ -206,9 +206,22 @@ public class AdminController {
         return "admin/orderHistory";
         // return ResponseEntity.ok(orders);
     }
+
+    /*  Get Order History for all customers */
+    @GetMapping("/orders")
+    public String getAllOrderHistory(Model model) {
+        List<OrderDTO> orders = orderServiceImpl.getAllOrders();
+        model.addAttribute("orders", orders);
+        return "admin/orders";
+    }
     
 
 
+    @PostMapping("/update-order-status")
+    public ResponseEntity<Void> updateOrderStatus(@RequestBody int orderId, String status){
+        orderServiceImpl.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok().build();
+    }
 
     /* ============================================================================================ */
     /*                            Admin Profile Management                                          */
