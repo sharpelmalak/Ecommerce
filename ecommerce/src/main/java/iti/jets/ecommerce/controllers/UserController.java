@@ -45,6 +45,7 @@ public class UserController {
     @GetMapping("/account")
     public String showUserAccount(Model model, Principal principal) {
         model.addAttribute("CustomerDTO", customerService.getCustomerByUserName(principal.getName()));
+        System.out.println("CustomerDTO : " + customerService.getCustomerByUserName(principal.getName()));
         model.addAttribute("categories", categoryService.getAllCategories());
         return "userAcc";
     }

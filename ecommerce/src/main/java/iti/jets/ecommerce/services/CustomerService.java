@@ -4,11 +4,14 @@ import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.models.*;
 import iti.jets.ecommerce.mappers.CustomerMapper;
 import iti.jets.ecommerce.repositories.*;
+import lombok.extern.java.Log;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
 
 import java.util.*;
@@ -48,6 +51,7 @@ public class CustomerService {
     }
 
     /* ==================================================== Registeration  ============================================= */
+    @Transactional
     public boolean RegisterCustomer(CustomerDTO customerDTO) {
         if (customerRepository.existsByUsername(customerDTO.getUsername())) {
             return false; // Username already taken
@@ -69,6 +73,9 @@ public class CustomerService {
                 }
             }
         }
+
+        /*Log the retrieved categories */
+        System.out.println("Selected Categories: " + selectedCategories.size());
 
         // Use the mapper to convert DTO to entity
         Customer customer = CustomerMapper.toEntity(customerDTO, selectedCategories);
@@ -110,6 +117,7 @@ public class CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + username));
         return CustomerMapper.toDto(customer);
     }
+    
 
     /* Get Customer Address */
     public CustomerAddressDTO getCustomerAddress(int customerId) {

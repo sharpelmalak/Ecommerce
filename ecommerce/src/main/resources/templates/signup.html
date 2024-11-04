@@ -352,13 +352,13 @@
                     <label for="job">Job</label>
                     <input type="text" id="job" name="job" class="form-control" placeholder="Job Title (Optional)">
                 </div>
-                
+
                 <!-- Interests Section -->
                 <div class="form-group">
                     <label><b>Select Your Interests</b></label>
                     <div class="d-flex flex-wrap">
                         <div th:each="category : ${categories}" class="interest-bubble">
-                            <input type="checkbox" th:id="${'category' + category.id}" th:name="categories" th:value="${category.id}">
+                            <input type="checkbox" th:id="${'category' + category.id}" th:name="categoriesIds" th:value="${category.id}">
                             <label th:for="${'category' + category.id}" th:text="${category.name}">Interest</label>
                         </div>
                     </div>

@@ -49,6 +49,10 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute CustomerDTO customerDTO, Model model, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        // Log the CustomerDTO
+        System.out.println("Received Customer DTO: " + customerDTO);
+
         // Call the service to save the user
         boolean isRegistered = customerService.RegisterCustomer(customerDTO);
         

@@ -47,7 +47,6 @@ public class CustomerMapper {
         customer.setCountry(dto.getCountry());
         customer.setPhone(dto.getPhone());
         customer.setIsDeleted(dto.getIsDeleted());
-        
         // Set categories to the customer
         customer.setCategories(categories); // Assuming Customer has a setCategories method
         
@@ -74,15 +73,17 @@ public class CustomerMapper {
         dto.setCity(customer.getCity());
         dto.setCountry(customer.getCountry());
 
-
-         // If categories are associated with the customer, collect their IDs
-         if (customer.getCategories() != null) {
-            List<Integer> categoriesIds = customer.getCategories()
-                .stream()
-                .map(Category::getId) // Assuming Category has a getId() method
-                .toList();
-            dto.setCategoriesIds(categoriesIds);
-        }
+        System.out.println("Customer Categories: " + customer.getCategories());
+        // If categories are associated with the customer, collect their IDs
+        if (customer.getCategories() != null) {
+        List<Integer> categoriesIds = customer.getCategories()
+            .stream()
+            .map(Category::getId) // Assuming Category has a getId() method
+            .toList();
+        Set<Integer>  categoriesIdsSet = new HashSet<>(categoriesIds);
+        System.out.println("Size : " + categoriesIdsSet.size());
+        dto.setCategoriesIds(categoriesIdsSet);
+    }
         
         return dto;
     }

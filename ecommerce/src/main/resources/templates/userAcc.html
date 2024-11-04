@@ -245,7 +245,6 @@
     <!-- End Header Area -->
 
 
-
     <div class="container profile-container">
         <!-- Avatar Section -->
         <div class="profile-avatar card h-100">
@@ -382,12 +381,14 @@
 
                         <!-- Interests Section -->
                         <div class="col-12">
+                            <!-- Interests Section -->
                             <div class="form-group">
                                 <label><b>Select Your Interests</b></label>
                                 <div class="d-flex flex-wrap">
                                     <div th:each="category : ${categories}" class="interest-bubble">
-                                        <input type="checkbox" th:id="${'category' + category.id}" th:name="categories"
-                                            th:value="${category.id}" />
+                                        <input type="checkbox" th:id="${'category' + category.id}" th:name="categoriesIds"
+                                            th:value="${category.id}"
+                                            th:checked="${CustomerDTO.categoriesIds.contains(category.id)}" />
                                         <label th:for="${'category' + category.id}" th:text="${category.name}"></label>
                                     </div>
                                 </div>
@@ -443,9 +444,6 @@
                                             type="text">
                                     </div>
 
-                                    <!-- <div class="col-lg-4 col-md-4">
-												<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-											</div>  -->
                                 </div>
                                 <div class="info"></div>
                             </form>

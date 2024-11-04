@@ -27,11 +27,9 @@ public class Category implements java.io.Serializable {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "customer_has_interests_category", catalog = "ecommerce",
-            joinColumns = { @JoinColumn(name = "category_id", nullable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "customer_id", nullable = false) })
-    private Set<Customer> customers = new HashSet<>(0);
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private Set<Customer> customers = new HashSet<>();
+
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private Set<Product> products = new HashSet<>(0);
