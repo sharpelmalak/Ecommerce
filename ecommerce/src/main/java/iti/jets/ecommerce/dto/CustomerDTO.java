@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,5 +19,5 @@ public class CustomerDTO extends UserDTO{
     private String country;
     private String phone;
     private Boolean isDeleted = false;
-    private List<Integer> categoriesIds;
+    private List<Integer> categoriesIds = new ArrayList<Integer>();
 }

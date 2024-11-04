@@ -11,10 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.nio.file.Files;
+
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 
 
@@ -48,16 +55,41 @@ public class AdminController {
     /*                            Admin Functionalities Related to Products                         */
     /* ============================================================================================ */
     @PostMapping("/product")
-    public String createProduct(@ModelAttribute ProductDTO productDTO, @RequestParam int adminId,Model model,
-            RedirectAttributes redirectAttributes) {
-        ProductDTO savedProduct = productService.createProduct(productDTO, adminId);
-        // Add attributes to display on the success page
-        redirectAttributes.addFlashAttribute("productAdded", true);
-        redirectAttributes.addFlashAttribute("successMessage", "Product created successfully!");
-        // Store productDTO in session
-        model.addAttribute("productDTO", savedProduct);
-        return "redirect:/admin/product_success"; // Redirect to the success page
+    public String createProduct(@ModelAttribute ProductDTO productDTO, @RequestParam int adminId, @RequestParam("imageFile") MultipartFile imageFile, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            // Process and save the image
+            if (!imageFile.isEmpty()) {
+                // Define the path where the image will be saved
+                String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/watch/";
+                String imageFileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+                Path   imagePath = Paths.get(uploadDir + imageFileName);
+
+                // Ensure the directory exists
+                Files.createDirectories(imagePath.getParent());
+
+                // Save the file locally
+                Files.write(imagePath, imageFile.getBytes());
+
+                // Set the image path in the productDTO
+                productDTO.setImage( "/img/watch/"+imageFileName); 
+            }
+
+            // Save the product
+            ProductDTO savedProduct = productService.createProduct(productDTO, adminId);
+
+            // Add attributes to display on the success page
+            redirectAttributes.addFlashAttribute("productAdded", true);
+            redirectAttributes.addFlashAttribute("successMessage", "Product created successfully!");
+            model.addAttribute("productDTO", savedProduct);
+            return "redirect:/admin/product_success";
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Image upload failed. Please try again.");
+            return "admin/add-product"; 
+        }
     }
+
+
 
     @GetMapping("/product_success")
     public String productSuccessPage(Model model) {
@@ -214,15 +246,12 @@ public class AdminController {
     }
     
 
-
-
     @GetMapping("/{orderId}/status")
     public ResponseEntity<Void> updateOrderStatus(@PathVariable Integer orderId, @RequestParam String status) {
         System.out.println("orderStatusValue : " + status);
         orderServiceImpl.updateOrderStatus(orderId, status);
         return ResponseEntity.ok().build();
     }
-
 
     /* ============================================================================================ */
     /*                            Admin Profile Management                                          */

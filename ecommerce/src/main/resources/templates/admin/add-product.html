@@ -120,15 +120,13 @@
     </style>
 </head>
 
-<body>
 
+<body>
     <header>
         <h1>Add New Product</h1>
     </header>
-
     <section th:if="${!productAdded}">
-        <form th:action="@{/admin/product}" method="post">
-            <!-- Hidden field for admin ID -->
+        <form th:action="@{/admin/product}" method="post" enctype="multipart/form-data">            <!-- Hidden field for admin ID -->
             <input type="hidden" name="adminId" th:value="${adminId}" />
 
             <label for="name">Product Name:</label>
@@ -163,8 +161,11 @@
             <label for="gender">Gender:</label>
             <input type="text" id="gender" name="gender" class="form-control" th:value="${productDTO.gender}">
 
-            <label for="imageUrl">Product Image URL:</label>
-            <input type="text" id="imageUrl" name="image" class="form-control" th:value="${productDTO.image}" required>
+
+            <!-- Image file upload -->
+            <label for="imageFile">Product Image:</label>
+            <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*" required>
+
 
             <label for="description">Product Description:</label>
             <textarea id="description" name="description" class="form-control" th:text="${productDTO.description}" required></textarea>
@@ -178,8 +179,7 @@
     </section>
 </div>
     <footer>
-        <p>Admin Panel &copy; 2024 Reserved for WatchAt</p>
+        <p>Admin Panel &copy; 2024 Reserved for WAXEN</p>
     </footer>
-
 </body>
 </html>
