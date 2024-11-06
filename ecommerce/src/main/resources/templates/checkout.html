@@ -4,17 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--    <link-->
+<!--            rel="stylesheet"-->
+<!--            type="text/css"-->
+<!--            href="https://www.paypalobjects.com/webstatic/en_US/developer/docs/css/cardfields.css"-->
+<!--    />-->
+
     <link rel="shortcut icon" th:href="@{/img/icon.png}" />
     <title>Waxen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- intl-tel-input CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
-    <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://www.paypalobjects.com/webstatic/en_US/developer/docs/css/cardfields.css"
-    />
+
     <!--
 		CSS
 		============================================= -->
@@ -179,6 +181,13 @@
             margin-top: 10px;
         }
 
+        .cust-style{
+            display: block;
+            width: 100%;
+            font-size: large;
+        }
+
+
 
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -286,11 +295,11 @@
                         <h6>Select Payment Method:</h6>
 
                         <!-- COD Option -->
-                        <input type="radio" id="cod" name="payment" value="COD">
+                        <input type="radio" id="cod"  name="payment" value="COD">
                         <label for="cod">Cash on Delivery</label><br>
 
                         <!-- Card Option -->
-                        <input type="radio" id="card" name="payment" value="Card">
+                        <input type="radio" id="card" name="payment" class="payment-method" value="Card">
                         <label for="card">Credit/Debit Card</label><br>
 
                         <div class="row">
@@ -380,7 +389,7 @@
                                     <input type="text" id="coupon-code" placeholder="Enter coupon code"
                                            style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px; margin-top: 17px; min-width: 200px; height: 40px; box-sizing: border-box;" />
                                     <button id="apply-coupon"
-                                            style="padding: 0 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; height: 40px; line-height: 40px;">
+                                            style="padding: 0 15px; margin-top: auto; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; height: 40px; line-height: 40px;">
                                         Apply
                                     </button>
                                 </li>
@@ -391,7 +400,7 @@
 
                         <div id="message" class="message"></div>
                         <br>
-                        <a class="primary-btn" id="place-order-btn"  >Place Order</a>
+                        <button  class="primary-btn cust-style" style="line-height: 50px;border-radius: 50px;" id="place-order-btn">Place Order</button>
                     </div>
                 </div>
 
@@ -966,7 +975,7 @@
     // Handle Promotion code
     //====================================
     document.getElementById("apply-coupon").addEventListener("click", function () {
-        const couponCode = document.getElementById("coupon-code").value;
+        let couponCode = document.getElementById("coupon-code").value;
         const messageDiv = document.getElementById("message");
 
         messageDiv.textContent = "";
@@ -984,7 +993,8 @@
             .then(data => {
                 if (data) {
                     displayMessage("Congratulations! Promotion applied.", "success");
-
+                    console.log("ok promotion")
+                    console.log(data)
                     // Handle shipping cost
                     let shippingCost = data.freeShipping ? 0 : 50;
                     finalShippingCost = shippingCost;
@@ -1003,11 +1013,15 @@
                 } else {
                     displayMessage("Invalid promotion code.", "error");
                 }
+                document.getElementById("coupon-code").value="";
             })
             .catch(error => {
-                displayMessage("Invalid promo code. Please try again.", "error");
+                displayMessage("This Promo code is Invalid or used before", "error");
+                document.getElementById("coupon-code").value="";
                 console.error("Error:", error);
             });
+
+
     });
 
 

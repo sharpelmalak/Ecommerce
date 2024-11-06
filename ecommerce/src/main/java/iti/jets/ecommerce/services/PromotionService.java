@@ -2,8 +2,10 @@ package iti.jets.ecommerce.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import iti.jets.ecommerce.exceptions.InvalidPromotionException;
+import iti.jets.ecommerce.models.Customer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class PromotionService {
 
     @Autowired
     private PromotionRepository promotionRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -52,25 +56,43 @@ public class PromotionService {
         return modelMapper.map(promotion, PromotionDTO.class);
     }
 
-    public boolean isValidPromotion(String promotionName, String country) {
+    public boolean usedBefore(String promotionName, int customerId) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer == null) {
+            return false; // Customer does not exist
+        }
+        return customer.getAppliedPromotions().contains(promotionName);
+    }
+
+    public boolean isValidPromotion(String promotionName, String country, int customerId) {
         LocalDate today = LocalDate.now();
 
-        // Get the promotion by name
-        PromotionDTO promotionDTO = getPromotionByName(promotionName);
+        // Get the promotion by name and check existence
+        PromotionDTO promotionDTO;
+        try {
+            promotionDTO = getPromotionByName(promotionName);
+        } catch (InvalidPromotionException e) {
+            return false; // Promotion not found
+        }
 
-        // Check if promotion exists
-        if (promotionDTO == null) {
+        // Validate the promotion's country and date range
+        if (!country.equalsIgnoreCase(promotionDTO.getCountry()) ||
+                today.isBefore(promotionDTO.getStartDate()) || today.isAfter(promotionDTO.getEndDate())) {
             return false;
         }
 
-        // Check if the promotion is valid for the given country
-        if (!country.equalsIgnoreCase(promotionDTO.getCountry())) {
+        // Check if the customer has used this promotion before
+        if (usedBefore(promotionName, customerId)) {
             return false;
         }
 
-        // Check if today's date is within the promotion's valid date range
-        if (today.isBefore(promotionDTO.getStartDate()) || today.isAfter(promotionDTO.getEndDate())) {
-            return false;
+        // Associate this promotion with the customer if valid
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer != null) {
+            Set<String> appliedPromotions = customer.getAppliedPromotions();
+            appliedPromotions.add(promotionName);
+            customer.setAppliedPromotions(appliedPromotions);
+            customerRepository.save(customer);
         }
 
         // If all checks pass, the promotion is valid

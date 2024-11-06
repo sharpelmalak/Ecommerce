@@ -56,6 +56,12 @@ public class Customer extends User implements java.io.Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private Set<Order> orders = new HashSet<>(0);
 
+    @ElementCollection
+    @CollectionTable(name = "customer_promotions", joinColumns = @JoinColumn(name = "customer_id"))
+    @Column(name = "promotion_code")
+    private Set<String> appliedPromotions = new HashSet<>();
+
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private Set<Card> cards = new HashSet<>(0);
 
