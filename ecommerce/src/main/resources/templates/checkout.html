@@ -975,7 +975,7 @@
     // Handle Promotion code
     //====================================
     document.getElementById("apply-coupon").addEventListener("click", function () {
-        const couponCode = document.getElementById("coupon-code").value;
+        let couponCode = document.getElementById("coupon-code").value;
         const messageDiv = document.getElementById("message");
 
         messageDiv.textContent = "";
@@ -993,7 +993,8 @@
             .then(data => {
                 if (data) {
                     displayMessage("Congratulations! Promotion applied.", "success");
-
+                    console.log("ok promotion")
+                    console.log(data)
                     // Handle shipping cost
                     let shippingCost = data.freeShipping ? 0 : 50;
                     finalShippingCost = shippingCost;
@@ -1012,11 +1013,15 @@
                 } else {
                     displayMessage("Invalid promotion code.", "error");
                 }
+                document.getElementById("coupon-code").value="";
             })
             .catch(error => {
-                displayMessage("Invalid promo code. Please try again.", "error");
+                displayMessage("This Promo code is Invalid or used before", "error");
+                document.getElementById("coupon-code").value="";
                 console.error("Error:", error);
             });
+
+
     });
 
 
