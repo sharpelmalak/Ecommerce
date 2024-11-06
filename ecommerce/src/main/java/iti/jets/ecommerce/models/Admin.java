@@ -26,5 +26,4 @@ public class Admin extends User implements java.io.Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
     private Set<Product> products = new HashSet<>(0);
-
 }
