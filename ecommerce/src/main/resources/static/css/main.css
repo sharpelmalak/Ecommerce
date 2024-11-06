@@ -5822,6 +5822,15 @@ label {
   }
 }
 
+@media (max-width: 991px) {
+  .header_area .navbar .nav.navbar-nav.navbar-right li:first-child {
+    display: block;
+    margin-left: 0px;
+    margin-top: -25px;
+    margin-bottom: -45px;
+  }
+}
+
 @keyframes fadeOut {
   0% {
     opacity: 1; /* Start fully visible */
