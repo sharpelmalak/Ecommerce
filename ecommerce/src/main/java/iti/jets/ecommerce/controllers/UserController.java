@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import iti.jets.ecommerce.dto.CustomerDTO;
 import iti.jets.ecommerce.dto.OrderDTO;
@@ -31,7 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/user")
 public class UserController {
     
-
+    
     @Autowired
     private CustomerService customerService;
 
@@ -49,10 +50,10 @@ public class UserController {
         model.addAttribute("CustomerDTO", customerService.getCustomerByUserName(principal.getName()));
         System.out.println("CustomerDTO : " + customerService.getCustomerByUserName(principal.getName()));
         model.addAttribute("categories", categoryService.getAllCategories());
-        return "userAcc";
+        return "userAcc"; 
     }
 
-     /*  Get Order History */
+    /*  Get Order History */
     @GetMapping("/{customerId}/orders")
     public String getOrderHistory(@PathVariable int customerId, Model model) {
         List<OrderDTO> orders = orderServiceImpl.getOrdersByCustomer(customerId);
