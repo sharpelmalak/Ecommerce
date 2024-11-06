@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+
+
 @Entity
 @Table(name = "customer", catalog = "ecommerce")
 @Getter
@@ -36,7 +38,6 @@ public class Customer extends User implements java.io.Serializable {
     @Column(name = "country", nullable = false, length = 100)
     private String country;
     
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private Set<CartItem> cartItems = new HashSet<>(0);
 
