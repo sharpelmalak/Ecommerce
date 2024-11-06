@@ -17,7 +17,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Admin extends User implements java.io.Serializable {
 
-    @Temporal(TemporalType.DATE) // to get the date without time 
+    @Temporal(TemporalType.DATE) 
     @Column(name = "hire_date", nullable = false, length = 10)
     private Date hireDate;
 

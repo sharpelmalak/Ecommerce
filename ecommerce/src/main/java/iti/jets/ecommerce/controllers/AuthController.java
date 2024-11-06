@@ -60,15 +60,13 @@ public class AuthController {
             successHandler.onAuthenticationSuccess(request,response,authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(
                             customerDTO.getUsername(), customerDTO.getPassword()))
-            );
-            model.addAttribute("successMessage", "Registration successful! Please log in.");
-            return "signup"; // Return to signup form if registration fails            
+            ); 
         } else {
             model.addAttribute("errorMessage", "Registration failed. Due to Username or Email Exists");
             model.addAttribute("customerDTO", customerDTO); // Preserve the data
             model.addAttribute("categories", categoryService.getAllCategories());
-            return "login"; // Return to signup form if registration fails
         }
+        return "signup"; // Return to signup form if registration fails
     }
     
 
