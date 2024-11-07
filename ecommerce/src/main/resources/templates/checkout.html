@@ -1061,7 +1061,7 @@
                 // After order is placed, send AJAX request to clear the cart
                 $.ajax({
                     url: '/cart/clear',  // Backend endpoint to clear the cart
-                    method: 'DELETE',  // Assuming it's a POST request to clear the cart
+                    method: 'DELETE',
                     success: function() {
                         console.log('Cart cleared successfully.');
 

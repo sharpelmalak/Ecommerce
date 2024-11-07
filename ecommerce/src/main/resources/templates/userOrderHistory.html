@@ -121,6 +121,14 @@
         #suggestions li:hover {
             background-color: #f5f5f5;
         }
+
+        /* Order Status Colors */
+        .status-pending { color: #ffc107; font-weight: bold; }   /* Yellow for Pending */
+        .status-shipped { color: #17a2b8; font-weight: bold; }   /* Blue for Shipped */
+        .status-delivered { color: #28a745; font-weight: bold; } /* Green for Delivered */
+        .status-canceled { color: #dc3545; font-weight: bold; }  /* Red for Canceled */
+        .status-placed { color: #eec157; font-weight: bold; }  /* Red for Canceled */
+
     </style>
 </head>
 
@@ -217,15 +225,9 @@
                                         </li>
                                     </ul>
                                 </td>
-                                <td th:classappend="status-pending" th:if="${order.orderStatus == 'placed'}"
-                                    th:text="${order.orderStatus}"></td>
-                                <td th:classappend="status-shipped" th:if="${order.orderStatus == 'Shipped'}"
-                                    th:text="${order.orderStatus}"></td>
-                                <td th:classappend="status-delivered" th:if="${order.orderStatus == 'Delivered'}"
-                                    th:text="${order.orderStatus}"></td>
-                                <td th:classappend="status-canceled" th:if="${order.orderStatus == 'Canceled'}"
-                                    th:text="${order.orderStatus}"></td>      <td th:classappend="status-canceled" th:if="${order.orderStatus == 'Canceled'}"
-                                    th:text="${order.orderStatus}"></td>
+                                <td th:classappend="'status-' + ${order.orderStatus.toLowerCase().replace('_', '-')}"
+                                    th:text="${order.orderStatus}">
+                                </td>
                             </tr>
                         </tbody>
                     </table>

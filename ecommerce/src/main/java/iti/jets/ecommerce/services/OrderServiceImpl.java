@@ -120,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
         // order created
         if (checkoutRequest.getPaymentMethod().equals("COD")  || paymentDTO.getPaymentStatus().equals("SUCCESS")) {
             order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
-            order.setStatus("placed");
+            order.setStatus("Placed");
             order.setPaymentMethod(checkoutRequest.getPaymentMethod());
             try {
                 orderRepository.save(order);

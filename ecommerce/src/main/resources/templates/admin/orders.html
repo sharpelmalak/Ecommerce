@@ -161,6 +161,7 @@
                                         <option value="Placed" th:selected="${order.orderStatus == 'Placed'}">Placed</option>
                                         <option value="Pending" th:selected="${order.orderStatus == 'Pending'}">Pending</option>
                                         <option value="Shipped" th:selected="${order.orderStatus == 'Shipped'}">Shipped</option>
+                                        <option value="Out_for_delivery" th:selected="${order.orderStatus == 'Out_for_delivery'}">Out for Delivery</option>
                                         <option value="Delivered" th:selected="${order.orderStatus == 'Delivered'}">Delivered</option>
                                         <option value="Canceled" th:selected="${order.orderStatus == 'Canceled'}">Canceled</option>
                                    </select>
@@ -172,6 +173,7 @@
                 </div>
             </div>
         </div>
+     </div>
     </div>
 
     <footer>&copy; 2024 Your Admin Panel. All Rights Reserved for WatchAt.</footer>

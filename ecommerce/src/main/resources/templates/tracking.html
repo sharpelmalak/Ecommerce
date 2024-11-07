@@ -238,6 +238,7 @@
         }
 
 
+
     </style>
 
 </head>
@@ -511,7 +512,7 @@
         const milestones = document.querySelectorAll('.milestone');
         const progressBarFill = document.querySelector('.progress-bar-fill');
         // Add 'active' class only to milestones up to the current status
-        const statuses = ['placed', 'shipped', 'out_for_delivery', 'delivered'];
+        const statuses = ['Placed', 'Shipped', 'Out_for_delivery', 'Delivered'];
         statuses.forEach((status, index) => {
             milestones[index].classList.remove('active');
         });
@@ -529,17 +530,19 @@
 
             // Map statuses to milestone completion levels
             const statusMap = {
-                'placed': 25,
-                'shipped': 50,
-                'out_for_delivery': 75,
-                'delivered': 100
+                'Canceled': 0,
+                'Pending': 0,
+                'Placed': 25,
+                'Shipped': 50,
+                'Out_for_delivery': 75,
+                'Delivered': 100
             };
 
             // Set progress fill width based on order status
             progressBarFill.style.width = statusMap[orderStatus] + '%';
 
             // Add 'active' class only to milestones up to the current status
-            const statuses = ['placed', 'shipped', 'out_for_delivery', 'delivered'];
+            const statuses = ['Placed', 'Shipped', 'Out_for_delivery', 'Delivered'];
             statuses.forEach((status, index) => {
                 if (statuses.indexOf(orderStatus) >= index) {
                     milestones[index].classList.add('active');
