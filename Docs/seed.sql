@@ -88,3 +88,10 @@ INSERT INTO product (admin_id, category_id, name, price, quantity, brand, descri
 (1, 6, 'TIMEX Easy Reader', 50.00, 30, 'TIMEX', 'Classic analog with easy-to-read dial.', 'timex_easyreader.jpg', false, 'Leather', 38, '30m', 'Unisex'),
 (1, 6, 'G-Shock Analog-Digital', 175.00, 10, 'G-Shock', 'Analog-digital hybrid with LED backlight.', 'gshock_analog_digital.jpg', false, 'Resin', 46, '200m', 'Male'),
 (1, 6, 'CASIO MTP-V002', 35.00, 40, 'CASIO', 'Affordable analog watch with a stainless steel case.', 'casio_mtp.jpg', false, 'Stainless Steel', 39, '50m', 'Male');
+
+
+
+use ecommerce;
+UPDATE product
+SET image = CONCAT('/img/watch/', id, '.jpg')
+WHERE id BETWEEN 51 AND 60;

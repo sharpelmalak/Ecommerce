@@ -12,6 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
     // You can define custom query methods here if needed
     Admin findByEmail(String email);
-    
     Optional<Admin> findByUsername(String username);
 }
