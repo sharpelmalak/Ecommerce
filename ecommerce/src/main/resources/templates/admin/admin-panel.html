@@ -81,6 +81,7 @@
 
 <body>
 <div id="action-message" class="action-message" style="display: none;"></div>
+<div id="actionMessage" style="display: none;"></div>
 
     <!--  Sidebar Section  -->
     <div class="sidebar">
@@ -221,15 +222,6 @@
             console.log("can't parse sharpel")
         }
 
-        // Modal open and close logic
-        document.getElementById("addProductBtn").addEventListener("click", function () {
-            clearFormData();
-            document.getElementById("productModal").style.display = "block";
-        });
-        document.querySelector(".close").addEventListener("click", function () {
-            document.getElementById("productModal").style.display = "none";
-        });
-
         function clearFormData() {
             document.getElementById("productId").value = '';
             document.getElementById("name").value = '';
@@ -239,21 +231,14 @@
             document.getElementById("imageUrl").value = '';
         }
 
-
     function deleteProduct(id) {
         if (confirm('Are you sure you want to delete this product?')) {
             fetch(`/admin/product/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then(response => {
+                method: 'DELETE'
+            }).then(response => {
                     if (response.ok) {
                         showActionMessage('Product deleted successfully!','success');
-                        // Optionally reload the page or update the UI
-                        location.reload(); // Reloads the page
+                        location.reload(true); // Reloads the page
                     } else {
                         showActionMessage('Failed to delete the product.','error');
                     }
@@ -264,8 +249,27 @@
                 });
         }
     }
-</script>
 
+        function showActionMessage(message, type) {
+            // Create or select a div to show the message
+            let messageDiv = document.getElementById('actionMessage');
+            if (!messageDiv) {
+                messageDiv = document.createElement('div');
+                messageDiv.id = 'actionMessage';
+                document.body.appendChild(messageDiv);
+            }
+
+            // Set the message text and style based on type
+            messageDiv.textContent = message;
+            messageDiv.className = type === 'success' ? 'alert alert-success' : 'alert alert-danger';
+
+            // Optionally, clear the message after a few seconds
+            setTimeout(() => {
+                messageDiv.textContent = '';
+            }, 3000); // 3 seconds
+        }
+
+</script>
 
 </body>
 </html>

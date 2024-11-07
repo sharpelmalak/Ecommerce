@@ -125,7 +125,7 @@
     <header>
         <h1>Add New Product</h1>
     </header>
-    <section th:if="${!productAdded}">
+    <section>
         <form th:action="@{/admin/product}" method="post" enctype="multipart/form-data">            <!-- Hidden field for admin ID -->
             <input type="hidden" name="adminId" th:value="${adminId}" />
 

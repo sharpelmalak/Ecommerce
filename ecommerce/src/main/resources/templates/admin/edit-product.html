@@ -123,7 +123,7 @@
     <header>
         <h1>Update Product Details</h1>
     </header>
-    <section th:if="${!productUpdated}">
+    <section>
         <form th:action="@{/admin/product/{id}(id=${productDTO.id})}" method="post">
             <input type="hidden" name="adminId" th:value="${adminId}" />
             

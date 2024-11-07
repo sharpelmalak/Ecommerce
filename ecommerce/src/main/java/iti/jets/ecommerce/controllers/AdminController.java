@@ -17,8 +17,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
 import java.nio.file.Files;
-
-
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +25,6 @@ import java.util.UUID;
 
 
 @Controller
-@SessionAttributes("productDTO")
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -55,7 +52,7 @@ public class AdminController {
     /*                            Admin Functionalities Related to Products                         */
     /* ============================================================================================ */
     @PostMapping("/product")
-    public String createProduct(@ModelAttribute ProductDTO productDTO, @RequestParam int adminId, @RequestParam("imageFile") MultipartFile imageFile, Model model, RedirectAttributes redirectAttributes) {
+    public String createProduct(@ModelAttribute ProductDTO productDTO, @RequestParam int adminId, @RequestParam("imageFile") MultipartFile imageFile, Model model) {
         try {
             // Process and save the image
             if (!imageFile.isEmpty()) {
@@ -76,12 +73,9 @@ public class AdminController {
 
             // Save the product
             ProductDTO savedProduct = productService.createProduct(productDTO, adminId);
-
-            // Add attributes to display on the success page
-            redirectAttributes.addFlashAttribute("productAdded", true);
-            redirectAttributes.addFlashAttribute("successMessage", "Product created successfully!");
             model.addAttribute("productDTO", savedProduct);
-            return "redirect:/admin/product_success";
+            model.addAttribute("successMessage", "Product created successfully!");
+            return "admin/product_success";
         } catch (IOException e) {
             e.printStackTrace();
             model.addAttribute("errorMessage", "Image upload failed. Please try again.");
@@ -90,81 +84,40 @@ public class AdminController {
     }
 
 
-
-    @GetMapping("/product_success")
-    public String productSuccessPage(Model model) {
-        // Retrieve productDTO from the model
-        ProductDTO productDTO = (ProductDTO) model.getAttribute("productDTO");
-    
-        // Add it to the model if needed for the view
-        model.addAttribute("productDTO", productDTO);
-        return "admin/product_success"; // Display the success message and details on this page
-    }
-
-
     @GetMapping("/product/addForm")
     public String showAddProductForm(Model model,Principal principal) {
         int adminId = adminService.getAdminProfile(principal.getName()).getId();
         model.addAttribute("adminId", adminId);
         model.addAttribute("productDTO", new ProductDTO()); /*  Add an empty productDTO to the model */
-        model.addAttribute("productAdded", false);
         model.addAttribute("categories", categoryService.getAllCategories());
         return "admin/add-product";
     }
 
     @GetMapping("/product/editForm")
     public String showEditProductForm(@RequestParam int id, Model model,Principal principal) {
-        
         int adminId = adminService.getAdminProfile(principal.getName()).getId();
         model.addAttribute("adminId", adminId);
         ProductDTO productDTO = productService.getProductById(id);
         model.addAttribute("productDTO", productDTO);
         model.addAttribute("productUpdated", false);
         model.addAttribute("categories", categoryService.getAllCategories());
-    
         return "admin/edit-product";
     }
     
     @PostMapping("/product/{id}")
-    public String updateProduct(@PathVariable int id, @ModelAttribute ProductDTO productDTO, Model model, RedirectAttributes redirectAttributes) {
+    public String updateProduct(@PathVariable int id, @ModelAttribute ProductDTO productDTO, Model model) {
         // Call the service to update the product
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
-        // Set success message and updated product
-        redirectAttributes.addFlashAttribute("productUpdated", true);
-        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+        model.addAttribute("successMessage", "Product updated successfully!");
         model.addAttribute("productDTO", updatedProduct);
-        return "redirect:/admin/product_update_success";
-    }
-    
-    @GetMapping("/product_update_success")
-    public String productUpdateSuccessPage(Model model) {
-        ProductDTO productDTO = (ProductDTO) model.getAttribute("productDTO");
-        model.addAttribute("productDTO", productDTO);
         return "admin/product_update_success";
     }
-
-
-    /* Delete a product (soft delete) */
+    
     @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id) {
         productService.deleteProduct(id);
         return ResponseEntity.ok("Product deleted successfully");
     }
-
-
-    /* method to get all the products (Active and non-Active) ,left for future usage : Haroun */
-    /* Get all products */
-    /*
-    @GetMapping("/products")
-    public String getAllProducts(Model model) {
-        List<ProductDTO> productDTOs = productService.getAllProducts();
-        List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
-        model.addAttribute("productList", productDTOs);
-        model.addAttribute("categoryList", categoryDTOs);
-        return "admin/admin-panel";
-        // return ResponseEntity.ok(productDTOs);
-    }
-    */
 
     @GetMapping("/products")
     public String getAllProducts(@RequestParam(defaultValue = "0" )int page,Model model) {
@@ -174,7 +127,7 @@ public class AdminController {
         model.addAttribute("productList", productDTOs.getContent());
         model.addAttribute("categoryList", categoryDTOs);
         model.addAttribute("totalPages", productDTOs.getTotalPages());
-        model.addAttribute("page", page); // Add the current page number to the model
+        model.addAttribute("page", page); 
         return "admin/admin-panel";
     }
 
@@ -186,6 +139,8 @@ public class AdminController {
     }
 
     
+
+
     /* ============================================================================================ */
     /*                           Admin Functionalities Related to Customers                         */
     /* ============================================================================================ */
@@ -253,6 +208,9 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
+
+
+
     /* ============================================================================================ */
     /*                            Admin Profile Management                                          */
     /* ============================================================================================ */
@@ -288,16 +246,15 @@ public class AdminController {
     }
 
 
+
     /* ================= Create Promotions  ==================== */
     @GetMapping("/add-promotion-form")
     public String showPromotionForm(Model model) {
         return "admin/add-promotion";
     }
 
-
     @PostMapping("/promotion")
     public String createPromotion(@ModelAttribute PromotionDTO promotionDTO, Model model) {
-
     // Add success message and promotion details to the model
     model.addAttribute("successMessage", "Promotion created successfully!");
     model.addAttribute("promotionDTO", promotionService.createPromotion(promotionDTO));
