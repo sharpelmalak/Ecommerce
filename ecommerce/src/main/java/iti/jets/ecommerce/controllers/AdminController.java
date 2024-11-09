@@ -70,7 +70,6 @@ public class AdminController {
                 // Set the image path in the productDTO
                 productDTO.setImage( "/img/watch/"+imageFileName); 
             }
-
             // Save the product
             ProductDTO savedProduct = productService.createProduct(productDTO, adminId);
             model.addAttribute("productDTO", savedProduct);
@@ -150,7 +149,6 @@ public class AdminController {
         List<CustomerDTO> customers = customerService.getAllCustomers();
         model.addAttribute("customersList", customers);
         return "admin/customers";
-        // return ResponseEntity.ok(customers);
     }
 
     /* Get a specific customer by ID */
