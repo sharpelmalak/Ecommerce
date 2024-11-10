@@ -9,6 +9,11 @@
 	<link rel="stylesheet" href="css/signup.css">
 	<title>Registration Form</title>
 
+
+
+
+	
+
 	<link rel="stylesheet" href="css/linearicons.css">
 	<link rel="stylesheet" href="css/themify-icons.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
