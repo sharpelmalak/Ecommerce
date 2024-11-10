@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.paypal.sdk.models.Order;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
@@ -124,6 +126,7 @@ public class AdminController {
         Page<ProductDTO> productDTOs = productService.getDefaultProducts(PageRequest.of(page, pageSize)); // Use the updated method
         List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
         model.addAttribute("productList", productDTOs.getContent());
+        model.addAttribute("TotalProductListCount",productService.getAllActiveProducts().size());
         model.addAttribute("categoryList", categoryDTOs);
         model.addAttribute("totalPages", productDTOs.getTotalPages());
         model.addAttribute("page", page); 
@@ -151,6 +154,7 @@ public class AdminController {
         return "admin/customers";
     }
 
+
     /* Get a specific customer by ID */
     @GetMapping("/customer/{id}")
     public String getCustomerById(@PathVariable int id,Model model) {
@@ -167,6 +171,7 @@ public class AdminController {
         CustomerDTO updatedCustomer = customerService.updateCustomerByAdmin(id, customerDTO);
         return ResponseEntity.ok(updatedCustomer);
     }
+
 
     /* Not Handled Yet : Haroun */
     /* Delete a customer (soft delete) */
@@ -192,9 +197,17 @@ public class AdminController {
 
     /*  Get Order History for all customers */
     @GetMapping("/orders")
-    public String getAllOrderHistory(Model model) {
-        List<OrderDTO> orders = orderServiceImpl.getAllOrders();
+   
+    public String getAllOrderHistory(@RequestParam(defaultValue = "0" )int page,Model model) {
+        int size = 8;
+        List<OrderDTO> totalOrders = orderServiceImpl.getAllOrders();
+        Page<OrderDTO> orders = orderServiceImpl.getAllOrders(PageRequest.of(page,size));
+        System.out.println("Num of Total Orders: "+totalOrders.size());
+        System.out.println("Page Orders " + orders.getContent());
         model.addAttribute("orders", orders);
+        model.addAttribute("totOrdersCount", totalOrders.size());
+        model.addAttribute("totalPages", orders.getTotalPages());
+        model.addAttribute("currentPage", page); 
         return "admin/orders";
     }
     

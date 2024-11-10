@@ -86,6 +86,12 @@ public class AuthController {
         return "signup";
     }
 
+
+
+    /*  Not Used, Spring Boot Handles this part by this method :  
+        successHandler.onAuthenticationSuccess(request,response,authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(customerDTO.getUsername(), customerDTO.getPassword())); */
+    /* 
     @PostMapping(value = "/login", consumes = {"application/json"}, produces = "application/json")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO) {
         try {
@@ -110,7 +116,7 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "Login Failed"));
         }
-    }
+    }*/
 
 
     @GetMapping("/check-username")

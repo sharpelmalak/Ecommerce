@@ -81,7 +81,6 @@ public class SecurityConfig {
                                         "/category/**",
                                         "/css/**", "/js/**", "/img/**", "/fonts/**","/common/**",
                                         "/home",
-                                        "/",
                                         "/error",
                                         "/details/**",
                                         "/"

@@ -16,13 +16,10 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
 
-
     @Autowired
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
-
 
 }

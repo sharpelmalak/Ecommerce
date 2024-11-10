@@ -7,6 +7,9 @@ import iti.jets.ecommerce.models.Customer;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface OrderService {
 
     OrderDTO createOrder(CheckoutRequest checkoutRequest , Customer customer);
@@ -17,5 +20,7 @@ public interface OrderService {
 
     void updateOrderStatus(int orderId, String status);
     OrderDTO trackOrder(int orderId, String customerEmail);
-
+    
+    Page<OrderDTO> getAllOrders(Pageable pageable); 
 }
+

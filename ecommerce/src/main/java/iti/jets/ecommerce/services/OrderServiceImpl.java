@@ -12,8 +12,12 @@ import iti.jets.ecommerce.services.payment.PaymentService;
 import iti.jets.ecommerce.services.payment.PaymentServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.PageImpl;
+
 
 import java.security.Principal;
 import java.sql.Timestamp;
@@ -153,6 +157,15 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDTO> returnedOrders = orders.stream().map((element) -> modelMapper.map(element, OrderDTO.class))
                 .collect(Collectors.toList());
         return returnedOrders;
+    }
+
+    // For Admins
+    @Override
+    public Page<OrderDTO> getAllOrders(Pageable pageable) {
+        Page<Order> orders = orderRepository.findAll(pageable);
+        List<OrderDTO> returnedOrdersDTOs = orders.getContent().stream().map((element) -> modelMapper.map(element, OrderDTO.class))
+                .collect(Collectors.toList());
+        return new PageImpl<>(returnedOrdersDTOs,pageable,orders.getTotalElements());
     }
 
     @Override
