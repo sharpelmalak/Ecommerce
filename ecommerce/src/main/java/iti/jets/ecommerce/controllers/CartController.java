@@ -30,7 +30,6 @@ public class CartController {
     public ResponseEntity<CartItemDTO> addToCart(@RequestParam int productId, @RequestParam int quantity, HttpServletRequest request, HttpServletResponse response, Principal principal) {
         try {
 
-
             CartItemDTO cartItem = cartService.addProductToCart(request.getSession(), request.getCookies(),productId, quantity);
             Cookie cookie = cartService.persistCartInCookie(request.getSession());
             if(principal != null) {
