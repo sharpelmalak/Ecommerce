@@ -94,7 +94,9 @@ public class CartController {
     public ResponseEntity<Void> removeFromCart(@PathVariable int productId,HttpServletRequest request,HttpServletResponse response,Principal principal) {
         try {
             cartService.removeProductFromCart(request.getSession(), productId);
+
             Cookie cookie = cartService.persistCartInCookie(request.getSession());
+            
             if(principal != null) {
                 cartService.saveCart((List<CartItemDTO>)request.getSession().getAttribute("cart"),principal.getName());
             }
