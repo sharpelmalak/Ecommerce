@@ -35,3 +35,4 @@ public abstract class User {
     @Column(name = "email", unique = true, nullable = false, length = 45)
     private String email;
 }
+
