@@ -41,6 +41,49 @@
         .single-footer-widget p {
                     text-align: justify;
                 }
+
+                .waxen4 {
+                padding-top: 250px;
+                background-color: #f9f9f9; /* Light background for a clean look */
+                padding-bottom: 150px;
+            }
+
+            .order_details .container {
+                max-width: 800px;
+                padding: 40px;
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+                border-radius: 10px; /* Rounded corners */
+                background: white;
+                margin-bottom: 0px; /* Removes the space between messages */
+            }
+
+            .title_confirmation {
+                font-family: 'Poppins', sans-serif; /* Stylish font */
+                font-size: 1.8rem;
+                color: #171313;
+                font-weight: bold;
+                text-transform: uppercase; /* Uppercase for a formal look */
+                letter-spacing: 1px;
+
+            }
+
+
+            .title_confirmation span {
+                margin-top: 0; /* Ensures no extra space between consecutive titles */
+                color: #ff6347; /* Highlight color for Order ID */
+                font-weight: bold;
+                margin-bottom: 0;
+            }
+
+            .primary-btn {
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.1rem;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-top: 0px;
+                cursor: pointer;
+            }
+
 	</style>
 
 </head>
@@ -99,31 +142,13 @@
     </header>
     <!-- End Header Area -->
 
-	<!-- End Header Area -->
-
-	<!-- Start Banner Area -->
-	<section class="banner-area organic-breadcrumb">
-		<div class="container">
-			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-				<div class="col-first">
-					<h1>Confirmation</h1>
-					<nav class="d-flex align-items-center">
-						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-						<a href="category.html">Confirmation</a>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Banner Area -->
-
 	<!--================Order Details Area =================-->
-	<section class="order_details section_gap">
+	<section class="order_details waxen4">
 		<div class="container">
 			<h3 class="title_confirmation">Thank you. Your order has been received.</h3>
 			<h3 class="title_confirmation">Your Order ID is :  <span id="order-id"></span> </h3>
 			<div>
-				<button style="margin-left: 40%" type="button" class="primary-btn" id="tracking">Track Your Order</button>
+				<button style="margin-left: 35%" type="button" class="primary-btn" id="tracking">Track Your Order</button>
 			</div>
 
 		</div>
@@ -134,16 +159,15 @@
 	<footer class="footer-area section_gap">
 		<div class="container">
 			<div class="row">
-
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <div class="single-footer-widget" style="text-align: justify;">
-                                        <h6>About Us</h6>
-                                        <p>
-                                            Welcome to Waxen, where luxury and style meet in every timepiece. We offer a curated selection of world-renowned brands like G-Shock, CASIO, Fossil, ALBA, CITIZEN, TOMMY HILFIGER, NAVIFORCE, and TIMEX.
-                                            From SPORTY watches for adventurers to CLASSIC and CASUAL designs for everyday elegance, our diverse collections suit every style. Discover SMART technology, PREMIUM craftsmanship, and timeless Analog watches, each embodying quality and individuality.	
-                                            At Waxen, we’re passionate about excellence—explore our collections and find a watch that’s uniquely yours.
-                                        </p>
-                                    </div>
+                    <div class="single-footer-widget" style="text-align: justify;">
+                        <h6>About Us</h6>
+                        <p>
+                            Welcome to Waxen, where luxury and style meet in every timepiece. We offer a curated selection of world-renowned brands like G-Shock, CASIO, Fossil, ALBA, CITIZEN, TOMMY HILFIGER, NAVIFORCE, and TIMEX.
+                            From SPORTY watches for adventurers to CLASSIC and CASUAL designs for everyday elegance, our diverse collections suit every style. Discover SMART technology, PREMIUM craftsmanship, and timeless Analog watches, each embodying quality and individuality.	
+                            At Waxen, we’re passionate about excellence—explore our collections and find a watch that’s uniquely yours.
+                        </p>
+                    </div>
                 </div>
                 
 				<div class="col-lg-4  col-md-6 col-sm-6">
@@ -159,16 +183,10 @@
 
 									<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
 									 required="" type="email">
-
-
 									<button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
 									<div style="position: absolute; left: -5000px;">
 										<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
 									</div>
-
-									<!-- <div class="col-lg-4 col-md-4">
-													<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-												</div>  -->
 								</div>
 								<div class="info"></div>
 							</form>
