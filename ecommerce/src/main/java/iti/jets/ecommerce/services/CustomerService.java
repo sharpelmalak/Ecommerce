@@ -1,9 +1,11 @@
 package iti.jets.ecommerce.services;
 
 import iti.jets.ecommerce.dto.*;
+import iti.jets.ecommerce.exceptions.InvalidInputException;
 import iti.jets.ecommerce.models.*;
 import iti.jets.ecommerce.mappers.CustomerMapper;
 import iti.jets.ecommerce.repositories.*;
+import iti.jets.ecommerce.utils.ValidationUtils;
 import lombok.extern.java.Log;
 
 import org.modelmapper.ModelMapper;
@@ -130,11 +132,18 @@ public class CustomerService {
         Customer authCustomer = customerRepository.findByEmail(customerAddress.getEmail()).orElse(null);
         CustomerDTO customer = getCustomerById(authCustomer.getId());
         System.out.println("addrss is : "+customerAddress.getAddress());
-        customer.setAddress(customerAddress.getAddress());
-        customer.setCity(customerAddress.getCity());
-        customer.setCountry(customerAddress.getCountry());
-        customer.setPhone(customerAddress.getPhone());
-        updateCustomer(authCustomer.getId(), customer);
+
+        // make sure the input is valid : not emtpy
+        if(ValidationUtils.isValidCustomerAddress(customerAddress)){
+            customer.setAddress(customerAddress.getAddress());
+            customer.setCity(customerAddress.getCity());
+            customer.setCountry(customerAddress.getCountry());
+            customer.setPhone(customerAddress.getPhone());
+            updateCustomer(authCustomer.getId(), customer);
+        }
+        else
+            throw new InvalidInputException("Invalid Input Data");
+
         return customerAddress;
     }
 
