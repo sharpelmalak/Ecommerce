@@ -56,7 +56,7 @@ public class CartService {
             while (iterator.hasNext()) {
                 CartItemDTO cartItem = iterator.next();
                 ProductDTO product = productService.getProductById(cartItem.getProduct().getId());
-                if (product == null || product.getQuantity() == 0) {
+                if (product == null || product.getQuantity() == 0 || product.isDeleted()) {
                     result = true;
                     iterator.remove();
                 } else {

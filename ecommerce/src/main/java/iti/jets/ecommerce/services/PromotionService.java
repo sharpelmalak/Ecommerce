@@ -48,7 +48,8 @@ public class PromotionService {
 
     public List<Promotion> getActivePromotions() {
         LocalDate today = LocalDate.now();
-        return promotionRepository.findAll();
+        return promotionRepository.findActivePromotions(today);
+        
     }
 
     public PromotionDTO getPromotionByName(String promotionName) {

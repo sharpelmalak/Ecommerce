@@ -497,7 +497,10 @@
 							<div class="prd-bottom">
 								<a href="#" class="social-info add-to-cart" th:data-product-id="${product.id}">
 									<span class="ti-bag"></span>
-									<p class="hover-text">add to bag</p>
+									<!-- <p class="hover-text" >add to bag</p> -->
+									<p class="hover-text" th:text="#{add.to.bag}">add to bag</p> <!-- Localized text for 'add to bag' -->
+
+									
 								</a>
 								<a th:href="@{/details/{id}(id=${product.id})}" class="social-info">
 									<span class="lnr lnr-move"></span>
@@ -531,6 +534,7 @@
 							uniquely yours.
 						</p>
 					</div>
+					<a href="?lang=en">English</a> | <a href="?lang=ar">العربية</a>
 				</div>
 
 				<div class="col-lg-4  col-md-6 col-sm-6">

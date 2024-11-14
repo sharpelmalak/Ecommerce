@@ -129,7 +129,7 @@ public class CartController {
         }
         return ResponseEntity.ok(Boolean.FALSE);
     }
-
+    
 
     // Clear all items from the cart
     @GetMapping("/checkEmpty")

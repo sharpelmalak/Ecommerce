@@ -568,6 +568,7 @@
       }
       function proceedCheckout() {
         // Example usage:
+        updateCartSummary();
         const totalAmount = calculateTotal();
         if (totalAmount > 0) {
           window.location.href = "/checkout";
