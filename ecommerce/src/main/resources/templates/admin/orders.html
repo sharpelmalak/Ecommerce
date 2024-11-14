@@ -10,15 +10,45 @@
     <style>
         body {
             background-color: #f4f7f9;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
 
-        .sidebar {
+        .d-flex {
+            display: flex;
+        }
+
+       /* Sidebar Style */
+       .sidebar {
             width: 250px;
             background-color: #343a40;
             position: fixed;
             height: 100vh;
+            left: 0;
+            top: 0;
             padding-top: 20px;
             color: white;
+        }
+        .sidebar a {
+            color: white;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         .price {
@@ -27,30 +57,8 @@
             font-weight: bold;
         }
 
-        .sidebar a {
-            color: white;
-            padding: 10px;
-            display: block;
-            text-decoration: none;
-        }
-
-        .sidebar a:hover {
-            background-color: #495057;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-
-        .card {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
         footer {
             margin-top: 20px;
-            /* Increased margin */
             text-align: center;
             background-color: #343a40;
             color: white;
@@ -66,124 +74,112 @@
         }
 
         /* Order Status Colors */
-        .status-pending {
-            color: #ffc107;
-            font-weight: bold;
-        }
-
-        /* Yellow for Pending */
-        .status-shipped {
-            color: #17a2b8;
-            font-weight: bold;
-        }
-
-        /* Blue for Shipped */
-        .status-delivered {
-            color: #28a745;
-            font-weight: bold;
-        }
-
-        /* Green for Delivered */
-        .status-canceled {
-            color: #dc3545;
-            font-weight: bold;
-        }
-
-        /* Red for Canceled */
-        .status-placed {
-            color: #eec157;
-            font-weight: bold;
-        }
-
-        /* Red for Canceled */
+        .status-pending { color: #ffc107; font-weight: bold; }
+        .status-shipped { color: #17a2b8; font-weight: bold; }
+        .status-delivered { color: #28a745; font-weight: bold; }
+        .status-canceled { color: #dc3545; font-weight: bold; }
+        .status-placed { color: #eec157; font-weight: bold; }
     </style>
 </head>
 
 <body>
-    <div class="sidebar">
-        <h2>Admin Panel</h2>
-        <a th:href="@{/admin/products}">Manage Products</a>
-        <a th:href="@{/admin/profile}">My Profile</a>
-        <a th:href="@{/admin/customers}">Customer Profiles</a>
-        <a th:href="@{/admin/orders}">All Orders</a>
-        <a th:href="@{/admin/add-promotion-form}">Create a Promotion</a>
-        <a th:href="@{/logout}">Logout</a>
-    </div>
+    <div class="d-flex">
+        <div class="sidebar">
+            <h2>Admin Panel</h2>
+            <a th:href="@{/admin/products}">Manage Products</a>
+            <a th:href="@{/admin/profile}">My Profile</a>
+            <a th:href="@{/admin/customers}">Customer Profiles</a>
+            <a th:href="@{/admin/orders}">All Orders</a>
+            <a th:href="@{/admin/add-promotion-form}">Create a Promotion</a>
+            <a th:href="@{/logout}">Logout</a>
+        </div>
 
-    <div class="main-content">
-
-        <div class="container-fluid">
-        <!-- Dashboard Widgets -->
-            <div class="col-md-3">
-                <div class="card p-3">
-                    <h5>Orders Count</h5>
-                    <p><strong th:text="${orders.size()}"></strong></p>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card p-3">
+                            <h5>Total Orders Count</h5>
+                            <p><strong th:text="${totOrdersCount}"></strong></p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="card p-4">
+                <!-- Message container for success or failure messages -->
+                <div id="message" style="display: none;" class="alert" role="alert"></div>
+                    
+                    <!-- Orders Table -->
+                    <div th:if="${!#lists.isEmpty(orders)}">
+                        <table class="table table-bordered table-hover mt-4">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer ID</th>
+                                    <th>Total Price</th>
+                                    <th>Date Created</th>
+                                    <th>Order Items</th>
+                                    <th>Order Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="order : ${orders}">
+                                    <td th:text="${order.orderId}"></td>
+                                    <td th:text="${order.customerId}"></td>
+                                    <td class="price" th:text="'$' + ${#numbers.formatDecimal(order.totalPrice, 1, 2)}"></td>
+                                    <td th:text="${order.orderDate}"></td>
+                                    <td>
+                                        <ul>
+                                            <li th:each="item : ${order.orderItems}">
+                                                <strong th:text="${item.productName}"></strong>
+                                                (x<span th:text="${item.quantity}"></span>) -
+                                                <span th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)}"></span>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <select class="form-select" th:value="${order.orderStatus}"
+                                                th:attr="onchange='updateOrderStatus(this, ' + ${order.orderId} + ')'">
+                                            <option value="Placed" th:selected="${order.orderStatus == 'Placed'}">Placed</option>
+                                            <option value="Pending" th:selected="${order.orderStatus == 'Pending'}">Pending</option>
+                                            <option value="Shipped" th:selected="${order.orderStatus == 'Shipped'}">Shipped</option>
+                                            <option value="Out_for_delivery" th:selected="${order.orderStatus == 'Out_for_delivery'}">Out for Delivery</option>
+                                            <option value="Delivered" th:selected="${order.orderStatus == 'Delivered'}">Delivered</option>
+                                            <option value="Canceled" th:selected="${order.orderStatus == 'Canceled'}">Canceled</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-        <!-- Message container for success or failure messages -->
-        <div id="message" style="display: none;" class="alert" role="alert"></div>
-
-        <div class="container-fluid">
-            <div class="card p-4">
-                <!-- Orders Table -->
-                <div th:if="${!#lists.isEmpty(orders)}">
-                    <table class="table table-bordered table-hover mt-4">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer ID</th>
-                                <th>Total Price</th>
-                                <th>Date Created</th>
-                                <th>Order Items</th>
-                                <th>Order Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="order : ${orders}">
-                                <td th:text="${order.orderId}"></td>
-                                <td th:text="${order.customerId}"></td>
-                                <td class="price" th:text="'$' + ${#numbers.formatDecimal(order.totalPrice, 1, 2)}">
-                                </td>
-                                <td th:text="${order.orderDate}"></td>
-                                <td>
-                                    <ul>
-                                        <li th:each="item : ${order.orderItems}">
-                                            <strong th:text="${item.productName}"></strong>
-                                            (x<span th:text="${item.quantity}"></span>) -
-                                            <span th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)}"></span>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <select class="form-select" th:value="${order.orderStatus}"
-                                        th:attr="onchange='updateOrderStatus(this, ' + ${order.orderId} + ')'">
-                                        <option value="Placed" th:selected="${order.orderStatus == 'Placed'}">Placed</option>
-                                        <option value="Pending" th:selected="${order.orderStatus == 'Pending'}">Pending</option>
-                                        <option value="Shipped" th:selected="${order.orderStatus == 'Shipped'}">Shipped</option>
-                                        <option value="Out_for_delivery" th:selected="${order.orderStatus == 'Out_for_delivery'}">Out for Delivery</option>
-                                        <option value="Delivered" th:selected="${order.orderStatus == 'Delivered'}">Delivered</option>
-                                        <option value="Canceled" th:selected="${order.orderStatus == 'Canceled'}">Canceled</option>
-                                   </select>
-
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <!-- Pagination -->
+                        <div>
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:if="${currentPage > 0}">
+                                    <a class="page-link" th:href="@{/admin/orders(page=${currentPage - 1})}">Previous</a>
+                                </li>
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                    th:classappend="${i == currentPage} ? 'active'">
+                                    <a class="page-link" th:href="@{/admin/orders(page=${i})}">[[${i + 1}]]</a>
+                                </li>
+                                <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                                    <a class="page-link" th:href="@{/admin/orders(page=${currentPage + 1})}">Next</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(orders)}" class="text-center">
+                        <p>No orders available at the moment.</p>
+                    </div>
                 </div>
             </div>
         </div>
-     </div>
     </div>
 
-    <footer>&copy; 2024 Your Admin Panel. All Rights Reserved for WatchAt.</footer>
+    <footer>&copy; 2024 Your Admin Panel. All Rights Reserved for WAXEN.</footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
-
-
-    <!-- ================== The Script ================== -->
+      
     <script th:inline="javascript">
         function updateOrderStatus(selectElement, orderId) {
             const newStatus = selectElement.value;
@@ -204,17 +200,15 @@
 
         function showMessage(message, alertClass) {
             const messageDiv = document.getElementById("message");
-            messageDiv.innerHTML = `<strong>${message}</strong>`; // Make the message bold
-            messageDiv.className = `alert ${alertClass}`; // Add Bootstrap alert class for styling
-            messageDiv.style.display = "block"; // Show the message
-            messageDiv.style.textAlign = "center"; // Center-align the text
+            messageDiv.innerHTML = `<strong>${message}</strong>`;
+            messageDiv.className = `alert ${alertClass}`;
+            messageDiv.style.display = "block";
+            messageDiv.style.textAlign = "center";
 
-            // Optionally, hide the message after a few seconds
             setTimeout(() => {
                 messageDiv.style.display = "none";
-            }, 4000); // 3 seconds
+            }, 4000);
         }
-
     </script>
 </body>
 

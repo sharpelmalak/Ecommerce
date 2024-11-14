@@ -151,7 +151,13 @@ public class CartService {
                 .findFirst()
                 .orElseThrow(() -> new CartException("Product not found in cart."));
 
-        cartItem.setQuantity(quantity);
+        if(quantity <= cartItem.getProduct().getQuantity()){
+            cartItem.setQuantity(quantity);
+                
+        }
+        else {
+            throw new CartException("Exceed the Limit!.");
+        } 
         session.setAttribute("cart", cartItems);
         return cartItem;
     }
@@ -204,6 +210,7 @@ public class CartService {
             cartCookie.setMaxAge(60 * 60 * 24 * 7); // Cookie valid for 7 days
             cartCookie.setPath("/"); // Set the path to ensure the cookie is available throughout the app
             cartCookie.setHttpOnly(false);
+            System.out.println("Size : " + cartItems.size());
            return cartCookie;
         }
         return null;
@@ -248,7 +255,9 @@ public class CartService {
             }
 
         }
-
+        else if(cart.isEmpty()){
+            resetCart(username);
+        }
     }
 
     @Transactional

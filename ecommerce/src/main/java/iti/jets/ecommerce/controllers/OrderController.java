@@ -1,4 +1,3 @@
-
 package iti.jets.ecommerce.controllers;
 
 import iti.jets.ecommerce.dto.CheckoutRequest;
@@ -18,8 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-
-
     private OrderService orderService;
     private CustomerRepository customerRepository;
 
