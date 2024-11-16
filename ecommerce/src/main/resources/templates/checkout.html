@@ -942,9 +942,19 @@
                 sessionStorage.setItem('orderId', orderId);
                 window.location.href = `/checkout/confirm?orderId=${orderId}`;  // Proceed to confirmation even if cart clearing fails
             },
-            error: function (error) {
-                console.error('Error during checkout:', error);
-                showActionMessage('Failed to place the order.Please Choose a Payment Method.', 'error')
+            error: function (xhr, status, error) {
+                let errorMessage;
+
+                // Check if the server returned a structured JSON response
+                if (xhr.responseJSON && xhr.responseJSON.details) {
+                    errorMessage = xhr.responseJSON.details; // Get error details
+                } else if (xhr.responseText && !xhr.responseText.startsWith('<')) {
+                    errorMessage = xhr.responseText; // Get raw error text if no JSON
+                } else {
+                    errorMessage = "An unexpected error occurred: " + error;
+                }
+                showActionMessage(`Can't place Order. `+errorMessage, 'error')
+
             }
         });
     }

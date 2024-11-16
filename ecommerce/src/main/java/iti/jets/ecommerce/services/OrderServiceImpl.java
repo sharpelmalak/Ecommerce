@@ -4,6 +4,7 @@ import iti.jets.ecommerce.dto.*;
 import iti.jets.ecommerce.exceptions.ItemNotAvailableException;
 import iti.jets.ecommerce.exceptions.ProductNotFoundException;
 import iti.jets.ecommerce.exceptions.ResourceNotFoundException;
+import iti.jets.ecommerce.exceptions.UnsupportedPaymentMethodException;
 import iti.jets.ecommerce.models.*;
 import iti.jets.ecommerce.repositories.CustomerRepository;
 import iti.jets.ecommerce.repositories.OrderRepository;
@@ -73,6 +74,10 @@ public class OrderServiceImpl implements OrderService {
             Product product = productRepository.findById(item.getProduct().getId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
+            // Handle Soft Delete
+            if(product.isDeleted())
+                throw new ProductNotFoundException("Product "+product.getName()+" is not available");
+
             if (product.getQuantity() >= item.getQuantity()) {
                 double itemTotal = product.getPrice() * item.getQuantity();
                 totalPrice += itemTotal;
@@ -90,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
                 orderItem.setCurrentPrice(product.getPrice());
                 orderItems.add(orderItem);
             } else {
-                throw new ItemNotAvailableException("Product not available");
+                throw new ProductNotFoundException("Product: "+product.getName()+" is out of stock");
             }
         }
 
@@ -100,17 +105,14 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalPrice(checkoutRequest.getTotalPrice());
         orderRepository.save(order); // Save again to persist the order with items
 
-        // After setting up all order items, add a print statement to log them
-        System.out.println("Order Items:");
-        for (OrderItem item : orderItems) {
-            System.out.println("Product ID: " + item.getProduct().getId() +
-                    ", Quantity: " + item.getQuantity() +
-                    ", Current Price: " + item.getCurrentPrice());
-        }
-
         // send payment request
         // result of payment [success,failed]
         // payment method : COD , Card , PayPal
+
+        //First Check Payment Method
+        if(checkoutRequest.getPaymentMethod() == null)
+            throw new UnsupportedPaymentMethodException("Please Choose a Payment Method");
+
         PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
         paymentRequestDTO.setOrderId(order.getId());
         paymentRequestDTO.setPaymentMethod(checkoutRequest.getPaymentMethod());
@@ -126,12 +128,7 @@ public class OrderServiceImpl implements OrderService {
             order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
             order.setStatus("Placed");
             order.setPaymentMethod(checkoutRequest.getPaymentMethod());
-            try {
-                orderRepository.save(order);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
+            orderRepository.save(order);
 
         }
         return modelMapper.map(order, OrderDTO.class);

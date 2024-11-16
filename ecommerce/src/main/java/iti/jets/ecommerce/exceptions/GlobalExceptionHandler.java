@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     // Handle ItemNotAvailableException
     @ExceptionHandler(ItemNotAvailableException.class)
     public ResponseEntity<String> handleItemNotAvailableException(ItemNotAvailableException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     // Handle UnsupportedPaymentMethod
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
     // Handle ProductNotFoundException
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CartException.class)
