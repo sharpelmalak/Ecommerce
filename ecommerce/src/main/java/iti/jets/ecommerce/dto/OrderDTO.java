@@ -1,9 +1,7 @@
 package iti.jets.ecommerce.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Table;
+import lombok.*;
 
 import java.util.Date;
 import java.util.Set;
@@ -13,6 +11,7 @@ import jakarta.persistence.ElementCollection;
 
 @Setter
 @Getter
+@ToString
 public class OrderDTO {
     private int orderId;
     private int customerId;

@@ -11,6 +11,7 @@ import iti.jets.ecommerce.repositories.OrderRepository;
 import iti.jets.ecommerce.repositories.ProductRepository;
 import iti.jets.ecommerce.services.payment.PaymentService;
 import iti.jets.ecommerce.services.payment.PaymentServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,21 +32,25 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    private final CartService cartService;
     private OrderRepository orderRepository;
     private ModelMapper modelMapper;
     private ProductService productService;
     private CustomerRepository customerRepository;
     private ProductRepository productRepository;
     private PaymentService paymentService;
+    private EmailService emailService;
 
     public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, ProductService productService,
-            CustomerRepository customerRepository, ProductRepository productRepository, PaymentService paymentService) {
+                            CustomerRepository customerRepository, ProductRepository productRepository, PaymentService paymentService , EmailService emailService, CartService cartService) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.productService = productService;
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
         this.paymentService = paymentService;
+        this.emailService = emailService;
+        this.cartService = cartService;
     }
 
     @Override
@@ -128,6 +133,12 @@ public class OrderServiceImpl implements OrderService {
             order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
             order.setStatus("Placed");
             order.setPaymentMethod(checkoutRequest.getPaymentMethod());
+
+            // send email
+            String customerEmail = customer.getEmail();
+            String orderDetails = modelMapper.map(order,OrderDTO.class).toString(); // Format your order details
+            emailService.sendOrderConfirmation(customerEmail, orderDetails);
+
             orderRepository.save(order);
 
         }
