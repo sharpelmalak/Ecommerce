@@ -11,6 +11,7 @@ import iti.jets.ecommerce.repositories.OrderRepository;
 import iti.jets.ecommerce.repositories.ProductRepository;
 import iti.jets.ecommerce.services.payment.PaymentService;
 import iti.jets.ecommerce.services.payment.PaymentServiceImpl;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
         // Create a new order
         Order order = new Order();
         order.setCustomer(customer); // Associate the customer with the order
-        order.setShippingAddress(customer.getAddress());
+        order.setShippingAddress(customer.getAddress()+" "+ customer.getCity()+ " " + customer.getCountry());
         order.setPaymentMethod(checkoutRequest.getPaymentMethod());
         // First save the Order to generate an ID
         order.setOrderDate(new Timestamp(Instant.now().toEpochMilli()));
@@ -136,8 +137,14 @@ public class OrderServiceImpl implements OrderService {
 
             // send email
             String customerEmail = customer.getEmail();
-            String orderDetails = modelMapper.map(order,OrderDTO.class).toString(); // Format your order details
-            emailService.sendOrderConfirmation(customerEmail, orderDetails);
+            OrderDTO orderDetails = modelMapper.map(order,OrderDTO.class); // Format your order details
+
+            try{
+                emailService.sendOrderConfirmation(customerEmail, orderDetails);
+            }
+            catch (MessagingException e){
+                e.printStackTrace();
+            }
 
             orderRepository.save(order);
 

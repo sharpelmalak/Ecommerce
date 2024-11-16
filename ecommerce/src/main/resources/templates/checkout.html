@@ -838,7 +838,7 @@
     // ==============================
     // Handle Promotion code
     //====================================
-    let finalShippingCost = 0;
+    let finalShippingCost = 50;
     document.getElementById("apply-coupon").addEventListener("click", function () {
         let couponCode = document.getElementById("coupon-code").value;
         const messageDiv = document.getElementById("message");
@@ -910,10 +910,11 @@
             shippingAddress: $('#shippingAddress').val(),
             items: globalCartItems,  // cart items
             paymentMethod: payMethod,
-            totalPrice: itemsTotalPrice,
+            totalPrice: itemsTotalPrice + finalShippingCost,
             shippingCost: finalShippingCost
         };
 
+        console.log(checkoutData);
         // AJAX call to send the checkout request to the backend
         $.ajax({
             url: '/orders',  // Backend endpoint to place the order
