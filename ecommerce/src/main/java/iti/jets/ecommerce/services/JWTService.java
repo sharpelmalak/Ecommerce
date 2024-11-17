@@ -1,9 +1,6 @@
 package iti.jets.ecommerce.services;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,9 +35,23 @@ public class JWTService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
     public String getUsernameFromJwtToken(String token) {
-        // extract the username from jwt token
-        System.out.println("token: " + extractClaim(token, Claims::getSubject));
-        return extractClaim(token, Claims::getSubject);
+        try {
+            // Validate and extract the username from the token
+            String username = extractClaim(token, Claims::getSubject);
+            System.out.println("token: " + username);
+            return username;
+        } catch (ExpiredJwtException e) {
+            System.err.println("JWT token is expired: " + e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            System.err.println("JWT token is unsupported: " + e.getMessage());
+        } catch (MalformedJwtException e) {
+            System.err.println("JWT token is malformed: " + e.getMessage());
+        } catch (SignatureException e) {
+            System.err.println("Invalid JWT signature: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.err.println("JWT claims string is empty: " + e.getMessage());
+        }
+        return null;
     }
 
     public String getRoleFromJwtToken(String token) {
