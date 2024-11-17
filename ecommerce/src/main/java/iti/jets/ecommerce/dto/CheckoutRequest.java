@@ -18,6 +18,4 @@ public class CheckoutRequest {
     private String paymentMethod;
     private double totalPrice;
     private int shippingCost;
-
-
 }

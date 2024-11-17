@@ -259,7 +259,7 @@ public class AdminController {
 
     /* ================= Create Promotions  ==================== */
     @GetMapping("/add-promotion-form")
-    public String showPromotionForm(Model model) {
+    public String showPromotionForm(){
         return "admin/add-promotion";
     }
 

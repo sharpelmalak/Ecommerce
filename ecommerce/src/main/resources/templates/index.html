@@ -268,15 +268,17 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-							<li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
+							<li class="nav-item"><a class="nav-link" th:text="#{home}" href="/home"></a></li>
+							<li class="nav-item"><a class="nav-link" th:text="#{shop}" href="/shop"></a></li>
+
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-									aria-haspopup="true" aria-expanded="false">Account</a>
+									aria-haspopup="true" aria-expanded="false" th:text="#{account}">Account</a>
 								<ul class="dropdown-menu" id="dropdown-menu-auth">
-
 								</ul>
 							</li>
+
+
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item"><a href="/cart" class="cart"><span class="ti-shopping-cart"></span></a>
@@ -356,30 +358,34 @@
 		<div class="container">
 			<!-- Promotion Dropdown and Values -->
 			<div class="promotion-section text-center promotion-card">
-				<h2>Available Promotions</h2>
+				<h2 th:text="#{promotions.available}">Available Promotions</h2>
 				<form action="#" method="post" style="margin-top: 20px;">
 					<div class="form-group">
-						<label for="countrySelect" class="promotion-label">Select Country to see your promotion:</label>
+						<label for="countrySelect" class="promotion-label" th:text="#{promotions.select_country}">
+							Select Country to see your promotion:
+						</label>
 						<select id="countrySelect" name="country" class="form-select" onchange="updatePromotionValue()">
-							<option value="">-- Choose Country --</option>
+							<option value="" th:text="#{promotions.choose_country}">-- Choose Country --</option>
 							<!-- Loop through promotions to populate dropdown -->
 							<th:block th:each="promo : ${promotions}">
 								<option th:value="${promo.country}" th:data-value="${promo.name}"
-									th:text="${promo.country}"></option>
+									th:text="${#messages.msgOrNull('country.' + promo.country) ?: promo.country}">
+								</option>
 							</th:block>
 						</select>
 					</div>
 				</form>
 				<!-- Promotion Details with Green Highlight -->
 				<div class="promotion-details" style="margin-top: 80px;">
-					<p><strong>Promotion Value:</strong>
-						<span id="promotionValue" class="promotion-value"></span>
+					<p>
+						<strong th:text="#{promotions.value}">Promotion Value:</strong>
+						<span id="promotionValue" class="promotion-value"
+							style="color: green; font-weight: bold;"></span>
 					</p>
 				</div>
 			</div>
-
+		</div>
 	</section>
-
 
 	<!-- Start category Area -->
 	<section class="category-area">
@@ -387,8 +393,9 @@
 			<!-- Category Header Title -->
 			<div class="row justify-content-center mb-4">
 				<div class="col-lg-8 text-center">
-					<h2 class="section-title">Browse Our Categories</h2>
-					<p class="section-subtitle">Discover a variety of watches that suit your style and needs.</p>
+					<h2 class="section-title" th:text="#{category.title}">Browse Our Categories</h2>
+					<p class="section-subtitle" th:text="#{category.subtitle}">Discover a variety of watches that suit
+						your style and needs.</p>
 				</div>
 			</div>
 
@@ -399,7 +406,7 @@
 						<a href="/shop">
 							<img class="img-fluid w-100" src="/img/watch/category/analog.jpg" alt="Analog">
 							<div class="deal-details">
-								<h6 class="deal-title">Analog Watches</h6>
+								<h6 class="deal-title" th:text="#{category.analog}">Analog Watches</h6>
 							</div>
 						</a>
 					</div>
@@ -411,7 +418,7 @@
 						<a href="/shop">
 							<img class="img-fluid w-100" src="/img/watch/category/premium.jpg" alt="Premium">
 							<div class="deal-details">
-								<h6 class="deal-title">Premium Watches</h6>
+								<h6 class="deal-title" th:text="#{category.premium}">Premium Watches</h6>
 							</div>
 						</a>
 					</div>
@@ -423,7 +430,7 @@
 						<a href="/cart">
 							<img class="img-fluid w-100" src="/img/watch/category/smart.jpg" alt="Smart">
 							<div class="deal-details">
-								<h6 class="deal-title">Smart Watches</h6>
+								<h6 class="deal-title" th:text="#{category.smart}">Smart Watches</h6>
 							</div>
 						</a>
 					</div>
@@ -433,9 +440,9 @@
 					<div class="single-deal">
 						<div class="overlay"></div>
 						<a href="/shop">
-							<img class="img-fluid w-100" src="/img/watch/category/classic.jpg" alt="classic">
+							<img class="img-fluid w-100" src="/img/watch/category/classic.jpg" alt="Classic">
 							<div class="deal-details">
-								<h6 class="deal-title">Classic Watches</h6>
+								<h6 class="deal-title" th:text="#{category.classic}">Classic Watches</h6>
 							</div>
 						</a>
 					</div>
@@ -445,40 +452,28 @@
 					<div class="single-deal">
 						<div class="overlay"></div>
 						<a href="/shop">
-							<img class="img-fluid w-100" src="/img/watch/category/sporty.jpg" alt="sporty">
+							<img class="img-fluid w-100" src="/img/watch/category/sporty.jpg" alt="Sporty">
 							<div class="deal-details">
-								<h6 class="deal-title">Sproty Watches</h6>
+								<h6 class="deal-title" th:text="#{category.sporty}">Sporty Watches</h6>
 							</div>
 						</a>
 					</div>
 				</div>
-
-				<!-- <div class="col-lg-4 col-md-6">
-					<div class="single-deal">
-						<div class="overlay"></div>
-						<a href="/shop">
-							<img class="img-fluid w-100" src="/img/watch/57.jpg" alt="Classic">
-							<div class="deal-details">
-								<h6 class="deal-title">Classic Watches</h6>
-							</div>
-						</a>
-					</div>
-				</div> -->
 			</div>
 		</div>
 	</section>
 	<!-- End category Area -->
 
-	<!-- start product Area
-					<section class="owl-carousel active-product-area section_gap"> -->
-	<!-- single product slide for Latest Products -->
+
+	<!-- start product Area -->
+	<!-- start product Area -->
 	<div class="single-product-slider">
 		<div class="container">
 			<div class="row justify-content-center"
 				style="margin-bottom: 20px;background-color: #f5f5f5; padding: 20px; border-radius: 10px;">
 				<div class="col-lg-6 text-center">
 					<div class="section-title">
-						<h1>Latest Products With Flash Sales, Hurry Up!</h1>
+						<h1 th:text="#{product.latest}">Latest Products With Flash Sales, Hurry Up!</h1>
 						<p></p>
 					</div>
 				</div>
@@ -497,14 +492,13 @@
 							<div class="prd-bottom">
 								<a href="#" class="social-info add-to-cart" th:data-product-id="${product.id}">
 									<span class="ti-bag"></span>
-									<!-- <p class="hover-text" >add to bag</p> -->
-									<p class="hover-text" th:text="#{add.to.bag}">add to bag</p> <!-- Localized text for 'add to bag' -->
-
-									
+									<p class="hover-text" th:text="#{product.add_to_bag}">Add to bag</p>
+									<!-- Localized text for 'Add to bag' -->
 								</a>
 								<a th:href="@{/details/{id}(id=${product.id})}" class="social-info">
 									<span class="lnr lnr-move"></span>
-									<p class="hover-text">view more</p>
+									<p class="hover-text" th:text="#{product.view_more}">View More</p>
+									<!-- Localized text for 'View More' -->
 								</a>
 							</div>
 						</div>
@@ -513,66 +507,46 @@
 			</div>
 		</div>
 	</div>
-	<!-- </section> -->
 	<!-- end product Area -->
 
-	<!-- start footer Area -->
+	<!-- Start footer Area -->
 	<footer class="footer-area section_gap">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-footer-widget" style="text-align: justify;">
-						<h6>About Us</h6>
-						<p>
-							Welcome to Waxen, where luxury and style meet in every timepiece. We offer a curated
-							selection of world-renowned brands like G-Shock, CASIO, Fossil, ALBA, CITIZEN, TOMMY
-							HILFIGER, NAVIFORCE, and TIMEX.
-							From SPORTY watches for adventurers to CLASSIC and CASUAL designs for everyday elegance, our
-							diverse collections suit every style. Discover SMART technology, PREMIUM craftsmanship, and
-							timeless Analog watches, each embodying quality and individuality.
-							At Waxen, we’re passionate about excellence—explore our collections and find a watch that’s
-							uniquely yours.
+						<h6 th:text="#{footer.about_us_title}">About Us</h6>
+						<p th:text="#{footer.about_us_text}">
+							Welcome to Waxen, where luxury and style meet in every timepiece...
 						</p>
 					</div>
-					<a href="?lang=en">English</a> | <a href="?lang=ar">العربية</a>
+					<a href="?lang=en" th:text="#{footer.language_english}">English</a> |
+					<a href="?lang=ar" th:text="#{footer.language_arabic}">العربية</a>
 				</div>
 
-				<div class="col-lg-4  col-md-6 col-sm-6">
+				<div class="col-lg-4 col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<h6>Newsletter</h6>
-						<p>Stay update with our latest</p>
-						<div class="" id="mc_embed_signup">
-
+						<h6 th:text="#{footer.newsletter_title}">Newsletter</h6>
+						<p th:text="#{footer.newsletter_text}">Stay updated with our latest</p>
+						<div id="mc_embed_signup">
 							<form target="_blank" novalidate="true"
 								action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
 								method="get" class="form-inline">
-
 								<div class="d-flex flex-row">
-
-									<input class="form-control" name="EMAIL" placeholder="Enter Email"
-										onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
-										required="" type="email">
-
-
+									<input class="form-control" name="EMAIL"
+										th:placeholder="#{footer.newsletter_placeholder}" required="" type="email">
 									<button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
 											aria-hidden="true"></i></button>
-									<div style="position: absolute; left: -5000px;">
-										<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
-											type="text">
-									</div>
-
-									<!-- <div class="col-lg-4 col-md-4">
-												<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-											</div>  -->
 								</div>
 								<div class="info"></div>
 							</form>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-3  col-md-6 col-sm-6">
+
+				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-footer-widget mail-chimp">
-						<h6 class="mb-20">Instragram Feed</h6>
+						<h6 th:text="#{footer.instagram_feed}">Instagram Feed</h6>
 						<ul class="instafeed d-flex flex-wrap">
 							<li><img src="img/i1.jpg" alt=""></li>
 							<li><img src="img/i2.jpg" alt=""></li>
@@ -585,10 +559,11 @@
 						</ul>
 					</div>
 				</div>
+
 				<div class="col-lg-2 col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<h6>Follow Us</h6>
-						<p>Let us be social</p>
+						<h6 th:text="#{footer.follow_us}">Follow Us</h6>
+						<p th:text="#{footer.social_text}">Let us be social</p>
 						<div class="footer-social d-flex align-items-center">
 							<a href="#"><i class="fa fa-facebook"></i></a>
 							<a href="#"><i class="fa fa-twitter"></i></a>
@@ -599,18 +574,15 @@
 				</div>
 			</div>
 			<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-				<p class="footer-text m-0">
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+				<p class="footer-text m-0" th:utext="#{footer.copyright_text}">
 					Copyright &copy;
-					<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is
-					made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
-						target="_blank">Colorlib</a>
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					<script>document.write(new Date().getFullYear());</script>
 				</p>
 			</div>
 		</div>
 	</footer>
 	<!-- End footer Area -->
+
 
 
 	<script src="js/vendor/jquery-2.2.4.min.js"></script>
@@ -633,6 +605,8 @@
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
 
+
+
 	<script>
 		$(document).ready(function () {
 			checkAuthStatus();
@@ -642,7 +616,7 @@
 					selectSuggestion($('#search_input').val())
 				}
 			});
-			
+
 			$(document).on('click', '.add-to-cart', function (e) {
 				e.preventDefault(); // Prevent default link behavior
 
@@ -681,14 +655,14 @@
 					if (response.authenticated) {
 						// User is authenticated
 						$('#dropdown-menu-auth').html(`
-                    <li class="nav-item"><a class="nav-link" href="/user/account">My-Account</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link"  th:text="#{my_account}"  href="/user/account">My-Account</a></li>
+                    <li class="nav-item"><a class="nav-link"  th:text="#{logout}" href="/logout">Logout</a></li>
                 `);
 					} else {
 						// User is not authenticated
 						$('#dropdown-menu-auth').html(`
-                    <li class="nav-item"><a class="nav-link" href="/auth/login">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/auth/registeration">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" th:text="#{login}" href="/auth/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link"  th:text="#{register}" href="/auth/registeration">Register</a></li>
                 `);
 					}
 				},
@@ -697,6 +671,8 @@
 				}
 			});
 		}
+
+
 		// Function to fetch and display suggestions as user types
 		function showSuggestions(query) {
 			const suggestionList = $('#suggestions').empty();
@@ -752,7 +728,6 @@
 			// Show the message, then fade out after 3 seconds
 			notification.fadeIn().delay(3000).fadeOut();
 		}
-
 	</script>
 </body>
 
