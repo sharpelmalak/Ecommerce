@@ -190,6 +190,26 @@
             font-size: large;
         }
 
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top: 2px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
 
     </style>
     <script crossorigin="anonymous"
@@ -385,7 +405,9 @@
                         <div class="message" id="message"></div>
                         <br>
                         <button class="primary-btn cust-style" id="place-order-btn"
-                                style="line-height: 50px;border-radius: 50px;">Place Order
+                                style="line-height: 50px; border-radius: 50px;">
+                            <span id="button-text">Place Order</span>
+                            <span id="spinner" class="spinner" style="display: none;"></span>
                         </button>
                     </div>
                 </div>
@@ -902,71 +924,100 @@
     // place order handling
     //==================================================================================================
     function makeOrder(paypal) {
-        let payMethod;
-        if (paypal) payMethod = "Paypal"
-        else payMethod = $('input[name="payment"]:checked').val()
-        // Prepare checkout data
-        checkoutData = {
-            shippingAddress: $('#shippingAddress').val(),
-            items: globalCartItems,  // cart items
-            paymentMethod: payMethod,
-            totalPrice: itemsTotalPrice + finalShippingCost,
-            shippingCost: finalShippingCost
-        };
+        return new Promise((resolve, reject) => {
+            const payMethod = paypal ? "Paypal" : $('input[name="payment"]:checked').val();
 
-        console.log(checkoutData);
-        // AJAX call to send the checkout request to the backend
-        $.ajax({
-            url: '/orders',  // Backend endpoint to place the order
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(checkoutData),
-            success: function (orderDTO) {
-                // Handle the returned OrderDTO
-                console.log('Order placed successfully:', orderDTO);
-                let orderId = orderDTO.orderId;
-                // After order is placed, send AJAX request to clear the cart
-                $.ajax({
-                    url: '/cart/clear',  // Backend endpoint to clear the cart
-                    method: 'DELETE',
-                    success: function () {
-                        console.log('Cart cleared successfully.');
+            // Prepare checkout data
+            const checkoutData = {
+                shippingAddress: $('#shippingAddress').val(),
+                items: globalCartItems,
+                paymentMethod: payMethod,
+                totalPrice: itemsTotalPrice + finalShippingCost,
+                shippingCost: finalShippingCost
+            };
 
-                        // Redirect to confirmation page after cart is cleared
-                        window.location.href = '/checkout/confirm';
-                    },
-                    error: function (error) {
-                        console.error('Error clearing the cart:', error);
+            console.log(checkoutData);
+
+            // AJAX call to send the checkout request to the backend
+            $.ajax({
+                url: '/orders',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(checkoutData),
+                success: function (orderDTO) {
+                    console.log('Order placed successfully:', orderDTO);
+                    const orderId = orderDTO.orderId;
+
+                    // Clear the cart after placing the order
+                    $.ajax({
+                        url: '/cart/clear',
+                        method: 'DELETE',
+                        success: function () {
+                            console.log('Cart cleared successfully.');
+                        },
+                        error: function (error) {
+                            console.error('Error clearing the cart:', error);
+                        },
+                        complete: function () {
+                            // Redirect to confirmation page
+                            window.location.href = `/checkout/confirm?orderId=${orderId}`;
+                            resolve(); // Notify success
+                        }
+                    });
+
+                    sessionStorage.setItem('orderId', orderId);
+                },
+                error: function (xhr, status, error) {
+                    let errorMessage;
+
+                    if (xhr.responseJSON && xhr.responseJSON.details) {
+                        errorMessage = xhr.responseJSON.details;
+                    } else if (xhr.responseText && !xhr.responseText.startsWith('<')) {
+                        errorMessage = xhr.responseText;
+                    } else {
+                        errorMessage = "An unexpected error occurred: " + error;
                     }
-                });
 
-                sessionStorage.setItem('orderId', orderId);
-                window.location.href = `/checkout/confirm?orderId=${orderId}`;  // Proceed to confirmation even if cart clearing fails
-            },
-            error: function (xhr, status, error) {
-                let errorMessage;
-
-                // Check if the server returned a structured JSON response
-                if (xhr.responseJSON && xhr.responseJSON.details) {
-                    errorMessage = xhr.responseJSON.details; // Get error details
-                } else if (xhr.responseText && !xhr.responseText.startsWith('<')) {
-                    errorMessage = xhr.responseText; // Get raw error text if no JSON
-                } else {
-                    errorMessage = "An unexpected error occurred: " + error;
+                    console.error(errorMessage);
+                    showActionMessage(`Can't place Order: ${errorMessage}`, 'error');
+                    reject(new Error(errorMessage)); // Notify failure
                 }
-                showActionMessage(`Can't place Order. `+errorMessage, 'error')
-
-            }
+            });
         });
     }
 
+
     $(document).ready(function () {
-        // When the "Place Order" button is clicked
         $('#place-order-btn').click(function (event) {
             event.preventDefault();
-            makeOrder(false);
+
+            const placeOrderBtn = document.getElementById("place-order-btn");
+            const spinner = document.getElementById("spinner");
+            const buttonText = document.getElementById("button-text");
+
+            // Disable the button and show spinner
+            placeOrderBtn.disabled = true;
+            buttonText.textContent = "Processing...";
+            spinner.style.display = "inline-block";
+
+            makeOrder(false)
+                .then(() => {
+                    console.log('Order processed successfully.');
+                    // The button and spinner state will be reset in the redirection logic
+                })
+                .catch((error) => {
+                    console.error('Error processing order:', error);
+                    showActionMessage("Failed to place the order."+error, "error");
+                })
+                .finally(() => {
+                    // Always reset the button and spinner regardless of the outcome
+                    placeOrderBtn.disabled = false;
+                    buttonText.textContent = "Place Order";
+                    spinner.style.display = "none";
+                });
         });
     });
+
 
 
     window.paypal
