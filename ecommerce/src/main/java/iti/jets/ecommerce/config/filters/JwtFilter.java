@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String uri = request.getRequestURI();
 
         // Skip the filter for static resources
-        if (uri.startsWith("/css") || uri.startsWith("/js") || uri.startsWith("/img") || uri.startsWith("/fonts")) {
+        if (uri.startsWith("/cart") || uri.startsWith("/css") || uri.startsWith("/js") || uri.startsWith("/img") || uri.startsWith("/fonts")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -75,6 +75,13 @@ public class JwtFilter extends OncePerRequestFilter {
                     if ("token".equals(cookie.getName())) {
                         token = cookie.getValue(); // Get the token from the cookie
                         userName = jwtService.getUsernameFromJwtToken(token);
+                        if(userName == null){
+                            Cookie coo = new Cookie("token", null);
+                            coo.setPath("/"); // Set the path to match the cookie path
+                            coo.setHttpOnly(true); // Ensure the cookie is only accessible via HTTP(S)
+                            coo.setMaxAge(0); // Set cookie age to 0 to delete it
+                            response.addCookie(coo);
+                        }
                         break;
                     }
                 }
