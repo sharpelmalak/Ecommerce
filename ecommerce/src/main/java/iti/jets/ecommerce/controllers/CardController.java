@@ -22,9 +22,10 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity< List<CardDTO>> getCustomerCards(@PathVariable int customerId){
-        return  ResponseEntity.ok(cardService.getAllCustomerCards(customerId));
+    @GetMapping
+    public ResponseEntity< List<CardDTO>> getCustomerCards(Principal principal){
+        CustomerDTO customerDTO = customerService.getCustomerByUserName(principal.getName());
+        return  ResponseEntity.ok(cardService.getAllCustomerCards(customerDTO.getId()));
     }
 
     @PostMapping
